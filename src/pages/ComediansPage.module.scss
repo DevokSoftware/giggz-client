@@ -1,0 +1,8 @@
+.comedian_image {
+  box-shadow: 3px 3px 13px 2px rgb(0 128 0 / 20%);
+  transition: transform 0.3s ease-out;
+}
+
+.comedian_image:hover {
+  transform: scale(1.1);
+}
