@@ -158,7 +158,15 @@ const ComedianDetailsPage = () => {
         </Text>
       </Box>
 
-      <VStack mt={2} spacing={4} align="stretch" mx="auto" maxW="800px">
+      <VStack
+        mt={2}
+        spacing={4}
+        align="stretch"
+        mx="auto"
+        maxW="800px"
+        pl={3}
+        pr={3}
+      >
         <HStack mt={4} spacing={4} justify="start">
           <Button
             background={showType === "future" ? "green.500" : "white"}
