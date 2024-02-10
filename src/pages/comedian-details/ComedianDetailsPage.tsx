@@ -13,9 +13,12 @@ import {
   VStack,
   HStack,
   Badge,
+  Button,
+  Center,
 } from "@chakra-ui/react";
 import { FaTiktok, FaYoutube, FaInstagram } from "react-icons/fa";
 import classes from "../ComediansPage.module.scss";
+import Pagination from "../../components/Pagination";
 //todo create model for comedian
 interface ComedianProps {
   name: string;
@@ -23,6 +26,7 @@ interface ComedianProps {
 }
 const ComedianDetailsPage = () => {
   const { comedianId } = useParams();
+  const [showType, setShowType] = React.useState("future");
   const comedian = {
     id: 1,
     name: "Pedro Teixeira da Mota",
@@ -41,25 +45,45 @@ const ComedianDetailsPage = () => {
   interface Show {
     date: string;
     name: string;
-    place: string;
-    city: string;
+    poster: string;
+    location: {
+      name: string;
+      address: string;
+    };
   }
 
   // Example show data
   const shows: Show[] = [
     {
-      date: "2023-01-15",
-      name: "Crazy Laughter Night",
-      place: "Comedy Theater",
-      city: "New York",
+      date: "10 de Outubro, 22:00h ",
+      name: "Pata de Ganso",
+      poster:
+        "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
+      location: {
+        name: "Lisboa Comedy Club",
+        address: "Av. Duque de Loulé 3A, 1050-085 Lisboa",
+      },
     },
     {
-      date: "2023-03-22",
-      name: "Laugh Fest",
-      place: "Funny Hall",
-      city: "Los Angeles",
+      date: "25 de Abril, 21:00h",
+      name: "Pata de Ganso",
+      poster:
+        "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
+      location: {
+        name: "Teatro Villaret",
+        address: "Av. Fontes Pereira de Melo 30A, 1050-122 Lisboa",
+      },
     },
-    // Add more shows as needed
+    {
+      date: "25 de Abril, 21:00h",
+      name: "Pata de Ganso",
+      poster:
+        "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
+      location: {
+        name: "Teatro Villaret",
+        address: "Av. Fontes Pereira de Melo 30A, 1050-122 Lisboa",
+      },
+    },
   ];
 
   return (
@@ -83,7 +107,6 @@ const ComedianDetailsPage = () => {
           objectFit="cover"
         />
 
-        {/* Social Icons */}
         <Flex mt={1} mb={4} justify="center">
           {comedian.social && comedian.social.tiktok && (
             <IconButton
@@ -127,47 +150,86 @@ const ComedianDetailsPage = () => {
             />
           )}
         </Flex>
-        <Heading color="green.600">{comedian.name}</Heading>
-        <Text color="green.500">{comedian.description}</Text>
-
-        <Text color="gray.500" mt={20}>
-          TODO - Add here cards with previous and future shows
+        <Heading size="md" color="green.600">
+          {comedian.name}
+        </Heading>
+        <Text fontSize="md" color="green.500">
+          {comedian.description}
         </Text>
+      </Box>
 
-        {/* <VStack
-          mt={8}
-          spacing={4}
-          align="stretch"
-          mx="auto"
-          justifyContent="center"
-        >
-          {shows.map((show, index) => (
-            <Box
-              key={index}
-              p={2} // Adjusted padding
-              boxShadow="md"
-              border="2px solid"
-              borderColor="green.600"
-              borderRadius="20px"
-            >
-              <HStack spacing={2}>
-                <Badge colorScheme="green" fontSize="sm">
-                  {show.date}
-                </Badge>
-                <Text fontWeight="bold" fontSize="md" color="green.600">
+      <VStack mt={2} spacing={4} align="stretch" mx="auto" maxW="800px">
+        <HStack mt={4} spacing={4} justify="start">
+          <Button
+            background={showType === "future" ? "green.500" : "white"}
+            border={`2px solid ${theme.colors.green[400]}`}
+            onClick={() => setShowType("future")}
+            borderRadius="20px"
+            size="sm"
+            color={showType === "future" ? "white" : "green.500"}
+            boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+          >
+            Próximos eventos
+          </Button>
+          <Button
+            background={showType === "past" ? "green.500" : "white"}
+            border={`2px solid ${theme.colors.green[400]}`}
+            onClick={() => setShowType("past")}
+            borderRadius="20px"
+            size="sm"
+            color={showType === "past" ? "white" : "green.500"}
+            boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+          >
+            Eventos passados
+          </Button>
+        </HStack>
+        {shows.map((show, index) => (
+          <Flex
+            key={index}
+            p={2}
+            boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+            border="2px solid"
+            borderColor="green.600"
+            borderRadius="20px"
+            alignItems="center"
+            cursor="pointer"
+            className={classes.show_card}
+          >
+            <Image
+              src={show.poster}
+              boxSize="70px"
+              objectFit="cover"
+              borderRadius="full"
+            />
+            <VStack alignItems="start" spacing={0} flex="1" ml={3}>
+              <HStack justifyContent="space-between" w="100%">
+                <Text
+                  textAlign="left"
+                  fontWeight="bold"
+                  fontSize="md"
+                  color="green.700"
+                >
                   {show.name}
                 </Text>
+                <Text fontSize="xs" color="black" ml="auto">
+                  {show.date}
+                </Text>
               </HStack>
-              <Text fontSize="sm" color="green.500">
-                {show.place}
-              </Text>
-              <Text fontSize="sm" color="green.500">
-                {show.city}
-              </Text>
-            </Box>
-          ))}
-        </VStack> */}
-      </Box>
+              <VStack alignItems="start" spacing={0} mt={2}>
+                <Text fontSize="sm" color="black" fontWeight="bold">
+                  {show.location.name}
+                </Text>
+                <Text fontSize="xs" color="black">
+                  {show.location.address}
+                </Text>
+              </VStack>
+            </VStack>
+          </Flex>
+        ))}
+        <Center>
+          <Pagination currentPage={1} totalPages={10} onPageChange={() => {}} />
+        </Center>
+      </VStack>
     </Box>
   );
 };

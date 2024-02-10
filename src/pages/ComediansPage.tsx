@@ -117,7 +117,6 @@ const ComediansPage = () => {
           {filteredComedians.map((comedian) => (
             <Box key={comedian.id} p={4} textAlign="center">
               <RouteLink to={`/comedians/${comedian.id}`}>
-                {/* <RouteLink to="/comedians/2"> */}
                 <Image
                   className={classes.comedian_image}
                   borderRadius="full"
