@@ -14,6 +14,16 @@ import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import ComediansPage from "./pages/ComediansPage";
 import Navbar from "./components/Navbar";
 
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link as RouteLink,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import ComedianDetailsPage from "./pages/comedian-details/ComedianDetailsPage";
+
 const theme = extendTheme({
   styles: {
     global: {
@@ -24,13 +34,26 @@ const theme = extendTheme({
   },
 });
 
-export const App = () => (
-  <div>
+export const App = () => {
+  return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Navbar />
-        <ComediansPage />
-      </Box>
+      <Router>
+        <Box textAlign="center" fontSize="xl">
+          <Navbar />
+          <Box pt={20}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/comedians" />} />
+              <Route path="/comedians" element={<Outlet />}>
+                <Route path="" element={<ComediansPage />} />
+                <Route
+                  path="/comedians/:comedianId"
+                  element={<ComedianDetailsPage />}
+                />
+              </Route>
+            </Routes>
+          </Box>
+        </Box>
+      </Router>
     </ChakraProvider>
-  </div>
-);
+  );
+};

@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Flex,
-  Spacer,
-  Text,
-  useTheme,
-} from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, useTheme } from "@chakra-ui/react";
 
 interface PaginationProps {
   currentPage: number;
@@ -22,7 +14,7 @@ const Pagination: React.FC<PaginationProps> = ({
 }: PaginationProps) => {
   const theme = useTheme();
   const generatePageNumbers = () => {
-    const visiblePages = 5;
+    const visiblePages = 4;
     const totalVisiblePages = Math.min(visiblePages, totalPages);
 
     const pages = [];
