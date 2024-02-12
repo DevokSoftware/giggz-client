@@ -82,16 +82,16 @@ const ComedianDetailsPage = () => {
         address: "Av. Fontes Pereira de Melo 30A, 1050-122 Lisboa",
       },
     },
-    // {
-    //   date: "25 de Abril, 21:00h",
-    //   name: "Pata de Ganso",
-    //   poster:
-    //     "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
-    //   location: {
-    //     name: "Teatro Villaret",
-    //     address: "Av. Fontes Pereira de Melo 30A, 1050-122 Lisboa",
-    //   },
-    // },
+    {
+      date: "25 de Abril, 21:00h",
+      name: "Pata de Ganso",
+      poster:
+        "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
+      location: {
+        name: "Teatro Villaret",
+        address: "Av. Fontes Pereira de Melo 30A, 1050-122 Lisboa",
+      },
+    },
   ];
 
   return (
@@ -244,6 +244,33 @@ const ComedianDetailsPage = () => {
                 </Heading>
               </Box>
               <Box key={comedian.id} p={4} textAlign="center">
+                <Link
+                  href="https://open.spotify.com/show/47e6U4LEsJBj2cdbFCpdjw"
+                  isExternal
+                >
+                  <Image
+                    className={classes.content_image}
+                    borderRadius="full"
+                    // border={`2px solid ${theme.colors.green[600]}`}
+                    border={`3px solid ${theme.colors.white}`}
+                    boxSize={{
+                      base: "90px",
+                      sm: "90px",
+                      md: "100px",
+                      lg: "120px",
+                    }}
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png"
+                    mx="auto"
+                    mb={3}
+                    objectFit="cover"
+                    cursor="pointer"
+                  />
+                </Link>
+                <Heading fontSize="md" color="green.600">
+                  ask.tm - Podcast
+                </Heading>
+              </Box>
+              <Box key={comedian.id} p={4} textAlign="center">
                 <Link href="https://www.patreon.com/pedrotmota/" isExternal>
                   <Image
                     className={classes.content_image}
@@ -294,10 +321,65 @@ const ComedianDetailsPage = () => {
                   Impasse - Stand Up Comedy
                 </Heading>
               </Box>
+
+              <Box key={comedian.id} p={4} textAlign="center">
+                <Link
+                  href="https://www.youtube.com/@ConversasdeMiguel"
+                  isExternal
+                >
+                  <Image
+                    className={classes.content_image}
+                    borderRadius="full"
+                    // border={`2px solid ${theme.colors.green[600]}`}
+                    border={`3px solid ${theme.colors.white}`}
+                    boxSize={{
+                      base: "90px",
+                      sm: "90px",
+                      md: "100px",
+                      lg: "120px",
+                    }}
+                    src="https://play-lh.googleusercontent.com/lMoItBgdPPVDJsNOVtP26EKHePkwBg-PkuY9NOrc-fumRtTFP4XhpUNk_22syN4Datc"
+                    mx="auto"
+                    mb={3}
+                    objectFit="cover"
+                    cursor="pointer"
+                  />
+                </Link>
+                <Heading fontSize="md" color="green.600">
+                  Conversas de Miguel - Podcast
+                </Heading>
+              </Box>
+              <Box key={comedian.id} p={4} textAlign="center">
+                <Link
+                  href="https://www.youtube.com/@sobumeranguenaodava"
+                  isExternal
+                >
+                  <Image
+                    className={classes.content_image}
+                    borderRadius="full"
+                    // border={`2px solid ${theme.colors.green[600]}`}
+                    border={`3px solid ${theme.colors.white}`}
+                    boxSize={{
+                      base: "90px",
+                      sm: "90px",
+                      md: "100px",
+                      lg: "120px",
+                    }}
+                    src="https://play-lh.googleusercontent.com/lMoItBgdPPVDJsNOVtP26EKHePkwBg-PkuY9NOrc-fumRtTFP4XhpUNk_22syN4Datc"
+                    mx="auto"
+                    mb={3}
+                    objectFit="cover"
+                    cursor="pointer"
+                  />
+                </Link>
+                <Heading fontSize="md" color="green.600">
+                  Bumerangue - Sketches
+                </Heading>
+              </Box>
             </SimpleGrid>
           </TabPanel>
           <TabPanel>
-            <VStack spacing={4} align="stretch" pl={3} pr={3}>
+            <VStack spacing={4} align="stretch">
               {/* <HStack spacing={4} justify="start">
                 <Button
                   background={showType === "future" ? "green.500" : "white"}
