@@ -29,7 +29,7 @@ const SearchBox: React.FC<SearchProps> = ({ onSearch }: SearchProps) => {
         // Add following css in to a css class
         sx={{
           "&::placeholder": {
-            color: "green.600",
+            color: "gray.400",
           },
         }}
         _hover={{ borderColor: "green.600" }}
