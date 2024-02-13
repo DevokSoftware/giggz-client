@@ -24,8 +24,12 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { FaTiktok, FaYoutube, FaInstagram, FaTwitter } from "react-icons/fa";
-import classes from "../ComediansPage.module.scss";
+import classes from "./ComedianDetails.module.scss";
 import Pagination from "../../components/Pagination";
+import { Comedian } from "../../models/Comedian";
+import { Show } from "../../models/Show";
+import { Content } from "../../models/Content";
+import { comedian, contents, shows } from "../../temp_data";
 //todo create model for comedian
 interface ComedianProps {
   name: string;
@@ -34,65 +38,18 @@ interface ComedianProps {
 const ComedianDetailsPage = () => {
   const { comedianId } = useParams();
   const [showType, setShowType] = React.useState("future");
-  const comedian = {
-    id: 1,
-    name: "Pedro Teixeira da Mota",
-    description: "Uma descrição muito crazy.",
-    image:
-      "https://pbs.twimg.com/profile_images/1340074211545665544/Kyp4dDeg_400x400.jpg",
-    social: {
-      tiktok: "https://www.tiktok.com/@delmotta",
-      youtube: "https://www.youtube.com/@PedroTeixeiraDaMota",
-      instagram: "https://www.instagram.com/pedrotmota/",
-      twitter: "https://twitter.com/pedrotmota",
-    },
-  };
-
   const theme = useTheme();
 
-  interface Show {
-    date: string;
-    name: string;
-    poster: string;
-    location: {
-      name: string;
-      address: string;
-    };
-  }
-
-  // Example show data
-  const shows: Show[] = [
-    {
-      date: "10 de Outubro, 22:00h ",
-      name: "Pata de Ganso",
-      poster:
-        "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
-      location: {
-        name: "Lisboa Comedy Club",
-        address: "Av. Duque de Loulé 3A, 1050-085 Lisboa",
-      },
-    },
-    {
-      date: "25 de Abril, 21:00h",
-      name: "Pata de Ganso",
-      poster:
-        "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
-      location: {
-        name: "Teatro Villaret",
-        address: "Av. Fontes Pereira de Melo 30A, 1050-122 Lisboa",
-      },
-    },
-    {
-      date: "25 de Abril, 21:00h",
-      name: "Pata de Ganso",
-      poster:
-        "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
-      location: {
-        name: "Teatro Villaret",
-        address: "Av. Fontes Pereira de Melo 30A, 1050-122 Lisboa",
-      },
-    },
-  ];
+  const getContentIcon = (contentType: string) => {
+    switch (contentType) {
+      case "SPOTIFY":
+        return "/spotify_icon.png";
+      case "YOUTUBE":
+        return "/youtube_icon.png";
+      case "PATREON":
+        return "/patreon_icon.webp";
+    }
+  };
 
   return (
     <Box maxW="1300px" mx="auto">
@@ -106,7 +63,6 @@ const ComedianDetailsPage = () => {
           //modify this boxShadow
           boxShadow="3px 3px 13px 2px rgb(0 128 0 / 20%)"
           border={`2px solid ${theme.colors.green[600]}`}
-          //   border={`3px solid ${theme.colors.white}`}
           boxSize={{
             base: "120px",
             sm: "120px",
@@ -173,7 +129,7 @@ const ComedianDetailsPage = () => {
             />
           )}
         </Flex>
-        <Heading size="md" color="green.600">
+        <Heading size="md" color="green.700">
           {comedian.name}
         </Heading>
         <Text fontSize="md" color="green.500">
@@ -189,12 +145,12 @@ const ComedianDetailsPage = () => {
         colorScheme="green"
         size="sm"
       >
-        <TabList pl={3} pr={3}>
+        <TabList pl={3} pr={3} justifyContent="center">
           <HStack spacing={4}>
             <Tab
               background="white"
               border={`2px solid ${theme.colors.green[400]}`}
-              borderRadius="20px"
+              borderRadius="10px"
               color="green.500"
               boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
               _selected={{ color: "white", background: "green.500" }}
@@ -204,7 +160,7 @@ const ComedianDetailsPage = () => {
             <Tab
               background="white"
               border={`2px solid ${theme.colors.green[400]}`}
-              borderRadius="20px"
+              borderRadius="10px"
               color="green.500"
               boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
               _selected={{ color: "white", background: "green.500" }}
@@ -215,167 +171,36 @@ const ComedianDetailsPage = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={4}>
-              <Box key={comedian.id} p={4} textAlign="center">
-                <Link
-                  href="https://open.spotify.com/show/2OSrNmY2aRczyjLyRPJqxM"
-                  isExternal
-                >
-                  <Image
-                    className={classes.content_image}
-                    borderRadius="full"
-                    // border={`2px solid ${theme.colors.green[600]}`}
-                    border={`3px solid ${theme.colors.white}`}
-                    boxSize={{
-                      base: "90px",
-                      sm: "90px",
-                      md: "100px",
-                      lg: "120px",
-                    }}
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png"
-                    mx="auto"
-                    mb={3}
-                    objectFit="cover"
-                    cursor="pointer"
-                  />
-                </Link>
-                <Heading fontSize="md" color="green.600">
-                  watch.tm - Podcast
-                </Heading>
-              </Box>
-              <Box key={comedian.id} p={4} textAlign="center">
-                <Link
-                  href="https://open.spotify.com/show/47e6U4LEsJBj2cdbFCpdjw"
-                  isExternal
-                >
-                  <Image
-                    className={classes.content_image}
-                    borderRadius="full"
-                    // border={`2px solid ${theme.colors.green[600]}`}
-                    border={`3px solid ${theme.colors.white}`}
-                    boxSize={{
-                      base: "90px",
-                      sm: "90px",
-                      md: "100px",
-                      lg: "120px",
-                    }}
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/1982px-Spotify_icon.svg.png"
-                    mx="auto"
-                    mb={3}
-                    objectFit="cover"
-                    cursor="pointer"
-                  />
-                </Link>
-                <Heading fontSize="md" color="green.600">
-                  ask.tm - Podcast
-                </Heading>
-              </Box>
-              <Box key={comedian.id} p={4} textAlign="center">
-                <Link href="https://www.patreon.com/pedrotmota/" isExternal>
-                  <Image
-                    className={classes.content_image}
-                    borderRadius="full"
-                    // border={`2px solid ${theme.colors.green[600]}`}
-                    border={`3px solid ${theme.colors.white}`}
-                    boxSize={{
-                      base: "90px",
-                      sm: "90px",
-                      md: "100px",
-                      lg: "120px",
-                    }}
-                    src="https://external-preview.redd.it/apparently-the-latest-version-of-patreon-is-written-in-v0-xqVoIpj5A_C6f45r-yfDw4tQnuxmeiWMu5ZLym1xZwY.jpg?auto=webp&s=bb013a5eddecca72b513ceca2ed13cc714e20eeb"
-                    mx="auto"
-                    mb={3}
-                    objectFit="cover"
-                    cursor="pointer"
-                  />
-                </Link>
-                <Heading fontSize="md" color="green.600">
-                  Patreon
-                </Heading>
-              </Box>
-              <Box key={comedian.id} p={4} textAlign="center">
-                <Link
-                  href=" https://www.youtube.com/watch?v=t1nDOuGyT7U"
-                  isExternal
-                >
-                  <Image
-                    className={classes.content_image}
-                    borderRadius="full"
-                    // border={`2px solid ${theme.colors.green[600]}`}
-                    border={`3px solid ${theme.colors.white}`}
-                    boxSize={{
-                      base: "90px",
-                      sm: "90px",
-                      md: "100px",
-                      lg: "120px",
-                    }}
-                    src="https://play-lh.googleusercontent.com/lMoItBgdPPVDJsNOVtP26EKHePkwBg-PkuY9NOrc-fumRtTFP4XhpUNk_22syN4Datc"
-                    mx="auto"
-                    mb={3}
-                    objectFit="cover"
-                    cursor="pointer"
-                  />
-                </Link>
-                <Heading fontSize="md" color="green.600">
-                  Impasse - Stand Up Comedy
-                </Heading>
-              </Box>
-
-              <Box key={comedian.id} p={4} textAlign="center">
-                <Link
-                  href="https://www.youtube.com/@ConversasdeMiguel"
-                  isExternal
-                >
-                  <Image
-                    className={classes.content_image}
-                    borderRadius="full"
-                    // border={`2px solid ${theme.colors.green[600]}`}
-                    border={`3px solid ${theme.colors.white}`}
-                    boxSize={{
-                      base: "90px",
-                      sm: "90px",
-                      md: "100px",
-                      lg: "120px",
-                    }}
-                    src="https://play-lh.googleusercontent.com/lMoItBgdPPVDJsNOVtP26EKHePkwBg-PkuY9NOrc-fumRtTFP4XhpUNk_22syN4Datc"
-                    mx="auto"
-                    mb={3}
-                    objectFit="cover"
-                    cursor="pointer"
-                  />
-                </Link>
-                <Heading fontSize="md" color="green.600">
-                  Conversas de Miguel - Podcast
-                </Heading>
-              </Box>
-              <Box key={comedian.id} p={4} textAlign="center">
-                <Link
-                  href="https://www.youtube.com/@sobumeranguenaodava"
-                  isExternal
-                >
-                  <Image
-                    className={classes.content_image}
-                    borderRadius="full"
-                    // border={`2px solid ${theme.colors.green[600]}`}
-                    border={`3px solid ${theme.colors.white}`}
-                    boxSize={{
-                      base: "90px",
-                      sm: "90px",
-                      md: "100px",
-                      lg: "120px",
-                    }}
-                    src="https://play-lh.googleusercontent.com/lMoItBgdPPVDJsNOVtP26EKHePkwBg-PkuY9NOrc-fumRtTFP4XhpUNk_22syN4Datc"
-                    mx="auto"
-                    mb={3}
-                    objectFit="cover"
-                    cursor="pointer"
-                  />
-                </Link>
-                <Heading fontSize="md" color="green.600">
-                  Bumerangue - Sketches
-                </Heading>
-              </Box>
+            <SimpleGrid columns={{ base: 2, sm: 3, md: 3, lg: 4 }} spacing={4}>
+              {contents.map((content) => (
+                <Box p={2} textAlign="center">
+                  <Link href={content.url} isExternal>
+                    <Image
+                      boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                      className={classes.content_image}
+                      borderRadius="full"
+                      border={`3px solid ${theme.colors.white}`}
+                      boxSize={{
+                        base: "70px",
+                        sm: "70px",
+                        md: "80px",
+                        lg: "90px",
+                      }}
+                      src={getContentIcon(content.contenttype)}
+                      mx="auto"
+                      objectFit="cover"
+                      cursor="pointer"
+                    />
+                  </Link>
+                  <Heading
+                    fontSize="sm"
+                    color="green.600"
+                    mt={{ base: 1, lg: 2 }}
+                  >
+                    {content.name}
+                  </Heading>
+                </Box>
+              ))}
             </SimpleGrid>
           </TabPanel>
           <TabPanel>

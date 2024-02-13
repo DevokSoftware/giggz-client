@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
-import ComediansPage from "./pages/ComediansPage";
+import ComediansPage from "./pages/comedians/ComediansPage";
 import Navbar from "./components/Navbar";
 
 import {

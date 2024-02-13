@@ -1,21 +1,89 @@
-// ComediansListPage.js
-import React, { useState } from "react";
-import {
-  Box,
-  Heading,
-  SimpleGrid,
-  Text,
-  Image,
-  useTheme,
-  Center,
-} from "@chakra-ui/react";
-import classes from "./ComediansPage.module.scss";
-import Pagination from "../components/Pagination";
-import SearchBox from "../components/SearchBox";
-import { Link as RouteLink } from "react-router-dom";
+import { Comedian } from "./models/Comedian";
+import { Content } from "./models/Content";
+import { Show } from "./models/Show";
 
-// Sample data for comedians with images
-const comediansData = [
+// Example show data
+export const shows: Show[] = [
+  {
+    date: "10 de Outubro, 22:00h ",
+    name: "Pata de Ganso",
+    poster:
+      "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
+    location: {
+      name: "Lisboa Comedy Club",
+      address: "Av. Duque de Loulé 3A, 1050-085 Lisboa",
+    },
+  },
+  {
+    date: "25 de Abril, 21:00h",
+    name: "Pata de Ganso",
+    poster:
+      "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
+    location: {
+      name: "Teatro Villaret",
+      address: "Av. Fontes Pereira de Melo 30A, 1050-122 Lisboa",
+    },
+  },
+  {
+    date: "25 de Abril, 21:00h",
+    name: "Pata de Ganso",
+    poster:
+      "https://comunidadeculturaearte.com/wp-content/uploads/2023/09/Pedro-Teixeira-da-Mota-regressa-aos-palcos-com-espetaculo-22Pata-de-Ganso22.png",
+    location: {
+      name: "Teatro Villaret",
+      address: "Av. Fontes Pereira de Melo 30A, 1050-122 Lisboa",
+    },
+  },
+];
+
+export const contents: Content[] = [
+  {
+    name: "watch.tm - Podcast",
+    contenttype: "SPOTIFY",
+    url: "https://open.spotify.com/show/2OSrNmY2aRczyjLyRPJqxM",
+  },
+  {
+    name: "ask.tm - Podcast",
+    contenttype: "SPOTIFY",
+    url: "https://open.spotify.com/show/47e6U4LEsJBj2cdbFCpdjw",
+  },
+  {
+    name: "Patreon",
+    contenttype: "PATREON",
+    url: "https://www.patreon.com/pedrotmota/",
+  },
+  {
+    name: "Impasse - Stand Up Comedy",
+    contenttype: "YOUTUBE",
+    url: "https://www.youtube.com/watch?v=t1nDOuGyT7U",
+  },
+  {
+    name: "Conversas de Miguel - Podcast",
+    contenttype: "YOUTUBE",
+    url: "https://www.youtube.com/@ConversasdeMiguel",
+  },
+  {
+    name: "Bumerangue - Sketches",
+    contenttype: "YOUTUBE",
+    url: "https://www.youtube.com/@sobumeranguenaodava",
+  },
+];
+
+export const comedian: Comedian = {
+  id: 1,
+  name: "Pedro Teixeira da Mota",
+  description: "Uma descrição muito crazy.",
+  image:
+    "https://pbs.twimg.com/profile_images/1340074211545665544/Kyp4dDeg_400x400.jpg",
+  social: {
+    tiktok: "https://www.tiktok.com/@delmotta",
+    youtube: "https://www.youtube.com/@PedroTeixeiraDaMota",
+    instagram: "https://www.instagram.com/pedrotmota/",
+    twitter: "https://twitter.com/pedrotmota",
+  },
+};
+
+export const comediansData = [
   {
     id: 1,
     name: "Pedro Teixeira da Mota",
@@ -86,72 +154,3 @@ const comediansData = [
       "https://comunidadeculturaearte.com/wp-content/uploads/2021/06/Manuel-Cardoso.png", // Example image, replace with actual image URL
   },
 ];
-
-const ComediansPage = () => {
-  const theme = useTheme();
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const [filteredComedians, setFilteredComedians] = useState(comediansData);
-
-  const handleSearch = (searchTerm: string) => {
-    // Implement your search logic here, for now, just filter by name
-    const filtered = comediansData.filter((comedian) =>
-      comedian.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredComedians(filtered);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-  return (
-    <Box>
-      <Box
-        pl={{ base: 3, sm: 5, md: 10, lg: 20 }}
-        pr={{ base: 3, sm: 5, md: 10, lg: 20 }}
-        maxW="1300px"
-        mx="auto"
-      >
-        <SearchBox onSearch={handleSearch} />
-        <SimpleGrid columns={{ base: 2, sm: 2, md: 3, lg: 4 }} spacing={4}>
-          {filteredComedians.map((comedian) => (
-            <Box key={comedian.id} p={4} textAlign="center">
-              <RouteLink to={`/comedians/${comedian.id}`}>
-                <Image
-                  className={classes.comedian_image}
-                  borderRadius="full"
-                  // border={`2px solid ${theme.colors.green[600]}`}
-                  border={`3px solid ${theme.colors.white}`}
-                  boxSize={{
-                    base: "90px",
-                    sm: "90px",
-                    md: "100px",
-                    lg: "120px",
-                  }}
-                  src={comedian.image}
-                  alt={comedian.name}
-                  mx="auto"
-                  mb={3}
-                  objectFit="cover"
-                  cursor="pointer"
-                />
-              </RouteLink>
-              <Heading fontSize="md" color="green.600">
-                {comedian.name}
-              </Heading>
-            </Box>
-          ))}
-        </SimpleGrid>
-      </Box>
-      <Center>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={10}
-          onPageChange={handlePageChange}
-        />
-      </Center>
-    </Box>
-  );
-};
-
-export default ComediansPage;
