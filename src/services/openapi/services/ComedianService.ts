@@ -14,7 +14,7 @@ export class ComedianService {
     public static comediansGet(): CancelablePromise<Array<ComedianResponse>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/comedians',
+            url: '/comedians',
         });
     }
     /**
@@ -27,7 +27,7 @@ export class ComedianService {
     ): CancelablePromise<ComedianResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/comedians/{comedianId}',
+            url: '/comedians/{comedianId}',
             path: {
                 'comedianId': comedianId,
             },

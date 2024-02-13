@@ -19,7 +19,7 @@ export class EventService {
     ): CancelablePromise<EventResponse> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/events/{eventId}',
+            url: '/events/{eventId}',
             path: {
                 'eventId': eventId,
             },
@@ -37,7 +37,7 @@ export class EventService {
     ): CancelablePromise<EventResponse> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/events/{eventId}',
+            url: '/events/{eventId}',
             path: {
                 'eventId': eventId,
             },
@@ -52,7 +52,7 @@ export class EventService {
     public static eventsGet(): CancelablePromise<Array<EventResponse>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/events',
+            url: '/events',
         });
     }
     /**
@@ -65,7 +65,7 @@ export class EventService {
     ): CancelablePromise<EventResponse> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/events',
+            url: '/events',
             body: requestBody,
             mediaType: 'application/json',
         });

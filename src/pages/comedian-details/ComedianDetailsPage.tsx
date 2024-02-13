@@ -1,6 +1,6 @@
 // ComedianDetailsPage.js
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Box,
@@ -26,21 +26,42 @@ import {
 import { FaTiktok, FaYoutube, FaInstagram, FaTwitter } from "react-icons/fa";
 import classes from "./ComedianDetails.module.scss";
 import Pagination from "../../components/Pagination";
-import { Comedian } from "../../models/Comedian";
-import { Show } from "../../models/Show";
-import { Content } from "../../models/Content";
-import { comedian, contents, shows } from "../../temp_data";
+import useApi from "../../services/useApi";
+import {
+  ComedianResponse,
+  ComedianService,
+  ContentResponse,
+} from "../../services/openapi";
 //todo create model for comedian
 interface ComedianProps {
   name: string;
   description: string;
 }
 const ComedianDetailsPage = () => {
+  const { isLoading, error, handleRequest } = useApi();
+  const [comedian, setComedian] = useState<ComedianResponse>();
   const { comedianId } = useParams();
-  const [showType, setShowType] = React.useState("future");
+  // const [showType, setShowType] = React.useState("future");
   const theme = useTheme();
 
-  const getContentIcon = (contentType: string) => {
+  useEffect(() => {
+    if (comedianId) {
+      const fetchComedians = async () => {
+        try {
+          const comedianResponse = await handleRequest(
+            ComedianService.comediansComedianIdGet(parseInt(comedianId, 10))
+          );
+          setComedian(comedianResponse);
+        } catch (error) {
+          // TODO handle this errors in a generic way
+          console.error(error);
+        }
+      };
+      fetchComedians();
+    }
+  }, [handleRequest]); //TODO: it is being called twice. check if this useEffect is working properly
+
+  const getContentIcon = (contentType: ContentResponse.contentType) => {
     switch (contentType) {
       case "SPOTIFY":
         return "/spotify_icon.png";
@@ -51,13 +72,17 @@ const ComedianDetailsPage = () => {
     }
   };
 
+  if (comedian == null) {
+    return <></>;
+  }
+
   return (
     <Box maxW="1300px" mx="auto">
       <Box textAlign="center" p={4}>
         <Image
           className={classes.comedian_image}
           borderRadius="full"
-          src={comedian.image}
+          src={comedian.picture}
           alt={`${comedian.name}'s image`}
           mx="auto"
           //modify this boxShadow
@@ -73,10 +98,10 @@ const ComedianDetailsPage = () => {
         />
 
         <Flex mt={1} mb={4} justify="center">
-          {comedian.social && comedian.social.instagram && (
+          {comedian && comedian.instagram && (
             <IconButton
               as="a"
-              href={comedian.social.instagram}
+              href={comedian.instagram}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
@@ -86,10 +111,10 @@ const ComedianDetailsPage = () => {
               color="purple.500"
             />
           )}
-          {comedian.social && comedian.social.tiktok && (
+          {comedian && comedian.tiktok && (
             <IconButton
               as="a"
-              href={comedian.social.tiktok}
+              href={comedian.tiktok}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok"
@@ -100,10 +125,10 @@ const ComedianDetailsPage = () => {
               mr={1}
             />
           )}
-          {comedian.social && comedian.social.youtube && (
+          {comedian && comedian.youtube && (
             <IconButton
               as="a"
-              href={comedian.social.youtube}
+              href={comedian.youtube}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="YouTube"
@@ -114,10 +139,10 @@ const ComedianDetailsPage = () => {
               mr={1}
             />
           )}
-          {comedian.social && comedian.social.twitter && (
+          {comedian && comedian.twitter && (
             <IconButton
               as="a"
-              href={comedian.social.twitter}
+              href={comedian.twitter}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="TikTok"
@@ -172,7 +197,7 @@ const ComedianDetailsPage = () => {
         <TabPanels>
           <TabPanel>
             <SimpleGrid columns={{ base: 2, sm: 3, md: 3, lg: 4 }} spacing={4}>
-              {contents.map((content) => (
+              {comedian.contents?.map((content) => (
                 <Box p={2} textAlign="center">
                   <Link href={content.url} isExternal>
                     <Image
@@ -186,7 +211,7 @@ const ComedianDetailsPage = () => {
                         md: "80px",
                         lg: "90px",
                       }}
-                      src={getContentIcon(content.contenttype)}
+                      src={getContentIcon(content.contentType)}
                       mx="auto"
                       objectFit="cover"
                       cursor="pointer"
@@ -229,7 +254,7 @@ const ComedianDetailsPage = () => {
                   Eventos passados
                 </Button>
               </HStack> */}
-              {shows.map((show, index) => (
+              {comedian.events?.map((show, index) => (
                 <Flex
                   key={index}
                   p={2}
@@ -257,17 +282,19 @@ const ComedianDetailsPage = () => {
                       >
                         {show.name}
                       </Text>
+                      {/* TODO - use moment to translate the date */}
                       <Text fontSize="xs" color="black" ml="auto">
                         {show.date}
                       </Text>
                     </HStack>
                     <VStack alignItems="start" spacing={0} mt={2}>
-                      <Text fontSize="sm" color="black" fontWeight="bold">
-                        {show.location.name}
+                      {/* TODO - add location as an Entity in BE */}
+                      {/* <Text fontSize="sm" color="black" fontWeight="bold">
+                        {show.name}
                       </Text>
                       <Text fontSize="xs" color="black">
                         {show.location.address}
-                      </Text>
+                      </Text> */}
                     </VStack>
                   </VStack>
                 </Flex>

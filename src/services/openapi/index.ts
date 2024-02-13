@@ -8,6 +8,7 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { ComedianResponse } from './models/ComedianResponse';
+export { ContentResponse } from './models/ContentResponse';
 export type { CreateEventRequest } from './models/CreateEventRequest';
 export type { EventResponse } from './models/EventResponse';
 export type { UpdateEventRequest } from './models/UpdateEventRequest';

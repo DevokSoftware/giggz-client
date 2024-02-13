@@ -5,7 +5,7 @@
 export type EventResponse = {
     id: string;
     name: string;
-    startDate?: string;
+    date?: string;
     description?: string;
     poster?: string;
     price?: number;

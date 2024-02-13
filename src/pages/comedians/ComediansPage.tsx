@@ -1,5 +1,5 @@
 // ComediansListPage.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Heading,
@@ -14,15 +14,34 @@ import Pagination from "../../components/Pagination";
 import SearchBox from "../../components/SearchBox";
 import { Link as RouteLink } from "react-router-dom";
 import { comediansData } from "../../temp_data";
+import { ComedianResponse, ComedianService } from "../../services/openapi";
+import { Comedian } from "../../models/Comedian";
+import useApi from "../../services/useApi";
 
 const ComediansPage = () => {
+  const { isLoading, error, handleRequest } = useApi();
+
   const theme = useTheme();
   const [currentPage, setCurrentPage] = useState(1);
-
   const [filteredComedians, setFilteredComedians] = useState(comediansData);
+  const [comedians, setComedians] = useState<ComedianResponse[]>([]);
+
+  useEffect(() => {
+    const fetchComedians = async () => {
+      try {
+        const comediansResponse = await handleRequest(
+          ComedianService.comediansGet()
+        );
+        setComedians(comediansResponse || []);
+      } catch (error) {
+        // TODO handle this errors in a generic way
+        console.error(error);
+      }
+    };
+    fetchComedians();
+  }, [handleRequest]); //TODO: it is being called twice. check if this useEffect is working properly
 
   const handleSearch = (searchTerm: string) => {
-    // Implement your search logic here, for now, just filter by name
     const filtered = comediansData.filter((comedian) =>
       comedian.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -42,7 +61,7 @@ const ComediansPage = () => {
       >
         <SearchBox onSearch={handleSearch} />
         <SimpleGrid columns={{ base: 2, sm: 3, md: 3, lg: 4 }} spacing={4}>
-          {filteredComedians.map((comedian) => (
+          {comedians.map((comedian) => (
             <Box key={comedian.id} p={{ base: 3, lg: 4 }} textAlign="center">
               <RouteLink to={`/comedians/${comedian.id}`}>
                 <Image
@@ -55,7 +74,7 @@ const ComediansPage = () => {
                     sm: "100px",
                     lg: "130px",
                   }}
-                  src={comedian.image}
+                  src={comedian.picture}
                   alt={comedian.name}
                   mx="auto"
                   objectFit="cover"
