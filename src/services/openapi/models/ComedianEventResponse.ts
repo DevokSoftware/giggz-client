@@ -2,9 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { EventComedianResponse } from './EventComedianResponse';
 import type { Location } from './Location';
-export type EventResponse = {
+export type ComedianEventResponse = {
     id: string;
     name: string;
     date?: string;
@@ -13,6 +12,5 @@ export type EventResponse = {
     price?: number;
     url?: string;
     location?: Location;
-    comedians?: Array<EventComedianResponse>;
 };
 

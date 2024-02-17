@@ -1,5 +1,5 @@
 // ComediansListPage.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Heading,
@@ -13,17 +13,36 @@ import classes from "./ComediansPage.module.scss";
 import Pagination from "../../components/Pagination";
 import SearchBox from "../../components/SearchBox";
 import { Link as RouteLink } from "react-router-dom";
-import { comediansData } from "../../temp_data";
+import { ComedianResponse, ComedianService } from "../../services/openapi";
+import { Comedian } from "../../models/Comedian";
+import useApi from "../../services/useApi";
 
 const ComediansPage = () => {
+  const { isLoading, error, handleRequest } = useApi();
+
   const theme = useTheme();
   const [currentPage, setCurrentPage] = useState(1);
+  const [comedians, setComedians] = useState<ComedianResponse[]>([]);
+  const [filteredComedians, setFilteredComedians] = useState(comedians);
 
-  const [filteredComedians, setFilteredComedians] = useState(comediansData);
+  useEffect(() => {
+    const fetchComedians = async () => {
+      try {
+        const comediansResponse = await handleRequest(
+          ComedianService.comediansGet()
+        );
+        setComedians(comediansResponse || []);
+        setFilteredComedians(comediansResponse || []);
+      } catch (error) {
+        // TODO handle this errors in a generic way
+        console.error(error);
+      }
+    };
+    fetchComedians();
+  }, [handleRequest]); //TODO: it is being called twice. check if this useEffect is working properly
 
   const handleSearch = (searchTerm: string) => {
-    // Implement your search logic here, for now, just filter by name
-    const filtered = comediansData.filter((comedian) =>
+    const filtered = comedians.filter((comedian) =>
       comedian.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredComedians(filtered);
@@ -55,7 +74,7 @@ const ComediansPage = () => {
                     sm: "100px",
                     lg: "130px",
                   }}
-                  src={comedian.image}
+                  src={comedian.picture}
                   alt={comedian.name}
                   mx="auto"
                   objectFit="cover"
