@@ -1,6 +1,16 @@
 // Navbar.js
 import React from "react";
-import { Box, Flex, Spacer, Link, Button, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Spacer,
+  Link,
+  Button,
+  Heading,
+  Text,
+  HStack,
+  Center,
+} from "@chakra-ui/react";
 import { Link as RouteLink } from "react-router-dom";
 const Navbar = () => {
   return (
@@ -10,7 +20,7 @@ const Navbar = () => {
           <Heading
             size="lg"
             color="white"
-            fontFamily="monospace" //Define the font family
+            fontFamily="monospace"
             fontWeight="bold"
             letterSpacing="wide"
             textTransform="uppercase"
@@ -18,13 +28,14 @@ const Navbar = () => {
             Giggz
           </Heading>
         </RouteLink>
-        <Spacer />
-        {/* <Box>
-          <Link color="white" mr={4}>
-            Home
+        <HStack ml={8} spacing={6}>
+          <Link as={RouteLink} to="/comedians" color="white">
+            <Text fontSize="md">Comediantes</Text>
           </Link>
-        </Box>
-        <Button colorScheme="whiteAlpha">Sign In</Button> */}
+          <Link as={RouteLink} to="/shows" color="white">
+            <Text fontSize="md">Eventos</Text>
+          </Link>
+        </HStack>
       </Flex>
     </Box>
   );

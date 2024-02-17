@@ -32,7 +32,9 @@ import {
   ComedianService,
   ContentResponse,
 } from "../../services/openapi";
-//todo create model for comedian
+import moment from "moment";
+import "moment/locale/pt-br";
+
 interface ComedianProps {
   name: string;
   description: string;
@@ -284,17 +286,23 @@ const ComedianDetailsPage = () => {
                       </Text>
                       {/* TODO - use moment to translate the date */}
                       <Text fontSize="xs" color="black" ml="auto">
-                        {show.date}
+                        {moment(show.date)
+                          .locale("pt-br")
+                          .format("d [de] MMMM, HH:mm[h]")}
                       </Text>
                     </HStack>
                     <VStack alignItems="start" spacing={0} mt={2}>
                       {/* TODO - add location as an Entity in BE */}
-                      {/* <Text fontSize="sm" color="black" fontWeight="bold">
-                        {show.name}
+                      <Text fontSize="sm" color="black" fontWeight="bold">
+                        {show.location?.name}
                       </Text>
                       <Text fontSize="xs" color="black">
-                        {show.location.address}
-                      </Text> */}
+                        {show.location?.street +
+                          " " +
+                          show.location?.number +
+                          ", " +
+                          show.location?.city}
+                      </Text>
                     </VStack>
                   </VStack>
                 </Flex>

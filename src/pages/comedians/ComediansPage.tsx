@@ -13,7 +13,6 @@ import classes from "./ComediansPage.module.scss";
 import Pagination from "../../components/Pagination";
 import SearchBox from "../../components/SearchBox";
 import { Link as RouteLink } from "react-router-dom";
-import { comediansData } from "../../temp_data";
 import { ComedianResponse, ComedianService } from "../../services/openapi";
 import { Comedian } from "../../models/Comedian";
 import useApi from "../../services/useApi";
@@ -23,8 +22,8 @@ const ComediansPage = () => {
 
   const theme = useTheme();
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredComedians, setFilteredComedians] = useState(comediansData);
   const [comedians, setComedians] = useState<ComedianResponse[]>([]);
+  const [filteredComedians, setFilteredComedians] = useState(comedians);
 
   useEffect(() => {
     const fetchComedians = async () => {
@@ -33,6 +32,7 @@ const ComediansPage = () => {
           ComedianService.comediansGet()
         );
         setComedians(comediansResponse || []);
+        setFilteredComedians(comediansResponse || []);
       } catch (error) {
         // TODO handle this errors in a generic way
         console.error(error);
@@ -42,7 +42,7 @@ const ComediansPage = () => {
   }, [handleRequest]); //TODO: it is being called twice. check if this useEffect is working properly
 
   const handleSearch = (searchTerm: string) => {
-    const filtered = comediansData.filter((comedian) =>
+    const filtered = comedians.filter((comedian) =>
       comedian.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredComedians(filtered);
@@ -61,7 +61,7 @@ const ComediansPage = () => {
       >
         <SearchBox onSearch={handleSearch} />
         <SimpleGrid columns={{ base: 2, sm: 3, md: 3, lg: 4 }} spacing={4}>
-          {comedians.map((comedian) => (
+          {filteredComedians.map((comedian) => (
             <Box key={comedian.id} p={{ base: 3, lg: 4 }} textAlign="center">
               <RouteLink to={`/comedians/${comedian.id}`}>
                 <Image

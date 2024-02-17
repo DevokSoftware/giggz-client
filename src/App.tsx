@@ -23,6 +23,7 @@ import {
   Outlet,
 } from "react-router-dom";
 import ComedianDetailsPage from "./pages/comedian-details/ComedianDetailsPage";
+import EventsPage from "./pages/events/EventsPage";
 
 const theme = extendTheme({
   styles: {
@@ -49,6 +50,9 @@ export const App = () => {
                   path="/comedians/:comedianId"
                   element={<ComedianDetailsPage />}
                 />
+              </Route>
+              <Route path="/shows" element={<Outlet />}>
+                <Route path="" element={<EventsPage />} />
               </Route>
             </Routes>
           </Box>

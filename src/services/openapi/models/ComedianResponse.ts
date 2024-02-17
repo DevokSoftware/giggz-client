@@ -2,8 +2,8 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ComedianEventResponse } from './ComedianEventResponse';
 import type { ContentResponse } from './ContentResponse';
-import type { EventResponse } from './EventResponse';
 export type ComedianResponse = {
     id: string;
     name: string;
@@ -14,7 +14,7 @@ export type ComedianResponse = {
     youtube?: string;
     tiktok?: string;
     twitter?: string;
-    events?: Array<EventResponse>;
+    events?: Array<ComedianEventResponse>;
     contents?: Array<ContentResponse>;
 };
 
