@@ -9,11 +9,16 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { ComedianEventResponse } from './models/ComedianEventResponse';
 export type { ComedianResponse } from './models/ComedianResponse';
+export type { ComediansGetFiltersParameter } from './models/ComediansGetFiltersParameter';
 export { ContentResponse } from './models/ContentResponse';
 export type { CreateEventRequest } from './models/CreateEventRequest';
 export type { EventComedianResponse } from './models/EventComedianResponse';
 export type { EventResponse } from './models/EventResponse';
+export type { EventsGetFiltersParameter } from './models/EventsGetFiltersParameter';
 export type { Location } from './models/Location';
+export type { Pageable } from './models/Pageable';
+export type { PageComedianResponse } from './models/PageComedianResponse';
+export type { PageEventResponse } from './models/PageEventResponse';
 export type { UpdateEventRequest } from './models/UpdateEventRequest';
 
 export { ComedianService } from './services/ComedianService';

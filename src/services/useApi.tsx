@@ -16,7 +16,7 @@ export function useApi() {
     } catch (error: any) {
       setError(error);
     } finally {
-      setIsloading(true);
+      setIsloading(false);
     }
   }, []);
 

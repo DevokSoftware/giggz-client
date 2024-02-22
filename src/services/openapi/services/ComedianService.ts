@@ -3,18 +3,33 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ComedianResponse } from '../models/ComedianResponse';
+import type { ComediansGetFiltersParameter } from '../models/ComediansGetFiltersParameter';
+import type { Pageable } from '../models/Pageable';
+import type { PageComedianResponse } from '../models/PageComedianResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class ComedianService {
     /**
-     * @returns ComedianResponse All existing comedians
+     * @param pageable
+     * @param filters
+     * @param sort
+     * @returns PageComedianResponse All existing comedians
      * @throws ApiError
      */
-    public static comediansGet(): CancelablePromise<Array<ComedianResponse>> {
+    public static comediansGet(
+        pageable: Pageable,
+        filters: ComediansGetFiltersParameter,
+        sort?: Array<string>,
+    ): CancelablePromise<PageComedianResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/comedians',
+            query: {
+                'pageable': pageable,
+                'filters': filters,
+                'sort': sort,
+            },
         });
     }
     /**

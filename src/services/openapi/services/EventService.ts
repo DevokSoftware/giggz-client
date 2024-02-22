@@ -4,6 +4,9 @@
 /* eslint-disable */
 import type { CreateEventRequest } from '../models/CreateEventRequest';
 import type { EventResponse } from '../models/EventResponse';
+import type { EventsGetFiltersParameter } from '../models/EventsGetFiltersParameter';
+import type { Pageable } from '../models/Pageable';
+import type { PageEventResponse } from '../models/PageEventResponse';
 import type { UpdateEventRequest } from '../models/UpdateEventRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -46,13 +49,25 @@ export class EventService {
         });
     }
     /**
-     * @returns EventResponse All existing events
+     * @param pageable
+     * @param filters
+     * @param sort
+     * @returns PageEventResponse All existing events
      * @throws ApiError
      */
-    public static eventsGet(): CancelablePromise<Array<EventResponse>> {
+    public static eventsGet(
+        pageable: Pageable,
+        filters: EventsGetFiltersParameter,
+        sort?: Array<string>,
+    ): CancelablePromise<PageEventResponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/events',
+            query: {
+                'pageable': pageable,
+                'filters': filters,
+                'sort': sort,
+            },
         });
     }
     /**
