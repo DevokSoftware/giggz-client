@@ -25,7 +25,8 @@ export const InputWithIcon: React.FC<InputWithIconProps> = ({
       <Input
         disabled={readOnly || false}
         color="green.700"
-        type="tel"
+        fontSize="sm"
+        type="text"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}

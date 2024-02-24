@@ -5,3 +5,25 @@
 .show_card:hover {
   transform: scale(1.01);
 }
+.selectComedian {
+  color: #276749;
+  border-color: #2f855a;
+  font-size: 2px;
+  width: 100%;
+}
+.selectComedian:hover {
+  color: #276749;
+  border-color: #2f855a;
+}
+.selectComedian:focus {
+  color: #276749;
+}
+
+// _hover={{ borderColor: "green.700" }}
+// _focus={{ borderColor: "green.700" }}
+// sx={{
+//   "&::placeholder": {
+//     color: "gray.400",
+//     fontSize: "sm",
+//   },
+// }}

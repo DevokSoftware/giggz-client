@@ -11,6 +11,12 @@ import type { UpdateEventRequest } from "../models/UpdateEventRequest";
 import type { CancelablePromise } from "../core/CancelablePromise";
 import { OpenAPI } from "../core/OpenAPI";
 import { request as __request } from "../core/request";
+
+/**
+ * This class in temporary since the openapi-typescript does not support yet objects in the query parameters,
+ * so it was needed to "override" the default implementation. It is a feature that the contributors are currently working on
+ * but there is no release date yet, only an open PR with the implementation.
+ * */
 export class EventServiceTemp {
   /**
    * @param pageable
@@ -24,9 +30,11 @@ export class EventServiceTemp {
     filters: EventsGetFiltersParameter,
     sort?: Array<string>
   ): CancelablePromise<PageEventResponse> {
-    const queryParams: Record<string, string | number | undefined> = {
-      pageable: JSON.stringify(pageable),
-    };
+    const queryParams: Record<string, string | number | undefined> = {};
+
+    if (pageable && pageable.sort) {
+      queryParams.sort = pageable.sort[0] + "," + pageable.sort[1];
+    }
 
     if (filters.name) {
       queryParams.name = filters.name;
@@ -43,6 +51,7 @@ export class EventServiceTemp {
     if (sort && sort.length > 0) {
       queryParams.sort = sort.join(",");
     }
+
     return __request(OpenAPI, {
       method: "GET",
       url: "/events",

@@ -10,13 +10,13 @@ import {
   Flex,
   VStack,
   HStack,
-  Select,
   InputGroup,
   InputLeftElement,
   Input,
   Stack,
   Button,
   Spinner,
+  Icon,
 } from "@chakra-ui/react";
 import classes from "./EventsPage.module.scss";
 import Pagination from "../../components/Pagination";
@@ -25,6 +25,7 @@ import { Link as RouteLink } from "react-router-dom";
 import {
   ComedianResponse,
   ComedianService,
+  ComediansGetFiltersParameter,
   EventResponse,
   EventService,
   EventsGetFiltersParameter,
@@ -32,34 +33,59 @@ import {
 } from "../../services/openapi";
 import useApi from "../../services/useApi";
 import moment from "moment";
-import { FaLocationArrow, FaSearchLocation } from "react-icons/fa";
+import {
+  FaCalculator,
+  FaLocationArrow,
+  FaSearchLocation,
+} from "react-icons/fa";
 import { InputWithIcon } from "../../components/InputWithIcon";
 
 import { IoCalendarNumberOutline, IoLocationOutline } from "react-icons/io5";
 import { PiTextAaThin } from "react-icons/pi";
 import { MdOutlinePerson } from "react-icons/md";
 import { EventServiceTemp } from "../../services/openapi/services/EventServiceTemp";
+import { ComedianServiceTemp } from "../../services/openapi/services/ComedianServiceTemp";
+import {
+  AsyncSelect,
+  ChakraStylesConfig,
+  GroupBase,
+  OptionBase,
+  Select,
+  chakraComponents,
+} from "chakra-react-select";
+import { debounce } from "lodash"; // Import debounce from lodash
+
+interface ComedianOption extends OptionBase {
+  label: string;
+  value: number;
+}
 
 const EventsPage = () => {
-  const { isLoading, error, handleRequest } = useApi();
-
+  const { isLoading, error, handleRequest: eventsHandleRequest } = useApi();
+  const { handleRequest: comediansHandleRequest } = useApi();
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageable, setPageable] = useState<Pageable>({});
+  const [pageable, setPageable] = useState<Pageable>({
+    sort: ["date", "asc"],
+  });
   const [filters, setFilters] = useState<EventsGetFiltersParameter>({});
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [eventNameFilter, setEventNameFilter] = useState<string>("");
   const [cityFilter, setCityFilter] = useState<string>("");
+  const [comedianNameFilter, setComedianNameFilter] = useState<number>();
+  const [comedianNameSearch, setComedianNameSearch] = useState<string>("");
   const [numberOfResults, setNumberOfResults] = useState(0);
+  const [comediansOptions, setComediansOptions] = useState<ComedianOption[]>();
 
   const fetchEvents = async () => {
     try {
       const filters: EventsGetFiltersParameter = {
         name: eventNameFilter,
         city: cityFilter,
+        comedianId: comedianNameFilter,
       };
       console.log(filters);
 
-      const eventsResponse = await handleRequest(
+      const eventsResponse = await eventsHandleRequest(
         EventServiceTemp.eventsGet(pageable, filters)
       );
       setEvents(eventsResponse?.content || []);
@@ -72,7 +98,38 @@ const EventsPage = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [handleRequest, pageable]);
+  }, [eventsHandleRequest, pageable]);
+
+  // Debounce the function to wait for a pause in typing
+  const fetchComediansDebounced = debounce(async () => {
+    try {
+      const comedianFilters: ComediansGetFiltersParameter = {
+        name: comedianNameSearch,
+      };
+      const comediansResponse = await comediansHandleRequest(
+        ComedianServiceTemp.comediansGet(pageable, comedianFilters)
+      );
+      const comediansOptions =
+        comediansResponse?.content?.map((comedian: ComedianResponse) => ({
+          label: comedian.name,
+          value: comedian.id as unknown as number,
+        })) || [];
+
+      setComediansOptions(comediansOptions);
+    } catch (error) {
+      console.error(error);
+    }
+  }, 2000); // Set the debounce delay (in milliseconds)
+
+  useEffect(() => {
+    // Call the debounced function when the filter changes
+    fetchComediansDebounced();
+
+    // Cleanup the debounced function on component unmount
+    return () => {
+      fetchComediansDebounced.cancel();
+    };
+  }, [comedianNameSearch]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -82,6 +139,33 @@ const EventsPage = () => {
     startDate: new Date(),
     endDate: new Date(),
     key: "selection",
+  };
+
+  const chakraStyles: ChakraStylesConfig<ComedianOption> = {
+    option: (provided, state) => ({
+      ...provided,
+      fontSize: "sm",
+    }),
+    placeholder: (provided, state) => ({
+      ...provided,
+      color: "gray.400",
+      fontSize: "sm",
+    }),
+    input: (provided, state) => ({
+      ...provided,
+      color: "green.700",
+      fontSize: "sm",
+    }),
+    singleValue: (provided, state) => ({
+      ...provided,
+      color: "green.700",
+      fontSize: "sm",
+      marginLeft: "25px",
+    }),
+    inputContainer: (provided, state) => ({
+      ...provided,
+      marginLeft: "25px",
+    }),
   };
 
   return (
@@ -120,13 +204,21 @@ const EventsPage = () => {
                 value={cityFilter}
                 placeholder="Cidade"
               />
-              <InputWithIcon
-                icon={MdOutlinePerson}
-                onChange={() => {}}
-                value={""}
-                placeholder="Comediante"
-                readOnly
-              />
+              <InputGroup borderColor="green.600">
+                <InputLeftElement>
+                  <MdOutlinePerson color="green" />
+                </InputLeftElement>
+                <Select<ComedianOption, false>
+                  name="colors"
+                  placeholder="Comediante"
+                  options={comediansOptions}
+                  onInputChange={(e) => setComedianNameSearch(e)}
+                  className={classes.selectComedian}
+                  useBasicStyles
+                  chakraStyles={chakraStyles}
+                  onChange={(value) => setComedianNameFilter(value?.value)}
+                />
+              </InputGroup>
               <InputWithIcon
                 icon={IoCalendarNumberOutline}
                 onChange={() => {}}
@@ -188,7 +280,7 @@ const EventsPage = () => {
                     <Text fontSize="xs" color="black" ml="auto">
                       {moment(event.date)
                         .locale("pt-br")
-                        .format("DD [de] MMMM, HH:mm[h]")}
+                        .format("DD [de] MMMM, y")}
                     </Text>
                   </HStack>
                   <VStack alignItems="start" spacing={0} mt={2}>
@@ -224,13 +316,13 @@ const EventsPage = () => {
                 </VStack>
               </Flex>
             ))}
-            <Center>
+            {/* <Center>
               <Pagination
                 currentPage={currentPage}
                 totalPages={10}
                 onPageChange={handlePageChange}
               />
-            </Center>
+            </Center> */}
           </>
         )}
       </Box>

@@ -112,13 +112,13 @@ const ComediansPage = () => {
                 </Box>
               ))}
             </SimpleGrid>
-            <Center>
+            {/* <Center>
               <Pagination
                 currentPage={currentPage}
                 totalPages={10}
                 onPageChange={handlePageChange}
               />
-            </Center>
+            </Center> */}
           </>
         )}
       </Box>
