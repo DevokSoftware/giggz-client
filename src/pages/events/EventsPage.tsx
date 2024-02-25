@@ -43,8 +43,8 @@ import { InputWithIcon } from "../../components/InputWithIcon";
 import { IoCalendarNumberOutline, IoLocationOutline } from "react-icons/io5";
 import { PiTextAaThin } from "react-icons/pi";
 import { MdOutlinePerson } from "react-icons/md";
-import { EventServiceTemp } from "../../services/openapi/services/EventServiceTemp";
-import { ComedianServiceTemp } from "../../services/openapi/services/ComedianServiceTemp";
+import { EventServiceTemp } from "../../services/tempGenerated/EventServiceTemp";
+import { ComedianServiceTemp } from "../../services/tempGenerated/ComedianServiceTemp";
 import {
   AsyncSelect,
   ChakraStylesConfig,
@@ -54,8 +54,8 @@ import {
   chakraComponents,
 } from "chakra-react-select";
 import { debounce } from "lodash"; // Import debounce from lodash
-import ReactDatePicker from "react-datepicker";
-import DatePicker from "react-datepicker";
+import { RangeDatePicker } from "../../components/RangeDatePicker";
+
 interface ComedianOption extends OptionBase {
   label: string;
   value: number;
@@ -68,11 +68,12 @@ const EventsPage = () => {
   const [pageable, setPageable] = useState<Pageable>({
     sort: ["date", "asc"],
   });
-  const [filters, setFilters] = useState<EventsGetFiltersParameter>({});
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [eventNameFilter, setEventNameFilter] = useState<string>("");
   const [cityFilter, setCityFilter] = useState<string>("");
   const [comedianNameFilter, setComedianNameFilter] = useState<number>();
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [comedianNameSearch, setComedianNameSearch] = useState<string>("");
   const [numberOfResults, setNumberOfResults] = useState(0);
   const [comediansOptions, setComediansOptions] = useState<ComedianOption[]>();
@@ -83,8 +84,9 @@ const EventsPage = () => {
         name: eventNameFilter,
         city: cityFilter,
         comedianId: comedianNameFilter,
+        dateFrom: startDate != null ? startDate.toISOString() : undefined,
+        dateTo: endDate != null ? endDate.toISOString() : undefined,
       };
-      console.log(filters);
 
       const eventsResponse = await eventsHandleRequest(
         EventServiceTemp.eventsGet(pageable, filters)
@@ -169,8 +171,6 @@ const EventsPage = () => {
     }),
   };
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
   const onChangeDate = (dates: any) => {
     const [start, end] = dates;
     setStartDate(start);
@@ -228,21 +228,18 @@ const EventsPage = () => {
                   onChange={(value) => setComedianNameFilter(value?.value)}
                 />
               </InputGroup>
-              <InputWithIcon
-                icon={IoCalendarNumberOutline}
-                onChange={() => {}}
-                value={""}
-                placeholder="Data"
-                readOnly
-              />
-              {/* <DatePicker
-                selected={startDate}
-                onChange={onChangeDate}
-                startDate={startDate}
-                endDate={endDate}
-                selectsRange
-                inline
-              /> */}
+
+              <InputGroup borderColor="green.600">
+                <InputLeftElement>
+                  <IoCalendarNumberOutline color="green" />
+                </InputLeftElement>
+                <RangeDatePicker
+                  startDate={startDate}
+                  endDate={endDate}
+                  onChange={onChangeDate}
+                  placeholder="Data"
+                />
+              </InputGroup>
             </SimpleGrid>
 
             <HStack mt={3} justifyContent="end" mr={3}>
@@ -252,7 +249,6 @@ const EventsPage = () => {
                 border={`2px solid green`}
                 borderRadius="10px"
                 color="green.500"
-                boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
                 _selected={{ color: "white", background: "green.500" }}
                 onClick={fetchEvents}
               >

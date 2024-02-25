@@ -8,7 +8,7 @@
 .selectComedian {
   color: #276749;
   border-color: #2f855a;
-  font-size: 2px;
+
   width: 100%;
 }
 .selectComedian:hover {
@@ -27,3 +27,45 @@
 //     fontSize: "sm",
 //   },
 // }}
+.yourcustominputclass {
+  width: 100%; /* Adjust the width as needed */
+  height: 100% !important;
+  padding: 11px;
+  font-size: 12px; /* Adjust font size as needed */
+  // border: 1px solid #2f855a; /* Adjust border color and style as needed */
+  border-radius: 4px; /* Adjust border radius as needed */
+  // box-sizing: border-box; /* Ensure padding and border don't affect the width */
+  background: none;
+  padding-left: 37px;
+  color: #276749;
+}
+.yourcustomwrapperclass {
+  width: 100%; /* Adjust the width as needed */
+  height: 100% !important;
+  // padding: 11px;
+  font-size: 12px; /* Adjust font size as needed */
+  border: 1px solid #2f855a !important; /* Adjust border color and style as needed */
+  border-radius: 4px; /* Adjust border radius as needed */
+  // background: none;
+}
+
+/* Add your custom styles for the calendar dropdown */
+.yourcustompopperclass {
+  color: #2f855a;
+  // border: 1px solid #2f855a; /* Adjust border color and style as needed */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adjust box shadow as needed */
+  border-radius: 4px; /* Adjust border radius as needed */
+  z-index: 1000; /* Ensure the calendar appears above other elements */
+}
+
+.clearButtonCalendar:after {
+  background-color: #2f855a !important;
+}
+
+.calendarIcon {
+  color: #276749;
+}
+.calendarWindow {
+  z-index: 2000;
+  background-color: red($color: #000000);
+}

@@ -2,13 +2,13 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ComedianResponse } from "../models/ComedianResponse";
-import type { ComediansGetFiltersParameter } from "../models/ComediansGetFiltersParameter";
-import type { Pageable } from "../models/Pageable";
-import type { PageComedianResponse } from "../models/PageComedianResponse";
-import type { CancelablePromise } from "../core/CancelablePromise";
-import { OpenAPI } from "../core/OpenAPI";
-import { request as __request } from "../core/request";
+import type { ComedianResponse } from "../openapi/models/ComedianResponse";
+import type { ComediansGetFiltersParameter } from "../openapi/models/ComediansGetFiltersParameter";
+import type { Pageable } from "../openapi/models/Pageable";
+import type { PageComedianResponse } from "../openapi/models/PageComedianResponse";
+import type { CancelablePromise } from "../openapi/core/CancelablePromise";
+import { OpenAPI } from "../openapi/core/OpenAPI";
+import { request as __request } from "../openapi/core/request";
 export class ComedianServiceTemp {
   /**
    * @param pageable

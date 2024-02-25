@@ -2,15 +2,15 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateEventRequest } from "../models/CreateEventRequest";
-import type { EventResponse } from "../models/EventResponse";
-import type { EventsGetFiltersParameter } from "../models/EventsGetFiltersParameter";
-import type { Pageable } from "../models/Pageable";
-import type { PageEventResponse } from "../models/PageEventResponse";
-import type { UpdateEventRequest } from "../models/UpdateEventRequest";
-import type { CancelablePromise } from "../core/CancelablePromise";
-import { OpenAPI } from "../core/OpenAPI";
-import { request as __request } from "../core/request";
+import type { CreateEventRequest } from "../openapi/models/CreateEventRequest";
+import type { EventResponse } from "../openapi/models/EventResponse";
+import type { EventsGetFiltersParameter } from "../openapi/models/EventsGetFiltersParameter";
+import type { Pageable } from "../openapi/models/Pageable";
+import type { PageEventResponse } from "../openapi/models/PageEventResponse";
+import type { UpdateEventRequest } from "../openapi/models/UpdateEventRequest";
+import type { CancelablePromise } from "../openapi/core/CancelablePromise";
+import { OpenAPI } from "../openapi/core/OpenAPI";
+import { request as __request } from "../openapi/core/request";
 
 /**
  * This class in temporary since the openapi-typescript does not support yet objects in the query parameters,
@@ -46,6 +46,12 @@ export class EventServiceTemp {
 
     if (filters.comedianId !== undefined) {
       queryParams.comedianId = filters.comedianId.toString();
+    }
+    if (filters.dateFrom) {
+      queryParams.dateFrom = filters.dateFrom;
+    }
+    if (filters.dateTo) {
+      queryParams.dateTo = filters.dateTo;
     }
 
     if (sort && sort.length > 0) {

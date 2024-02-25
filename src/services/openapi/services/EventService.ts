@@ -51,14 +51,12 @@ export class EventService {
     /**
      * @param pageable
      * @param filters
-     * @param sort
      * @returns PageEventResponse All existing events
      * @throws ApiError
      */
     public static eventsGet(
         pageable: Pageable,
         filters: EventsGetFiltersParameter,
-        sort?: Array<string>,
     ): CancelablePromise<PageEventResponse> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -66,7 +64,6 @@ export class EventService {
             query: {
                 'pageable': pageable,
                 'filters': filters,
-                'sort': sort,
             },
         });
     }

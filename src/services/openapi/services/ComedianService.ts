@@ -13,14 +13,12 @@ export class ComedianService {
     /**
      * @param pageable
      * @param filters
-     * @param sort
      * @returns PageComedianResponse All existing comedians
      * @throws ApiError
      */
     public static comediansGet(
         pageable: Pageable,
         filters: ComediansGetFiltersParameter,
-        sort?: Array<string>,
     ): CancelablePromise<PageComedianResponse> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -28,7 +26,6 @@ export class ComedianService {
             query: {
                 'pageable': pageable,
                 'filters': filters,
-                'sort': sort,
             },
         });
     }
