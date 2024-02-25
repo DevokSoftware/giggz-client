@@ -288,7 +288,7 @@ const ComedianDetailsPage = () => {
                       <Text fontSize="xs" color="black" ml="auto">
                         {moment(show.date)
                           .locale("pt-br")
-                          .format("d [de] MMMM, HH:mm[h]")}
+                          .format("DD [de] MMMM, y")}
                       </Text>
                     </HStack>
                     <VStack alignItems="start" spacing={0} mt={2}>

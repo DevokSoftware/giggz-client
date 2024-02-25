@@ -54,7 +54,8 @@ import {
   chakraComponents,
 } from "chakra-react-select";
 import { debounce } from "lodash"; // Import debounce from lodash
-
+import ReactDatePicker from "react-datepicker";
+import DatePicker from "react-datepicker";
 interface ComedianOption extends OptionBase {
   label: string;
   value: number;
@@ -168,6 +169,14 @@ const EventsPage = () => {
     }),
   };
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  const onChangeDate = (dates: any) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+  };
+
   return (
     <Box mt={{ base: 2, sm: 3, md: 5, lg: 5 }}>
       <Box
@@ -226,6 +235,14 @@ const EventsPage = () => {
                 placeholder="Data"
                 readOnly
               />
+              {/* <DatePicker
+                selected={startDate}
+                onChange={onChangeDate}
+                startDate={startDate}
+                endDate={endDate}
+                selectsRange
+                inline
+              /> */}
             </SimpleGrid>
 
             <HStack mt={3} justifyContent="end" mr={3}>

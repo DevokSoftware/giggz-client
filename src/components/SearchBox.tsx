@@ -24,7 +24,7 @@ const SearchBox: React.FC<SearchProps> = ({ onSearch }: SearchProps) => {
         onChange={(e) => setSearchTerm(e.target.value)}
         borderColor="green.600"
         color="green.600"
-        borderRadius="40px"
+        borderRadius="15px"
         placeholder="Procurar comediante..."
         // Add following css in to a css class
         sx={{
