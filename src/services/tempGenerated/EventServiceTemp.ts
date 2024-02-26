@@ -32,8 +32,17 @@ export class EventServiceTemp {
   ): CancelablePromise<PageEventResponse> {
     const queryParams: Record<string, string | number | undefined> = {};
 
-    if (pageable && pageable.sort) {
-      queryParams.sort = pageable.sort[0] + "," + pageable.sort[1];
+    if (pageable) {
+      if (pageable.sort) {
+        queryParams.sort = pageable.sort[0] + "," + pageable.sort[1];
+      }
+
+      if (pageable.page) {
+        queryParams.page = pageable.page;
+      }
+      if (pageable.size) {
+        queryParams.size = pageable.size;
+      }
     }
 
     if (filters.name) {

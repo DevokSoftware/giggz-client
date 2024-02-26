@@ -67,15 +67,18 @@ const EventsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageable, setPageable] = useState<Pageable>({
     sort: ["date", "asc"],
+    size: 10,
+    page: 0,
   });
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [eventNameFilter, setEventNameFilter] = useState<string>("");
   const [cityFilter, setCityFilter] = useState<string>("");
-  const [comedianNameFilter, setComedianNameFilter] = useState<number>();
+  const [comedianOption, setComedianOption] = useState<ComedianOption>();
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [comedianNameSearch, setComedianNameSearch] = useState<string>("");
   const [numberOfResults, setNumberOfResults] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [comedianNameSearch, setComedianNameSearch] = useState<string>("");
   const [comediansOptions, setComediansOptions] = useState<ComedianOption[]>();
 
   const fetchEvents = async () => {
@@ -83,16 +86,22 @@ const EventsPage = () => {
       const filters: EventsGetFiltersParameter = {
         name: eventNameFilter,
         city: cityFilter,
-        comedianId: comedianNameFilter,
+        comedianId: comedianOption?.value,
         dateFrom: startDate != null ? startDate.toISOString() : undefined,
         dateTo: endDate != null ? endDate.toISOString() : undefined,
       };
-
+      debugger;
+      const updatedPageable = {
+        ...pageable,
+        page: currentPage - 1, // Adjusted for 0-based indexing in the backend
+      };
       const eventsResponse = await eventsHandleRequest(
-        EventServiceTemp.eventsGet(pageable, filters)
+        EventServiceTemp.eventsGet(updatedPageable, filters)
       );
+      setPageable(updatedPageable);
       setEvents(eventsResponse?.content || []);
       setNumberOfResults(eventsResponse?.totalElements || 0);
+      setTotalPages(eventsResponse?.totalPages || 0);
     } catch (error) {
       // TODO handle this errors in a generic way
       console.error(error);
@@ -101,7 +110,7 @@ const EventsPage = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [eventsHandleRequest, pageable]);
+  }, [eventsHandleRequest, currentPage]);
 
   // Debounce the function to wait for a pause in typing
   const fetchComediansDebounced = debounce(async () => {
@@ -135,6 +144,7 @@ const EventsPage = () => {
   }, [comedianNameSearch]);
 
   const handlePageChange = (page: number) => {
+    console.log(page);
     setCurrentPage(page);
   };
 
@@ -185,159 +195,164 @@ const EventsPage = () => {
         maxW="1000px"
         mx="auto"
       >
-        {isLoading ? (
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="green.600"
-            size="xl"
-          />
-        ) : (
-          <>
-            <SimpleGrid
-              spacing={3}
-              ml={2}
-              mr={2}
-              columns={{ base: 2, sm: 3, md: 3, lg: 4 }}
+        <>
+          <SimpleGrid
+            spacing={3}
+            ml={2}
+            mr={2}
+            columns={{ base: 2, sm: 3, md: 3, lg: 4 }}
+          >
+            <InputWithIcon
+              icon={PiTextAaThin}
+              onChange={setEventNameFilter}
+              value={eventNameFilter}
+              placeholder="Nome"
+            />
+            <InputWithIcon
+              icon={IoLocationOutline}
+              onChange={setCityFilter}
+              value={cityFilter}
+              placeholder="Cidade"
+            />
+            <InputGroup borderColor="green.600">
+              <InputLeftElement>
+                <MdOutlinePerson color="green" />
+              </InputLeftElement>
+              <Select<ComedianOption, false>
+                name="colors"
+                placeholder="Comediante"
+                options={comediansOptions}
+                onInputChange={(e) => setComedianNameSearch(e)}
+                className={classes.selectComedian}
+                useBasicStyles
+                chakraStyles={chakraStyles}
+                value={comedianOption}
+                onChange={(value) => setComedianOption(value || undefined)}
+              />
+            </InputGroup>
+
+            <InputGroup borderColor="green.600">
+              <InputLeftElement>
+                <IoCalendarNumberOutline color="green" />
+              </InputLeftElement>
+              <RangeDatePicker
+                startDate={startDate}
+                endDate={endDate}
+                onChange={onChangeDate}
+                placeholder="Data"
+              />
+            </InputGroup>
+          </SimpleGrid>
+
+          <HStack mt={3} justifyContent="end" mr={3}>
+            <Button
+              size="sm"
+              background="white"
+              border={`2px solid green`}
+              borderRadius="10px"
+              color="green.500"
+              _selected={{ color: "white", background: "green.500" }}
+              onClick={fetchEvents}
             >
-              <InputWithIcon
-                icon={PiTextAaThin}
-                onChange={setEventNameFilter}
-                value={eventNameFilter}
-                placeholder="Nome"
-              />
-              <InputWithIcon
-                icon={IoLocationOutline}
-                onChange={setCityFilter}
-                value={cityFilter}
-                placeholder="Cidade"
-              />
-              <InputGroup borderColor="green.600">
-                <InputLeftElement>
-                  <MdOutlinePerson color="green" />
-                </InputLeftElement>
-                <Select<ComedianOption, false>
-                  name="colors"
-                  placeholder="Comediante"
-                  options={comediansOptions}
-                  onInputChange={(e) => setComedianNameSearch(e)}
-                  className={classes.selectComedian}
-                  useBasicStyles
-                  chakraStyles={chakraStyles}
-                  onChange={(value) => setComedianNameFilter(value?.value)}
-                />
-              </InputGroup>
+              Pesquisar
+            </Button>
+          </HStack>
 
-              <InputGroup borderColor="green.600">
-                <InputLeftElement>
-                  <IoCalendarNumberOutline color="green" />
-                </InputLeftElement>
-                <RangeDatePicker
-                  startDate={startDate}
-                  endDate={endDate}
-                  onChange={onChangeDate}
-                  placeholder="Data"
-                />
-              </InputGroup>
-            </SimpleGrid>
-
-            <HStack mt={3} justifyContent="end" mr={3}>
-              <Button
-                size="sm"
-                background="white"
-                border={`2px solid green`}
-                borderRadius="10px"
-                color="green.500"
-                _selected={{ color: "white", background: "green.500" }}
-                onClick={fetchEvents}
-              >
-                Pesquisar
-              </Button>
-            </HStack>
-
-            <HStack mt={3} justifyContent="end" mr={3}>
-              <Text fontSize="xs" color="gray.400">
-                {numberOfResults} resultados encontrados
-              </Text>
-            </HStack>
-            {events?.map((event, index) => (
-              <Flex
-                key={index}
-                p={2}
-                boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-                border="2px solid"
-                borderColor="green.600"
-                borderRadius="20px"
-                cursor="pointer"
-                className={classes.show_card}
-                m={2}
-              >
-                <Image
-                  src={event.poster}
-                  boxSize="70px"
-                  objectFit="cover"
-                  borderRadius="full"
-                />
-                <VStack alignItems="start" spacing={0} flex="1" ml={3}>
-                  <HStack justifyContent="space-between" w="100%">
-                    <Text
-                      textAlign="left"
-                      fontWeight="bold"
-                      fontSize="md"
-                      color="green.700"
-                    >
-                      {event.name}
-                    </Text>
-                    {/* TODO - use moment to translate the date */}
-                    <Text fontSize="xs" color="black" ml="auto">
-                      {moment(event.date)
-                        .locale("pt-br")
-                        .format("DD [de] MMMM, y")}
-                    </Text>
-                  </HStack>
-                  <VStack alignItems="start" spacing={0} mt={2}>
-                    {/* TODO - add location as an Entity in BE */}
-                    <Text fontSize="sm" color="black" fontWeight="bold">
-                      {event.location?.name}
-                    </Text>
-                    <Text fontSize="xs" color="black">
-                      {event.location?.street +
-                        " " +
-                        event.location?.number +
-                        ", " +
-                        event.location?.city}
-                    </Text>
+          {isLoading ? (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="green.600"
+              size="xl"
+            />
+          ) : (
+            <>
+              <HStack mt={3} justifyContent="end" mr={3}>
+                <Text fontSize="xs" color="gray.400">
+                  {numberOfResults} resultados encontrados
+                </Text>
+              </HStack>
+              {events?.map((event, index) => (
+                <Flex
+                  key={index}
+                  p={2}
+                  boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                  border="2px solid"
+                  borderColor="green.600"
+                  borderRadius="20px"
+                  cursor="pointer"
+                  className={classes.show_card}
+                  m={2}
+                >
+                  <Image
+                    src={event.poster}
+                    boxSize="70px"
+                    objectFit="cover"
+                    borderRadius="full"
+                  />
+                  <VStack alignItems="start" spacing={0} flex="1" ml={3}>
+                    <HStack justifyContent="space-between" w="100%">
+                      <Text
+                        textAlign="left"
+                        fontWeight="bold"
+                        fontSize="md"
+                        color="green.700"
+                      >
+                        {event.name}
+                      </Text>
+                      {/* TODO - use moment to translate the date */}
+                      <Text fontSize="xs" color="black" ml="auto">
+                        {moment(event.date)
+                          .locale("pt-br")
+                          .format("DD [de] MMMM, y")}
+                      </Text>
+                    </HStack>
+                    <VStack alignItems="start" spacing={0} mt={2}>
+                      {/* TODO - add location as an Entity in BE */}
+                      <Text fontSize="sm" color="black" fontWeight="bold">
+                        {event.location?.name}
+                      </Text>
+                      <Text fontSize="xs" color="black">
+                        {event.location?.street +
+                          " " +
+                          event.location?.number +
+                          ", " +
+                          event.location?.city}
+                      </Text>
+                    </VStack>
+                    <Box mt={3}>
+                      {event.comedians?.map((comedian, index) => (
+                        <HStack>
+                          <Image
+                            src={comedian.picture}
+                            boxSize="20px"
+                            objectFit="cover"
+                            borderRadius="full"
+                          />
+                          <RouteLink to={`/comedians/${comedian.id}`}>
+                            <Text fontSize="sm" color="green.600">
+                              {comedian.name}
+                            </Text>
+                          </RouteLink>
+                        </HStack>
+                      ))}
+                    </Box>
                   </VStack>
-                  <Box mt={3}>
-                    {event.comedians?.map((comedian, index) => (
-                      <HStack>
-                        <Image
-                          src={comedian.picture}
-                          boxSize="20px"
-                          objectFit="cover"
-                          borderRadius="full"
-                        />
-                        <RouteLink to={`/comedians/${comedian.id}`}>
-                          <Text fontSize="sm" color="green.600">
-                            {comedian.name}
-                          </Text>
-                        </RouteLink>
-                      </HStack>
-                    ))}
-                  </Box>
-                </VStack>
-              </Flex>
-            ))}
-            {/* <Center>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={10}
-                onPageChange={handlePageChange}
-              />
-            </Center> */}
-          </>
-        )}
+                </Flex>
+              ))}
+            </>
+          )}
+          <Center>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages} // Corrected totalPages calculation
+              onPageChange={handlePageChange}
+              totalElements={numberOfResults}
+              pageSize={pageable?.size || 0}
+            />
+          </Center>
+        </>
       </Box>
     </Box>
   );

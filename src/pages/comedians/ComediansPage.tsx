@@ -66,61 +66,67 @@ const ComediansPage = () => {
         maxW="1300px"
         mx="auto"
       >
-        {isLoading ? (
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="green.600"
-            size="xl"
-          />
-        ) : (
-          <>
-            <SearchBox onSearch={handleSearch} />
-            <SimpleGrid columns={{ base: 2, sm: 3, md: 3, lg: 4 }} spacing={4}>
-              {filteredComedians.map((comedian) => (
-                <Box
-                  key={comedian.id}
-                  p={{ base: 3, lg: 4 }}
-                  textAlign="center"
-                >
-                  <RouteLink to={`/comedians/${comedian.id}`}>
-                    <Image
-                      className={classes.comedian_image}
-                      boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
-                      borderRadius="full"
-                      border={`3px solid ${theme.colors.white}`}
-                      boxSize={{
-                        base: "90px",
-                        sm: "100px",
-                        lg: "130px",
-                      }}
-                      src={comedian.picture}
-                      alt={comedian.name}
-                      mx="auto"
-                      objectFit="cover"
-                      cursor="pointer"
-                    />
-                  </RouteLink>
-                  <Heading
-                    fontSize="sm"
-                    color="green.700"
-                    mt={{ base: 1, lg: 2 }}
+        <>
+          <SearchBox onSearch={handleSearch} />
+          {isLoading ? (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="green.600"
+              size="xl"
+            />
+          ) : (
+            <>
+              <SimpleGrid
+                columns={{ base: 2, sm: 3, md: 3, lg: 4 }}
+                spacing={4}
+              >
+                {filteredComedians.map((comedian) => (
+                  <Box
+                    key={comedian.id}
+                    p={{ base: 3, lg: 4 }}
+                    textAlign="center"
                   >
-                    {comedian.name}
-                  </Heading>
-                </Box>
-              ))}
-            </SimpleGrid>
-            {/* <Center>
+                    <RouteLink to={`/comedians/${comedian.id}`}>
+                      <Image
+                        className={classes.comedian_image}
+                        boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                        borderRadius="full"
+                        border={`3px solid ${theme.colors.white}`}
+                        boxSize={{
+                          base: "90px",
+                          sm: "100px",
+                          lg: "130px",
+                        }}
+                        src={comedian.picture}
+                        alt={comedian.name}
+                        mx="auto"
+                        objectFit="cover"
+                        cursor="pointer"
+                      />
+                    </RouteLink>
+                    <Heading
+                      fontSize="sm"
+                      color="green.700"
+                      mt={{ base: 1, lg: 2 }}
+                    >
+                      {comedian.name}
+                    </Heading>
+                  </Box>
+                ))}
+              </SimpleGrid>
+            </>
+          )}
+
+          {/* <Center>
               <Pagination
                 currentPage={currentPage}
                 totalPages={10}
                 onPageChange={handlePageChange}
               />
             </Center> */}
-          </>
-        )}
+        </>
       </Box>
     </Box>
   );

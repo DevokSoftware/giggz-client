@@ -5,14 +5,19 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  totalElements: number;
+  pageSize: number;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
+  totalElements,
+  pageSize,
 }: PaginationProps) => {
   const theme = useTheme();
+
   const generatePageNumbers = () => {
     const visiblePages = 4;
     const totalVisiblePages = Math.min(visiblePages, totalPages);
@@ -39,6 +44,10 @@ const Pagination: React.FC<PaginationProps> = ({
   const handlePageChange = (page: number) => {
     onPageChange(page);
   };
+
+  if (totalPages === 1) {
+    return <></>;
+  }
 
   return (
     <Box mt={4} mb={4} textAlign="center">
