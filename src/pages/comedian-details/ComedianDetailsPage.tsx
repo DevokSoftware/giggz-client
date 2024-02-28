@@ -28,20 +28,52 @@ import classes from "./ComedianDetails.module.scss";
 import Pagination from "../../components/Pagination";
 import useApi from "../../services/useApi";
 import {
+  ComedianEventResponse,
   ComedianResponse,
   ComedianService,
+  ComediansComedianIdEventsGetFiltersParameter,
   ContentResponse,
+  Pageable,
 } from "../../services/openapi";
 import moment from "moment";
 import "moment/locale/pt-br";
+import { ComedianServiceTemp } from "../../services/tempGenerated/ComedianServiceTemp";
 
 interface ComedianProps {
   name: string;
   description: string;
 }
 const ComedianDetailsPage = () => {
-  const { isLoading, error, handleRequest } = useApi();
+  const { handleRequest: handleRequestComedian } = useApi();
+
+  const {
+    isLoading,
+    error,
+    handleRequest: handleRequestComedianEvents,
+  } = useApi();
   const [comedian, setComedian] = useState<ComedianResponse>();
+
+  const [futureComedianEvents, setFutureComedianEvents] =
+    useState<ComedianEventResponse[]>();
+  const [currentFutureEventsPage, setFutureEventsPage] = useState(1);
+
+  const [pageableFutureEvents, setPageableFutureEvents] = useState<Pageable>({
+    sort: ["date", "asc"],
+    size: 10,
+    page: 0,
+  });
+  const [totalFutureEventsPages, setTotalFutureEventsPages] = useState(0);
+  const [pastComedianEvents, setPastComedianEvents] =
+    useState<ComedianEventResponse[]>();
+  const [currentPastEventsPage, setPastEventsPage] = useState(1);
+
+  const [pageablePastEvents, setPageablePastEvents] = useState<Pageable>({
+    sort: ["date", "asc"],
+    size: 10,
+    page: 0,
+  });
+  const [totalPastEventsPages, setTotalPastEventsPages] = useState(0);
+
   const { comedianId } = useParams();
   // const [showType, setShowType] = React.useState("future");
   const theme = useTheme();
@@ -50,7 +82,7 @@ const ComedianDetailsPage = () => {
     if (comedianId) {
       const fetchComedians = async () => {
         try {
-          const comedianResponse = await handleRequest(
+          const comedianResponse = await handleRequestComedian(
             ComedianService.comediansComedianIdGet(parseInt(comedianId, 10))
           );
           setComedian(comedianResponse);
@@ -60,8 +92,63 @@ const ComedianDetailsPage = () => {
         }
       };
       fetchComedians();
+      fetchFutureEvents();
+      fetchPastEvents();
     }
-  }, [handleRequest]); //TODO: it is being called twice. check if this useEffect is working properly
+  }, [handleRequestComedian]);
+
+  const fetchFutureEvents = async () => {
+    if (comedianId) {
+      try {
+        const filters: ComediansComedianIdEventsGetFiltersParameter = {
+          dateFrom: new Date().toISOString(),
+        };
+        const updatedPageable = {
+          ...pageableFutureEvents,
+          page: currentFutureEventsPage - 1, // Adjusted for 0-based indexing in the backend
+        };
+        const eventsResponse = await handleRequestComedianEvents(
+          ComedianServiceTemp.comediansComedianIdEventsGet(
+            parseInt(comedianId, 10),
+            updatedPageable,
+            filters
+          )
+        );
+        setPageableFutureEvents(updatedPageable);
+        setFutureComedianEvents(eventsResponse?.content || []);
+        setTotalFutureEventsPages(eventsResponse?.totalPages || 0);
+      } catch (error) {
+        // TODO handle this errors in a generic way
+        console.error(error);
+      }
+    }
+  };
+  const fetchPastEvents = async () => {
+    if (comedianId) {
+      try {
+        const filters: ComediansComedianIdEventsGetFiltersParameter = {
+          dateTo: new Date().toISOString(),
+        };
+        const updatedPageable = {
+          ...pageablePastEvents,
+          page: currentPastEventsPage - 1, // Adjusted for 0-based indexing in the backend
+        };
+        const eventsResponse = await handleRequestComedianEvents(
+          ComedianServiceTemp.comediansComedianIdEventsGet(
+            parseInt(comedianId, 10),
+            updatedPageable,
+            filters
+          )
+        );
+        setPageablePastEvents(updatedPageable);
+        setPastComedianEvents(eventsResponse?.content || []);
+        setTotalPastEventsPages(eventsResponse?.totalPages || 0);
+      } catch (error) {
+        // TODO handle this errors in a generic way
+        console.error(error);
+      }
+    }
+  };
 
   const getContentIcon = (contentType: ContentResponse.contentType) => {
     switch (contentType) {
@@ -84,7 +171,7 @@ const ComedianDetailsPage = () => {
         <Image
           className={classes.comedian_image}
           borderRadius="full"
-          src={comedian.picture}
+          src={"data:image/jpeg;base64," + comedian.picture}
           alt={`${comedian.name}'s image`}
           mx="auto"
           //modify this boxShadow
@@ -159,9 +246,6 @@ const ComedianDetailsPage = () => {
         <Heading size="md" color="green.700">
           {comedian.name}
         </Heading>
-        <Text fontSize="md" color="green.500">
-          {comedian.description}
-        </Text>
       </Box>
 
       <Tabs
@@ -192,7 +276,17 @@ const ComedianDetailsPage = () => {
               boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
               _selected={{ color: "white", background: "green.400" }}
             >
-              Eventos
+              Próximos Eventos
+            </Tab>
+            <Tab
+              background="white"
+              border={`2px solid ${theme.colors.green[500]}`}
+              borderRadius="10px"
+              color="green.500"
+              boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+              _selected={{ color: "white", background: "green.400" }}
+            >
+              Eventos Passados
             </Tab>
           </HStack>
         </TabList>
@@ -232,31 +326,69 @@ const ComedianDetailsPage = () => {
           </TabPanel>
           <TabPanel>
             <VStack spacing={4} align="stretch">
-              {/* <HStack spacing={4} justify="start">
-                <Button
-                  background={showType === "future" ? "green.500" : "white"}
-                  border={`2px solid ${theme.colors.green[400]}`}
-                  onClick={() => setShowType("future")}
+              {futureComedianEvents?.map((show, index) => (
+                <Flex
+                  key={index}
+                  p={2}
+                  boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                  border="2px solid"
+                  borderColor="green.600"
                   borderRadius="20px"
-                  size="sm"
-                  color={showType === "future" ? "white" : "green.500"}
-                  boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+                  alignItems="center"
+                  cursor="pointer"
+                  className={classes.show_card}
                 >
-                  Próximos eventos
-                </Button>
-                <Button
-                  background={showType === "past" ? "green.500" : "white"}
-                  border={`2px solid ${theme.colors.green[400]}`}
-                  onClick={() => setShowType("past")}
-                  borderRadius="20px"
-                  size="sm"
-                  color={showType === "past" ? "white" : "green.500"}
-                  boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
-                >
-                  Eventos passados
-                </Button>
-              </HStack> */}
-              {comedian.events?.map((show, index) => (
+                  <Image
+                    src={show.poster}
+                    boxSize="70px"
+                    objectFit="cover"
+                    borderRadius="full"
+                  />
+                  <VStack alignItems="start" spacing={0} flex="1" ml={3}>
+                    <HStack justifyContent="space-between" w="100%">
+                      <Text
+                        textAlign="left"
+                        fontWeight="bold"
+                        fontSize="md"
+                        color="green.700"
+                      >
+                        {show.name}
+                      </Text>
+                      {/* TODO - use moment to translate the date */}
+                      <Text fontSize="xs" color="black" ml="auto">
+                        {moment(show.date)
+                          .locale("pt-br")
+                          .format("DD [de] MMMM, y")}
+                      </Text>
+                    </HStack>
+                    <VStack alignItems="start" spacing={0} mt={2}>
+                      {/* TODO - add location as an Entity in BE */}
+                      <Text fontSize="sm" color="black" fontWeight="bold">
+                        {show.location?.name}
+                      </Text>
+                      <Text fontSize="xs" color="black">
+                        {show.location?.street +
+                          " " +
+                          show.location?.number +
+                          ", " +
+                          show.location?.city}
+                      </Text>
+                    </VStack>
+                  </VStack>
+                </Flex>
+              ))}
+              <Center>
+                {/* <Pagination
+                  currentPage={1}
+                  totalPages={10}
+                  onPageChange={() => {}}
+                /> */}
+              </Center>
+            </VStack>
+          </TabPanel>
+          <TabPanel>
+            <VStack spacing={4} align="stretch">
+              {pastComedianEvents?.map((show, index) => (
                 <Flex
                   key={index}
                   p={2}

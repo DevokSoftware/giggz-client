@@ -3,8 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ComedianResponse } from '../models/ComedianResponse';
+import type { ComediansComedianIdEventsGetFiltersParameter } from '../models/ComediansComedianIdEventsGetFiltersParameter';
 import type { ComediansGetFiltersParameter } from '../models/ComediansGetFiltersParameter';
 import type { Pageable } from '../models/Pageable';
+import type { PageComedianEventsResponse } from '../models/PageComedianEventsResponse';
 import type { PageComedianResponse } from '../models/PageComedianResponse';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -42,6 +44,30 @@ export class ComedianService {
             url: '/comedians/{comedianId}',
             path: {
                 'comedianId': comedianId,
+            },
+        });
+    }
+    /**
+     * @param comedianId
+     * @param pageable
+     * @param filters
+     * @returns PageComedianEventsResponse All existing comedian events
+     * @throws ApiError
+     */
+    public static comediansComedianIdEventsGet(
+        comedianId: number,
+        pageable: Pageable,
+        filters: ComediansComedianIdEventsGetFiltersParameter,
+    ): CancelablePromise<PageComedianEventsResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/comedians/{comedianId}/events',
+            path: {
+                'comedianId': comedianId,
+            },
+            query: {
+                'pageable': pageable,
+                'filters': filters,
             },
         });
     }

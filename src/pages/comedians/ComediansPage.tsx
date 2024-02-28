@@ -99,7 +99,7 @@ const ComediansPage = () => {
                           sm: "100px",
                           lg: "130px",
                         }}
-                        src={comedian.picture}
+                        src={"data:image/jpeg;base64," + comedian.picture}
                         alt={comedian.name}
                         mx="auto"
                         objectFit="cover"

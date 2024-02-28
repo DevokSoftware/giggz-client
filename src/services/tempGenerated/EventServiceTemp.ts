@@ -27,8 +27,7 @@ export class EventServiceTemp {
    */
   public static eventsGet(
     pageable: Pageable,
-    filters: EventsGetFiltersParameter,
-    sort?: Array<string>
+    filters: EventsGetFiltersParameter
   ): CancelablePromise<PageEventResponse> {
     const queryParams: Record<string, string | number | undefined> = {};
 
@@ -61,10 +60,6 @@ export class EventServiceTemp {
     }
     if (filters.dateTo) {
       queryParams.dateTo = filters.dateTo;
-    }
-
-    if (sort && sort.length > 0) {
-      queryParams.sort = sort.join(",");
     }
 
     return __request(OpenAPI, {

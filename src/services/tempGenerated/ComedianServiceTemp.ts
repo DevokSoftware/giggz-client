@@ -9,6 +9,10 @@ import type { PageComedianResponse } from "../openapi/models/PageComedianRespons
 import type { CancelablePromise } from "../openapi/core/CancelablePromise";
 import { OpenAPI } from "../openapi/core/OpenAPI";
 import { request as __request } from "../openapi/core/request";
+import {
+  ComediansComedianIdEventsGetFiltersParameter,
+  PageComedianEventsResponse,
+} from "../openapi";
 export class ComedianServiceTemp {
   /**
    * @param pageable
@@ -36,6 +40,48 @@ export class ComedianServiceTemp {
     return __request(OpenAPI, {
       method: "GET",
       url: "/comedians",
+      query: queryParams,
+    });
+  }
+  /**
+   * @param comedianId
+   * @param pageable
+   * @param filters
+   * @returns PageComedianEventsResponse All existing comedian events
+   * @throws ApiError
+   */
+  public static comediansComedianIdEventsGet(
+    comedianId: number,
+    pageable: Pageable,
+    filters: ComediansComedianIdEventsGetFiltersParameter
+  ): CancelablePromise<PageComedianEventsResponse> {
+    const queryParams: Record<string, string | number | undefined> = {};
+
+    if (pageable) {
+      if (pageable.sort) {
+        queryParams.sort = pageable.sort[0] + "," + pageable.sort[1];
+      }
+
+      if (pageable.page) {
+        queryParams.page = pageable.page;
+      }
+      if (pageable.size) {
+        queryParams.size = pageable.size;
+      }
+    }
+    if (filters.dateFrom) {
+      queryParams.dateFrom = filters.dateFrom;
+    }
+    if (filters.dateTo) {
+      queryParams.dateTo = filters.dateTo;
+    }
+
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/comedians/{comedianId}/events",
+      path: {
+        comedianId: comedianId,
+      },
       query: queryParams,
     });
   }

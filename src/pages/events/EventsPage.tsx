@@ -325,7 +325,7 @@ const EventsPage = () => {
                       {event.comedians?.map((comedian, index) => (
                         <HStack>
                           <Image
-                            src={comedian.picture}
+                            src={"data:image/jpeg;base64," + comedian.picture}
                             boxSize="20px"
                             objectFit="cover"
                             borderRadius="full"
