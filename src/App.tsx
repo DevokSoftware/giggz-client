@@ -54,6 +54,7 @@ export const App = () => {
               <Route path="/shows" element={<Outlet />}>
                 <Route path="" element={<EventsPage />} />
               </Route>
+              <Route path="*" element={<Navigate to="/comedians" />} />
             </Routes>
           </Box>
         </Box>
