@@ -30,6 +30,19 @@ export class ComedianServiceTemp {
       pageable: JSON.stringify(pageable),
     };
 
+    if (pageable) {
+      if (pageable.sort) {
+        queryParams.sort = pageable.sort[0] + "," + pageable.sort[1];
+      }
+
+      if (pageable.page) {
+        queryParams.page = pageable.page;
+      }
+      if (pageable.size) {
+        queryParams.size = pageable.size;
+      }
+    }
+
     if (filters.name) {
       queryParams.name = filters.name;
     }

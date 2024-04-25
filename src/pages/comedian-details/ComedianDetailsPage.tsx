@@ -171,7 +171,7 @@ const ComedianDetailsPage = () => {
         <Image
           className={classes.comedian_image}
           borderRadius="full"
-          src={"data:image/jpeg;base64," + comedian.picture}
+          src={comedian.picture}
           alt={`${comedian.name}'s image`}
           mx="auto"
           //modify this boxShadow
@@ -326,6 +326,18 @@ const ComedianDetailsPage = () => {
           </TabPanel>
           <TabPanel>
             <VStack spacing={4} align="stretch">
+              {futureComedianEvents?.length === 0 && (
+                <Center>
+                  <Text
+                    textAlign="left"
+                    fontWeight="bold"
+                    fontSize="sm"
+                    color="green.600"
+                  >
+                    Sem eventos
+                  </Text>
+                </Center>
+              )}
               {futureComedianEvents?.map((show, index) => (
                 <Flex
                   key={index}
@@ -354,7 +366,6 @@ const ComedianDetailsPage = () => {
                       >
                         {show.name}
                       </Text>
-                      {/* TODO - use moment to translate the date */}
                       <Text fontSize="xs" color="black" ml="auto">
                         {moment(show.date)
                           .locale("pt-br")
@@ -362,7 +373,6 @@ const ComedianDetailsPage = () => {
                       </Text>
                     </HStack>
                     <VStack alignItems="start" spacing={0} mt={2}>
-                      {/* TODO - add location as an Entity in BE */}
                       <Text fontSize="sm" color="black" fontWeight="bold">
                         {show.location?.name}
                       </Text>
@@ -388,6 +398,18 @@ const ComedianDetailsPage = () => {
           </TabPanel>
           <TabPanel>
             <VStack spacing={4} align="stretch">
+              {pastComedianEvents?.length === 0 && (
+                <Center>
+                  <Text
+                    textAlign="left"
+                    fontWeight="bold"
+                    fontSize="sm"
+                    color="green.600"
+                  >
+                    Sem eventos
+                  </Text>
+                </Center>
+              )}
               {pastComedianEvents?.map((show, index) => (
                 <Flex
                   key={index}

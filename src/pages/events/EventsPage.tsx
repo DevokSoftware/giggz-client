@@ -45,63 +45,77 @@ import { PiTextAaThin } from "react-icons/pi";
 import { MdOutlinePerson } from "react-icons/md";
 import { EventServiceTemp } from "../../services/tempGenerated/EventServiceTemp";
 import { ComedianServiceTemp } from "../../services/tempGenerated/ComedianServiceTemp";
-import {
-  AsyncSelect,
-  ChakraStylesConfig,
-  GroupBase,
-  OptionBase,
-  Select,
-  chakraComponents,
-} from "chakra-react-select";
+import { ChakraStylesConfig, OptionBase, Select } from "chakra-react-select";
 import { debounce } from "lodash"; // Import debounce from lodash
 import { RangeDatePicker } from "../../components/RangeDatePicker";
+import { QueryPagination } from "../../components/types/Types";
 
 interface ComedianOption extends OptionBase {
   label: string;
   value: number;
 }
 
+interface EventFilters {
+  name?: string;
+  comedian?: ComedianOption;
+  city?: string;
+  startDate: Date;
+  endDate?: Date;
+}
+
 const EventsPage = () => {
-  const { isLoading, error, handleRequest: eventsHandleRequest } = useApi();
+  const { isLoading, handleRequest: eventsHandleRequest } = useApi();
   const { handleRequest: comediansHandleRequest } = useApi();
-  const [currentPage, setCurrentPage] = useState(1);
   const [pageable, setPageable] = useState<Pageable>({
     sort: ["date", "asc"],
-    size: 10,
+    size: 12,
     page: 0,
   });
   const [events, setEvents] = useState<EventResponse[]>([]);
-  const [eventNameFilter, setEventNameFilter] = useState<string>("");
-  const [cityFilter, setCityFilter] = useState<string>("");
-  const [comedianOption, setComedianOption] = useState<ComedianOption>();
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [numberOfResults, setNumberOfResults] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [eventFilters, setEventFilters] = useState<EventFilters>({
+    startDate: new Date(),
+  });
+
+  const [eventPagination, setEventPagination] = useState<QueryPagination>({
+    currentPage: 1,
+  });
+
   const [comedianNameSearch, setComedianNameSearch] = useState<string>("");
   const [comediansOptions, setComediansOptions] = useState<ComedianOption[]>();
 
   const fetchEvents = async () => {
     try {
       const filters: EventsGetFiltersParameter = {
-        name: eventNameFilter,
-        city: cityFilter,
-        comedianId: comedianOption?.value,
-        dateFrom: startDate != null ? startDate.toISOString() : undefined,
-        dateTo: endDate != null ? endDate.toISOString() : undefined,
+        name: eventFilters?.name,
+        city: eventFilters?.city,
+        comedianId:
+          eventFilters?.comedian?.value && eventFilters?.comedian?.value > 0
+            ? eventFilters?.comedian?.value
+            : undefined,
+        dateFrom:
+          eventFilters?.startDate != null
+            ? eventFilters?.startDate.toISOString()
+            : undefined,
+        dateTo:
+          eventFilters?.endDate != null
+            ? eventFilters?.endDate.toISOString()
+            : undefined,
       };
-      debugger;
+
       const updatedPageable = {
         ...pageable,
-        page: currentPage - 1, // Adjusted for 0-based indexing in the backend
+        page: eventPagination.currentPage - 1,
       };
       const eventsResponse = await eventsHandleRequest(
         EventServiceTemp.eventsGet(updatedPageable, filters)
       );
       setPageable(updatedPageable);
       setEvents(eventsResponse?.content || []);
-      setNumberOfResults(eventsResponse?.totalElements || 0);
-      setTotalPages(eventsResponse?.totalPages || 0);
+      setEventPagination({
+        ...eventPagination,
+        numberOfResults: eventsResponse?.totalElements || 0,
+        totalPages: eventsResponse?.totalPages || 0,
+      });
     } catch (error) {
       // TODO handle this errors in a generic way
       console.error(error);
@@ -110,7 +124,7 @@ const EventsPage = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [eventsHandleRequest, currentPage]);
+  }, [eventsHandleRequest, eventPagination.currentPage]);
 
   // Debounce the function to wait for a pause in typing
   const fetchComediansDebounced = debounce(async () => {
@@ -119,13 +133,16 @@ const EventsPage = () => {
         name: comedianNameSearch,
       };
       const comediansResponse = await comediansHandleRequest(
-        ComedianServiceTemp.comediansGet(pageable, comedianFilters)
+        ComedianServiceTemp.comediansGet({}, comedianFilters)
       );
-      const comediansOptions =
-        comediansResponse?.content?.map((comedian: ComedianResponse) => ({
+      const comediansOptions: ComedianOption[] = [];
+      comediansOptions.push({ label: " ", value: -1 });
+      comediansOptions.push(
+        ...(comediansResponse?.content?.map((comedian: ComedianResponse) => ({
           label: comedian.name,
           value: comedian.id as unknown as number,
-        })) || [];
+        })) || [])
+      );
 
       setComediansOptions(comediansOptions);
     } catch (error) {
@@ -134,30 +151,24 @@ const EventsPage = () => {
   }, 2000); // Set the debounce delay (in milliseconds)
 
   useEffect(() => {
-    // Call the debounced function when the filter changes
     fetchComediansDebounced();
-
-    // Cleanup the debounced function on component unmount
     return () => {
       fetchComediansDebounced.cancel();
     };
   }, [comedianNameSearch]);
 
   const handlePageChange = (page: number) => {
-    console.log(page);
-    setCurrentPage(page);
-  };
-
-  const selectionRange = {
-    startDate: new Date(),
-    endDate: new Date(),
-    key: "selection",
+    setEventPagination({
+      ...eventPagination,
+      currentPage: page,
+    });
   };
 
   const chakraStyles: ChakraStylesConfig<ComedianOption> = {
     option: (provided, state) => ({
       ...provided,
       fontSize: "sm",
+      height: "30px",
     }),
     placeholder: (provided, state) => ({
       ...provided,
@@ -183,8 +194,11 @@ const EventsPage = () => {
 
   const onChangeDate = (dates: any) => {
     const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
+    setEventFilters((prevFilters) => ({
+      ...prevFilters,
+      startDate: start,
+      endDate: end,
+    }));
   };
 
   return (
@@ -204,14 +218,24 @@ const EventsPage = () => {
           >
             <InputWithIcon
               icon={PiTextAaThin}
-              onChange={setEventNameFilter}
-              value={eventNameFilter}
+              onChange={(value) =>
+                setEventFilters((prevFilters) => ({
+                  ...prevFilters,
+                  name: value,
+                }))
+              }
+              value={eventFilters.name}
               placeholder="Nome"
             />
             <InputWithIcon
               icon={IoLocationOutline}
-              onChange={setCityFilter}
-              value={cityFilter}
+              onChange={(value) =>
+                setEventFilters((prevFilters) => ({
+                  ...prevFilters,
+                  city: value,
+                }))
+              }
+              value={eventFilters.city}
               placeholder="Cidade"
             />
             <InputGroup borderColor="green.600">
@@ -226,8 +250,13 @@ const EventsPage = () => {
                 className={classes.selectComedian}
                 useBasicStyles
                 chakraStyles={chakraStyles}
-                value={comedianOption}
-                onChange={(value) => setComedianOption(value || undefined)}
+                value={eventFilters.comedian}
+                onChange={(value) =>
+                  setEventFilters((prevFilters) => ({
+                    ...prevFilters,
+                    comedian: value || undefined,
+                  }))
+                }
               />
             </InputGroup>
 
@@ -236,8 +265,8 @@ const EventsPage = () => {
                 <IoCalendarNumberOutline color="green" />
               </InputLeftElement>
               <RangeDatePicker
-                startDate={startDate}
-                endDate={endDate}
+                startDate={eventFilters.startDate}
+                endDate={eventFilters.endDate}
                 onChange={onChangeDate}
                 placeholder="Data"
               />
@@ -270,9 +299,21 @@ const EventsPage = () => {
             <>
               <HStack mt={3} justifyContent="end" mr={3}>
                 <Text fontSize="xs" color="gray.400">
-                  {numberOfResults} resultados encontrados
+                  {eventPagination.numberOfResults} resultados encontrados
                 </Text>
               </HStack>
+              {events?.length === 0 && (
+                <Center>
+                  <Text
+                    textAlign="left"
+                    fontWeight="bold"
+                    fontSize="sm"
+                    color="green.600"
+                  >
+                    Sem eventos
+                  </Text>
+                </Center>
+              )}
               {events?.map((event, index) => (
                 <Flex
                   key={index}
@@ -325,7 +366,7 @@ const EventsPage = () => {
                       {event.comedians?.map((comedian, index) => (
                         <HStack>
                           <Image
-                            src={"data:image/jpeg;base64," + comedian.picture}
+                            src={comedian.picture}
                             boxSize="20px"
                             objectFit="cover"
                             borderRadius="full"
@@ -345,11 +386,9 @@ const EventsPage = () => {
           )}
           <Center>
             <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages} // Corrected totalPages calculation
+              currentPage={eventPagination.currentPage}
+              totalPages={eventPagination.totalPages || 0}
               onPageChange={handlePageChange}
-              totalElements={numberOfResults}
-              pageSize={pageable?.size || 0}
             />
           </Center>
         </>

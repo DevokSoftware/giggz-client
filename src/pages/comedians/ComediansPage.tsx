@@ -21,32 +21,54 @@ import {
   Pageable,
 } from "../../services/openapi";
 import useApi from "../../services/useApi";
+import { ComedianServiceTemp } from "../../services/tempGenerated/ComedianServiceTemp";
+import { QueryPagination } from "../../components/types/Types";
 
 const ComediansPage = () => {
   const { isLoading, error, handleRequest } = useApi();
 
   const theme = useTheme();
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageable, setPageable] = useState<Pageable>({});
+  const [pageable, setPageable] = useState<Pageable>({
+    sort: ["name", "asc"],
+    size: 16,
+    page: 0,
+  });
   const [filters, setFilters] = useState<ComediansGetFiltersParameter>({});
   const [comedians, setComedians] = useState<ComedianResponse[]>([]);
   const [filteredComedians, setFilteredComedians] = useState(comedians);
+  const [comedianPagination, setComedianPagination] = useState<QueryPagination>(
+    {
+      currentPage: 1,
+    }
+  );
 
   useEffect(() => {
     const fetchComedians = async () => {
       try {
+        const updatedPageable = {
+          ...pageable,
+          page: comedianPagination.currentPage - 1,
+        };
+
         const comediansResponse = await handleRequest(
-          ComedianService.comediansGet(pageable, filters)
+          ComedianServiceTemp.comediansGet(updatedPageable, filters)
         );
+        setPageable(updatedPageable);
         setComedians(comediansResponse?.content || []);
         setFilteredComedians(comediansResponse?.content || []);
+        setComedianPagination({
+          ...comedianPagination,
+          numberOfResults: comediansResponse?.totalElements || 0,
+          totalPages: comediansResponse?.totalPages || 0,
+        });
       } catch (error) {
         // TODO handle this errors in a generic way
         console.error(error);
       }
     };
     fetchComedians();
-  }, [handleRequest]); //TODO: it is being called twice. check if this useEffect is working properly
+  }, [handleRequest, comedianPagination.currentPage]); //TODO: it is being called twice. check if this useEffect is working properly
 
   const handleSearch = (searchTerm: string) => {
     const filtered = comedians.filter((comedian) =>
@@ -56,7 +78,10 @@ const ComediansPage = () => {
   };
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    setComedianPagination({
+      ...comedianPagination,
+      currentPage: page,
+    });
   };
   return (
     <Box mt={{ base: 2, sm: 3, md: 10, lg: 10 }}>
@@ -99,7 +124,7 @@ const ComediansPage = () => {
                           sm: "100px",
                           lg: "130px",
                         }}
-                        src={"data:image/jpeg;base64," + comedian.picture}
+                        src={comedian.picture}
                         alt={comedian.name}
                         mx="auto"
                         objectFit="cover"
@@ -119,13 +144,13 @@ const ComediansPage = () => {
             </>
           )}
 
-          {/* <Center>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={10}
-                onPageChange={handlePageChange}
-              />
-            </Center> */}
+          <Center>
+            <Pagination
+              currentPage={comedianPagination.currentPage}
+              totalPages={comedianPagination.totalPages || 0}
+              onPageChange={handlePageChange}
+            />
+          </Center>
         </>
       </Box>
     </Box>

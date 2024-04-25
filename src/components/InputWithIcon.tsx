@@ -3,7 +3,7 @@ import { IconType } from "react-icons";
 import { FaLocationArrow } from "react-icons/fa";
 
 interface InputWithIconProps {
-  value: string;
+  value: string | undefined;
   onChange: (value: string) => void;
   icon: IconType;
   placeholder: string;

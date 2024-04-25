@@ -5,16 +5,14 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-  totalElements: number;
-  pageSize: number;
+  // totalElements: number;
+  // pageSize: number;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
   onPageChange,
-  totalElements,
-  pageSize,
 }: PaginationProps) => {
   const theme = useTheme();
 
