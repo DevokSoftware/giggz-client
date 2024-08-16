@@ -8,5 +8,6 @@ export type EventsGetFiltersParameter = {
     comedianId?: number;
     dateFrom?: string;
     dateTo?: string;
+    standupId?: number;
 };
 

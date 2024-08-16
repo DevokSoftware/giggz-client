@@ -24,6 +24,7 @@ import {
 } from "react-router-dom";
 import ComedianDetailsPage from "./pages/comedian-details/ComedianDetailsPage";
 import EventsPage from "./pages/events/EventsPage";
+import StandupDetailsPage from "./pages/standup-details/StandupDetailsPage";
 
 const theme = extendTheme({
   styles: {
@@ -49,6 +50,12 @@ export const App = () => {
                 <Route
                   path="/comedians/:comedianId"
                   element={<ComedianDetailsPage />}
+                />
+              </Route>
+              <Route path="/standups" element={<Outlet />}>
+                <Route
+                  path="/standups/:standupId"
+                  element={<StandupDetailsPage />}
                 />
               </Route>
               <Route path="/shows" element={<Outlet />}>

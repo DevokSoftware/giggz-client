@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { EventComedianResponse } from './EventComedianResponse';
 import type { Location } from './Location';
+import type { Standup } from './Standup';
 export type EventResponse = {
     id: string;
     name: string;
@@ -14,5 +15,6 @@ export type EventResponse = {
     url?: string;
     location?: Location;
     comedians?: Array<EventComedianResponse>;
+    standup?: Standup;
 };
 

@@ -2,11 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Location = {
-    id: string;
-    name: string;
-    city: string;
-    number?: string;
-    street?: string;
+export type StandupInput = {
+    id?: string;
+    name?: string;
+    picture?: string;
 };
 

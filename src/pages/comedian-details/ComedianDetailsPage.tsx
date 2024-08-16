@@ -12,8 +12,6 @@ import {
   useTheme,
   VStack,
   HStack,
-  Badge,
-  Button,
   Center,
   Tabs,
   TabList,
@@ -25,7 +23,6 @@ import {
 } from "@chakra-ui/react";
 import { FaTiktok, FaYoutube, FaInstagram, FaTwitter } from "react-icons/fa";
 import classes from "./ComedianDetails.module.scss";
-import Pagination from "../../components/Pagination";
 import useApi from "../../services/useApi";
 import {
   ComedianEventResponse,
@@ -364,7 +361,7 @@ const ComedianDetailsPage = () => {
                         fontSize="md"
                         color="green.700"
                       >
-                        {show.name}
+                        {show.standup ? show.standup.name : show.name}
                       </Text>
                       <Text fontSize="xs" color="black" ml="auto">
                         {moment(show.date)
@@ -436,7 +433,7 @@ const ComedianDetailsPage = () => {
                         fontSize="md"
                         color="green.700"
                       >
-                        {show.name}
+                        {show.standup ? show.standup.name : show.name}
                       </Text>
                       {/* TODO - use moment to translate the date */}
                       <Text fontSize="xs" color="black" ml="auto">

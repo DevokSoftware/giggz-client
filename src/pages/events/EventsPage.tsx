@@ -334,14 +334,27 @@ const EventsPage = () => {
                   />
                   <VStack alignItems="start" spacing={0} flex="1" ml={3}>
                     <HStack justifyContent="space-between" w="100%">
-                      <Text
-                        textAlign="left"
-                        fontWeight="bold"
-                        fontSize="md"
-                        color="green.700"
-                      >
-                        {event.name}
-                      </Text>
+                      {event.standup ? (
+                        <RouteLink to={`/standups/${event.standup?.id}`}>
+                          <Text
+                            textAlign="left"
+                            fontWeight="bold"
+                            fontSize="md"
+                            color="green.700"
+                          >
+                            {event.standup.name}
+                          </Text>
+                        </RouteLink>
+                      ) : (
+                        <Text
+                          textAlign="left"
+                          fontWeight="bold"
+                          fontSize="md"
+                          color="green.700"
+                        >
+                          {event.name}
+                        </Text>
+                      )}
                       {/* TODO - use moment to translate the date */}
                       <Text fontSize="xs" color="black" ml="auto">
                         {moment(event.date)

@@ -2,8 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type Location = {
-    id: string;
+export type LocationInput = {
     name: string;
     city: string;
     number?: string;

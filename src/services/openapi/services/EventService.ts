@@ -49,6 +49,22 @@ export class EventService {
         });
     }
     /**
+     * @param eventId
+     * @returns any Event deleted
+     * @throws ApiError
+     */
+    public static eventsEventIdDelete(
+        eventId: number,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/events/{eventId}',
+            path: {
+                'eventId': eventId,
+            },
+        });
+    }
+    /**
      * @param pageable
      * @param filters
      * @returns PageEventResponse All existing events

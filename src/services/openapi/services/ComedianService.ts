@@ -5,13 +5,67 @@
 import type { ComedianResponse } from '../models/ComedianResponse';
 import type { ComediansComedianIdEventsGetFiltersParameter } from '../models/ComediansComedianIdEventsGetFiltersParameter';
 import type { ComediansGetFiltersParameter } from '../models/ComediansGetFiltersParameter';
+import type { CreateComedianRequest } from '../models/CreateComedianRequest';
 import type { Pageable } from '../models/Pageable';
 import type { PageComedianEventsResponse } from '../models/PageComedianEventsResponse';
 import type { PageComedianResponse } from '../models/PageComedianResponse';
+import type { UpdateComedianRequest } from '../models/UpdateComedianRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class ComedianService {
+    /**
+     * @param comedianId
+     * @returns ComedianResponse Existing comedian
+     * @throws ApiError
+     */
+    public static comediansComedianIdGet(
+        comedianId: number,
+    ): CancelablePromise<ComedianResponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/comedians/{comedianId}',
+            path: {
+                'comedianId': comedianId,
+            },
+        });
+    }
+    /**
+     * @param comedianId
+     * @param requestBody
+     * @returns ComedianResponse Comedian updated
+     * @throws ApiError
+     */
+    public static comediansComedianIdPut(
+        comedianId: number,
+        requestBody: UpdateComedianRequest,
+    ): CancelablePromise<ComedianResponse> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/comedians/{comedianId}',
+            path: {
+                'comedianId': comedianId,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param comedianId
+     * @returns any Comedian deleted
+     * @throws ApiError
+     */
+    public static comediansComedianIdDelete(
+        comedianId: number,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/comedians/{comedianId}',
+            path: {
+                'comedianId': comedianId,
+            },
+        });
+    }
     /**
      * @param pageable
      * @param filters
@@ -32,19 +86,18 @@ export class ComedianService {
         });
     }
     /**
-     * @param comedianId
-     * @returns ComedianResponse Existing comedian
+     * @param requestBody
+     * @returns ComedianResponse Comedian created
      * @throws ApiError
      */
-    public static comediansComedianIdGet(
-        comedianId: number,
+    public static comediansPost(
+        requestBody: CreateComedianRequest,
     ): CancelablePromise<ComedianResponse> {
         return __request(OpenAPI, {
-            method: 'GET',
-            url: '/comedians/{comedianId}',
-            path: {
-                'comedianId': comedianId,
-            },
+            method: 'POST',
+            url: '/comedians',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
     /**

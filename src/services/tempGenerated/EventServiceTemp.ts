@@ -61,6 +61,9 @@ export class EventServiceTemp {
     if (filters.dateTo) {
       queryParams.dateTo = filters.dateTo;
     }
+    if (filters.standupId) {
+      queryParams.standupId = filters.standupId;
+    }
 
     return __request(OpenAPI, {
       method: "GET",

@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Location } from './Location';
+import type { Standup } from './Standup';
 export type ComedianEventResponse = {
     id: string;
     name: string;
@@ -12,5 +13,6 @@ export type ComedianEventResponse = {
     price?: number;
     url?: string;
     location?: Location;
+    standup?: Standup;
 };
 
