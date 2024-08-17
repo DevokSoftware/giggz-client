@@ -37,41 +37,41 @@ import "moment/locale/pt-br";
 import { ComedianServiceTemp } from "../../services/tempGenerated/ComedianServiceTemp";
 import { Link as RouteLink } from "react-router-dom";
 import FormattedDate from "../../components/FormattedDate";
+import Pagination from "../../components/Pagination";
+import { QueryPagination } from "../../components/types/Types";
 
-interface ComedianProps {
-  name: string;
-  description: string;
-}
 const ComedianDetailsPage = () => {
   const { handleRequest: handleRequestComedian } = useApi();
 
-  const {
-    isLoading,
-    error,
-    handleRequest: handleRequestComedianEvents,
-  } = useApi();
+  const { handleRequest: handleRequestComedianEvents } = useApi();
   const [comedian, setComedian] = useState<ComedianResponse>();
 
   const [futureComedianEvents, setFutureComedianEvents] =
     useState<ComedianEventResponse[]>();
-  const [currentFutureEventsPage, setFutureEventsPage] = useState(1);
-
-  const [pageableFutureEvents, setPageableFutureEvents] = useState<Pageable>({
-    sort: ["date", "asc"],
-    size: 10,
-    page: 0,
-  });
-  const [totalFutureEventsPages, setTotalFutureEventsPages] = useState(0);
   const [pastComedianEvents, setPastComedianEvents] =
     useState<ComedianEventResponse[]>();
-  const [currentPastEventsPage, setPastEventsPage] = useState(1);
 
-  const [pageablePastEvents, setPageablePastEvents] = useState<Pageable>({
+  const [pastEventsPagination, setPastEventsPagination] =
+    useState<QueryPagination>({
+      currentPage: 1,
+    });
+
+  const [futureEventsPagination, setFutureEventsPagination] =
+    useState<QueryPagination>({
+      currentPage: 1,
+    });
+
+  const [pastEventsPageable, setPastEventsPageable] = useState<Pageable>({
     sort: ["date", "asc"],
-    size: 10,
+    size: 5,
     page: 0,
   });
-  const [totalPastEventsPages, setTotalPastEventsPages] = useState(0);
+
+  const [futureEventsPageable, setFutureEventsPageable] = useState<Pageable>({
+    sort: ["date", "asc"],
+    size: 5,
+    page: 0,
+  });
 
   const { comedianId } = useParams();
   // const [showType, setShowType] = React.useState("future");
@@ -103,8 +103,8 @@ const ComedianDetailsPage = () => {
           dateFrom: new Date().toISOString(),
         };
         const updatedPageable = {
-          ...pageableFutureEvents,
-          page: currentFutureEventsPage - 1, // Adjusted for 0-based indexing in the backend
+          ...futureEventsPageable,
+          page: futureEventsPagination.currentPage - 1, // Adjusted for 0-based indexing in the backend
         };
         const eventsResponse = await handleRequestComedianEvents(
           ComedianServiceTemp.comediansComedianIdEventsGet(
@@ -113,9 +113,13 @@ const ComedianDetailsPage = () => {
             filters
           )
         );
-        setPageableFutureEvents(updatedPageable);
+        setFutureEventsPageable(updatedPageable);
+        setFutureEventsPagination({
+          ...futureEventsPagination,
+          numberOfResults: eventsResponse?.totalElements || 0,
+          totalPages: eventsResponse?.totalPages || 0,
+        });
         setFutureComedianEvents(eventsResponse?.content || []);
-        setTotalFutureEventsPages(eventsResponse?.totalPages || 0);
       } catch (error) {
         // TODO handle this errors in a generic way
         console.error(error);
@@ -129,9 +133,10 @@ const ComedianDetailsPage = () => {
           dateTo: new Date().toISOString(),
         };
         const updatedPageable = {
-          ...pageablePastEvents,
-          page: currentPastEventsPage - 1, // Adjusted for 0-based indexing in the backend
+          ...pastEventsPageable,
+          page: pastEventsPagination.currentPage - 1, // Adjusted for 0-based indexing in the backend
         };
+
         const eventsResponse = await handleRequestComedianEvents(
           ComedianServiceTemp.comediansComedianIdEventsGet(
             parseInt(comedianId, 10),
@@ -139,14 +144,30 @@ const ComedianDetailsPage = () => {
             filters
           )
         );
-        setPageablePastEvents(updatedPageable);
+        setPastEventsPageable(updatedPageable);
+        setPastEventsPagination({
+          ...pastEventsPagination,
+          numberOfResults: eventsResponse?.totalElements || 0,
+          totalPages: eventsResponse?.totalPages || 0,
+        });
         setPastComedianEvents(eventsResponse?.content || []);
-        setTotalPastEventsPages(eventsResponse?.totalPages || 0);
       } catch (error) {
         // TODO handle this errors in a generic way
         console.error(error);
       }
     }
+  };
+  const handlePastEventsPageChange = (page: number) => {
+    setPastEventsPagination({
+      ...pastEventsPagination,
+      currentPage: page,
+    });
+  };
+  const handleFutureEventsPageChange = (page: number) => {
+    setFutureEventsPagination({
+      ...futureEventsPagination,
+      currentPage: page,
+    });
   };
 
   const getContentIcon = (contentType: ContentResponse.contentType) => {
@@ -159,6 +180,14 @@ const ComedianDetailsPage = () => {
         return "/patreon_icon.webp";
     }
   };
+
+  useEffect(() => {
+    fetchFutureEvents();
+  }, [futureEventsPagination.currentPage]);
+
+  useEffect(() => {
+    fetchPastEvents();
+  }, [pastEventsPagination.currentPage]);
 
   if (comedian == null) {
     return <></>;
@@ -325,7 +354,7 @@ const ComedianDetailsPage = () => {
           </TabPanel>
           <TabPanel>
             <VStack spacing={4} align="stretch">
-              {futureComedianEvents?.length === 0 && (
+              {futureComedianEvents?.length === 0 ? (
                 <Center>
                   <Text
                     textAlign="left"
@@ -336,77 +365,80 @@ const ComedianDetailsPage = () => {
                     Sem eventos
                   </Text>
                 </Center>
-              )}
-              {futureComedianEvents?.map((show, index) => (
-                <Flex
-                  key={index}
-                  p={2}
-                  boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-                  border="2px solid"
-                  borderColor="green.600"
-                  borderRadius="20px"
-                  alignItems="center"
-                  cursor="pointer"
-                  className={classes.show_card}
-                >
-                  <Image
-                    src={show.poster}
-                    boxSize="70px"
-                    objectFit="cover"
-                    borderRadius="full"
-                  />
-                  <VStack alignItems="start" spacing={0} flex="1" ml={3}>
-                    <HStack justifyContent="space-between" w="100%">
-                      {show.standup ? (
-                        <RouteLink to={`/standups/${show.standup?.id}`}>
-                          <Text
-                            textAlign="left"
-                            fontWeight="bold"
-                            fontSize="md"
-                            color="green.700"
-                          >
-                            {show.standup.name}
+              ) : (
+                <>
+                  {futureComedianEvents?.map((show, index) => (
+                    <Flex
+                      key={index}
+                      p={2}
+                      boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                      border="2px solid"
+                      borderColor="green.600"
+                      borderRadius="20px"
+                      alignItems="center"
+                      cursor="pointer"
+                      className={classes.show_card}
+                    >
+                      <Image
+                        src={show.standup ? show.standup?.poster : show.poster}
+                        boxSize="70px"
+                        objectFit="cover"
+                        borderRadius="full"
+                      />
+                      <VStack alignItems="start" spacing={0} flex="1" ml={3}>
+                        <HStack justifyContent="space-between" w="100%">
+                          {show.standup ? (
+                            <RouteLink to={`/standups/${show.standup?.id}`}>
+                              <Text
+                                textAlign="left"
+                                fontWeight="bold"
+                                fontSize="md"
+                                color="green.700"
+                              >
+                                {show.standup.name}
+                              </Text>
+                            </RouteLink>
+                          ) : (
+                            <Text
+                              textAlign="left"
+                              fontWeight="bold"
+                              fontSize="md"
+                              color="green.700"
+                            >
+                              {show.name}
+                            </Text>
+                          )}
+                        </HStack>
+                        <VStack alignItems="start" spacing={0} mt={2}>
+                          <Text fontSize="sm" color="black" fontWeight="bold">
+                            {show.location?.name}
                           </Text>
-                        </RouteLink>
-                      ) : (
-                        <Text
-                          textAlign="left"
-                          fontWeight="bold"
-                          fontSize="md"
-                          color="green.700"
-                        >
-                          {show.name}
-                        </Text>
-                      )}
-                    </HStack>
-                    <VStack alignItems="start" spacing={0} mt={2}>
-                      <Text fontSize="sm" color="black" fontWeight="bold">
-                        {show.location?.name}
-                      </Text>
-                      <Text fontSize="xs" color="black">
-                        {show.location?.street +
-                          " " +
-                          show.location?.number +
-                          ", " +
-                          show.location?.city}
-                      </Text>
-                    </VStack>
-                  </VStack>
-                  <FormattedDate date={show.date} />
-                </Flex>
-              ))}
-              <Center>
-                {/* <Pagination
-                  currentPage={1}
-                  totalPages={10}
-                  onPageChange={() => {}}
-                /> */}
-              </Center>
+                          <Text fontSize="xs" color="black">
+                            {show.location?.street +
+                              " " +
+                              show.location?.number +
+                              ", " +
+                              show.location?.city}
+                          </Text>
+                        </VStack>
+                      </VStack>
+                      <FormattedDate date={show.date} />
+                    </Flex>
+                  ))}
+                  <Center>
+                    <Pagination
+                      currentPage={futureEventsPagination.currentPage}
+                      totalPages={futureEventsPagination.totalPages || 0}
+                      onPageChange={handleFutureEventsPageChange}
+                    />
+                  </Center>
+                </>
+              )}
             </VStack>
           </TabPanel>
           <TabPanel>
             <VStack spacing={4} align="stretch">
-              {pastComedianEvents?.length === 0 && (
+              {pastComedianEvents?.length === 0 ? (
                 <Center>
                   <Text
                     textAlign="left"
@@ -417,74 +449,77 @@ const ComedianDetailsPage = () => {
                     Sem eventos
                   </Text>
                 </Center>
-              )}
-              {pastComedianEvents?.map((show, index) => (
-                <Flex
-                  key={index}
-                  p={2}
-                  boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-                  border="2px solid"
-                  borderColor="green.600"
-                  borderRadius="20px"
-                  alignItems="center"
-                  cursor="pointer"
-                  className={classes.show_card}
-                >
-                  <Image
-                    src={show.poster}
-                    boxSize="70px"
-                    objectFit="cover"
-                    borderRadius="full"
-                  />
-                  <VStack alignItems="start" spacing={0} flex="1" ml={3}>
-                    <HStack justifyContent="space-between" w="100%">
-                      {show.standup ? (
-                        <RouteLink to={`/standups/${show.standup?.id}`}>
-                          <Text
-                            textAlign="left"
-                            fontWeight="bold"
-                            fontSize="md"
-                            color="green.700"
-                          >
-                            {show.standup.name}
+              ) : (
+                <>
+                  {pastComedianEvents?.map((show, index) => (
+                    <Flex
+                      key={index}
+                      p={2}
+                      boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                      border="2px solid"
+                      borderColor="green.600"
+                      borderRadius="20px"
+                      alignItems="center"
+                      cursor="pointer"
+                      className={classes.show_card}
+                    >
+                      <Image
+                        src={show.standup ? show.standup?.poster : show.poster}
+                        boxSize="70px"
+                        objectFit="cover"
+                        borderRadius="full"
+                      />
+                      <VStack alignItems="start" spacing={0} flex="1" ml={3}>
+                        <HStack justifyContent="space-between" w="100%">
+                          {show.standup ? (
+                            <RouteLink to={`/standups/${show.standup?.id}`}>
+                              <Text
+                                textAlign="left"
+                                fontWeight="bold"
+                                fontSize="md"
+                                color="green.700"
+                              >
+                                {show.standup.name}
+                              </Text>
+                            </RouteLink>
+                          ) : (
+                            <Text
+                              textAlign="left"
+                              fontWeight="bold"
+                              fontSize="md"
+                              color="green.700"
+                            >
+                              {show.name}
+                            </Text>
+                          )}
+                        </HStack>
+                        <VStack alignItems="start" spacing={0} mt={2}>
+                          {/* TODO - add location as an Entity in BE */}
+                          <Text fontSize="sm" color="black" fontWeight="bold">
+                            {show.location?.name}
                           </Text>
-                        </RouteLink>
-                      ) : (
-                        <Text
-                          textAlign="left"
-                          fontWeight="bold"
-                          fontSize="md"
-                          color="green.700"
-                        >
-                          {show.name}
-                        </Text>
-                      )}
-                    </HStack>
-                    <VStack alignItems="start" spacing={0} mt={2}>
-                      {/* TODO - add location as an Entity in BE */}
-                      <Text fontSize="sm" color="black" fontWeight="bold">
-                        {show.location?.name}
-                      </Text>
-                      <Text fontSize="xs" color="black">
-                        {show.location?.street +
-                          " " +
-                          show.location?.number +
-                          ", " +
-                          show.location?.city}
-                      </Text>
-                    </VStack>
-                  </VStack>
+                          <Text fontSize="xs" color="black">
+                            {show.location?.street +
+                              " " +
+                              show.location?.number +
+                              ", " +
+                              show.location?.city}
+                          </Text>
+                        </VStack>
+                      </VStack>
 
-                  <FormattedDate date={show.date} />
-                </Flex>
-              ))}
-              <Center>
-                {/* <Pagination
-                  currentPage={1}
-                  totalPages={10}
-                  onPageChange={() => {}}
-                /> */}
-              </Center>
+                      <FormattedDate date={show.date} />
+                    </Flex>
+                  ))}
+                  <Center>
+                    <Pagination
+                      currentPage={pastEventsPagination.currentPage}
+                      totalPages={pastEventsPagination.totalPages || 0}
+                      onPageChange={handlePastEventsPageChange}
+                    />
+                  </Center>
+                </>
+              )}
             </VStack>
           </TabPanel>
         </TabPanels>

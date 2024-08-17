@@ -21,6 +21,7 @@ import useApi from "../../services/useApi";
 import {
   EventResponse,
   EventsGetFiltersParameter,
+  Pageable,
   Standup,
   StandupService,
 } from "../../services/openapi";
@@ -29,35 +30,56 @@ import { EventServiceTemp } from "../../services/tempGenerated/EventServiceTemp"
 import classes from "./StandupDetailsPage.module.scss";
 import moment from "moment";
 import FormattedDate from "../../components/FormattedDate";
+import Pagination from "../../components/Pagination";
+import { QueryPagination } from "../../components/types/Types";
 const StandupDetailsPage = () => {
+  const theme = useTheme();
   const { handleRequest } = useApi();
-
+  const { standupId } = useParams();
   const [standup, setStandup] = useState<Standup>();
   const [events, setEvents] = useState<EventResponse[]>([]);
+  const [eventPagination, setEventPagination] = useState<QueryPagination>({
+    currentPage: 1,
+  });
+  const [eventsPageable, setEventsPageable] = useState<Pageable>({
+    sort: ["date", "asc"],
+    size: 5,
+    page: 0,
+  });
+
   const fetchEvents = async () => {
     if (!standupId) {
       return;
     }
     try {
-      console.log(parseInt(standupId, 10));
+      const updatedPageable = {
+        ...eventsPageable,
+        page: eventPagination.currentPage - 1,
+      };
+
       const eventsResponse = await handleRequest(
-        EventServiceTemp.eventsGet(
-          {},
-          {
-            standupId: parseInt(standupId, 10),
-          }
-        )
+        EventServiceTemp.eventsGet(updatedPageable, {
+          standupId: parseInt(standupId, 10),
+        })
       );
+      setEventsPageable(updatedPageable);
+      setEventPagination({
+        ...eventPagination,
+        numberOfResults: eventsResponse?.totalElements || 0,
+        totalPages: eventsResponse?.totalPages || 0,
+      });
       setEvents(eventsResponse?.content || []);
     } catch (error) {
       // TODO handle this errors in a generic way
       console.error(error);
     }
   };
-
-  const { standupId } = useParams();
-
-  const theme = useTheme();
+  const handlePageChange = (page: number) => {
+    setEventPagination({
+      ...eventPagination,
+      currentPage: page,
+    });
+  };
 
   useEffect(() => {
     if (standupId) {
@@ -76,6 +98,10 @@ const StandupDetailsPage = () => {
       fetchEvents();
     }
   }, [handleRequest]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [eventPagination.currentPage]);
 
   if (standup == null) {
     return <></>;
@@ -164,6 +190,13 @@ const StandupDetailsPage = () => {
               <FormattedDate date={show.date} />
             </Flex>
           ))}
+          <Center>
+            <Pagination
+              currentPage={eventPagination.currentPage}
+              totalPages={eventPagination.totalPages || 0}
+              onPageChange={handlePageChange}
+            />
+          </Center>
         </VStack>
       </GridItem>
     </Grid>
