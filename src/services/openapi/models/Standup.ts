@@ -5,6 +5,7 @@
 export type Standup = {
     id: string;
     name: string;
+    description?: string;
     poster?: string;
 };
 

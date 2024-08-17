@@ -17,6 +17,9 @@ import {
   Button,
   Spinner,
   Icon,
+  Grid,
+  GridItem,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import classes from "./EventsPage.module.scss";
 import Pagination from "../../components/Pagination";
@@ -49,6 +52,7 @@ import { ChakraStylesConfig, OptionBase, Select } from "chakra-react-select";
 import { debounce } from "lodash"; // Import debounce from lodash
 import { RangeDatePicker } from "../../components/RangeDatePicker";
 import { QueryPagination } from "../../components/types/Types";
+import FormattedDate from "../../components/FormattedDate";
 
 interface ComedianOption extends OptionBase {
   label: string;
@@ -64,6 +68,7 @@ interface EventFilters {
 }
 
 const EventsPage = () => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const { isLoading, handleRequest: eventsHandleRequest } = useApi();
   const { handleRequest: comediansHandleRequest } = useApi();
   const [pageable, setPageable] = useState<Pageable>({
@@ -317,7 +322,6 @@ const EventsPage = () => {
               {events?.map((event, index) => (
                 <Flex
                   key={index}
-                  p={2}
                   boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
                   border="2px solid"
                   borderColor="green.600"
@@ -325,43 +329,41 @@ const EventsPage = () => {
                   cursor="pointer"
                   className={classes.show_card}
                   m={2}
+                  h={{ base: "auto", sm: "130px" }}
                 >
-                  <Image
-                    src={event.poster}
-                    boxSize="70px"
-                    objectFit="cover"
-                    borderRadius="full"
-                  />
-                  <VStack alignItems="start" spacing={0} flex="1" ml={3}>
-                    <HStack justifyContent="space-between" w="100%">
-                      {event.standup ? (
-                        <RouteLink to={`/standups/${event.standup?.id}`}>
-                          <Text
-                            textAlign="left"
-                            fontWeight="bold"
-                            fontSize="md"
-                            color="green.700"
-                          >
-                            {event.standup.name}
-                          </Text>
-                        </RouteLink>
-                      ) : (
+                  <HStack w="100px">
+                    <Image
+                      borderTopLeftRadius="18px"
+                      borderBottomLeftRadius="18px"
+                      src={event.standup ? event.standup.poster : event.poster}
+                      objectFit="cover"
+                      w="100%"
+                      h="100%"
+                    />
+                  </HStack>
+                  <VStack alignItems="start" spacing={0} flex="1" ml={5} m={2}>
+                    {event.standup ? (
+                      <RouteLink to={`/standups/${event.standup?.id}`}>
                         <Text
                           textAlign="left"
                           fontWeight="bold"
                           fontSize="md"
                           color="green.700"
                         >
-                          {event.name}
+                          {event.standup.name}
                         </Text>
-                      )}
-                      {/* TODO - use moment to translate the date */}
-                      <Text fontSize="xs" color="black" ml="auto">
-                        {moment(event.date)
-                          .locale("pt-br")
-                          .format("DD [de] MMMM, y")}
+                      </RouteLink>
+                    ) : (
+                      <Text
+                        textAlign="left"
+                        fontWeight="bold"
+                        fontSize="md"
+                        color="green.700"
+                      >
+                        {event.name}
                       </Text>
-                    </HStack>
+                    )}
+
                     <VStack alignItems="start" spacing={0} mt={2}>
                       {/* TODO - add location as an Entity in BE */}
                       <Text fontSize="sm" color="black" fontWeight="bold">
@@ -375,24 +377,48 @@ const EventsPage = () => {
                           event.location?.city}
                       </Text>
                     </VStack>
-                    <Box mt={3}>
-                      {event.comedians?.map((comedian, index) => (
-                        <HStack>
-                          <Image
-                            src={comedian.picture}
-                            boxSize="20px"
-                            objectFit="cover"
-                            borderRadius="full"
-                          />
-                          <RouteLink to={`/comedians/${comedian.id}`}>
-                            <Text fontSize="sm" color="green.600">
-                              {comedian.name}
-                            </Text>
-                          </RouteLink>
-                        </HStack>
-                      ))}
-                    </Box>
+                    {isMobile ? (
+                      <Box mt={3}>
+                        {event.comedians?.map((comedian, index) => (
+                          <HStack mr={3}>
+                            <Image
+                              src={comedian.picture}
+                              boxSize="20px"
+                              objectFit="cover"
+                              borderRadius="full"
+                            />
+                            <RouteLink to={`/comedians/${comedian.id}`}>
+                              <Text fontSize="sm" color="green.600">
+                                {comedian.name}
+                              </Text>
+                            </RouteLink>
+                          </HStack>
+                        ))}
+                      </Box>
+                    ) : (
+                      <Flex mt={3}>
+                        {event.comedians?.map((comedian, index) => (
+                          <HStack mr={3}>
+                            <Image
+                              src={comedian.picture}
+                              boxSize="20px"
+                              objectFit="cover"
+                              borderRadius="full"
+                            />
+                            <RouteLink to={`/comedians/${comedian.id}`}>
+                              <Text fontSize="sm" color="green.600">
+                                {comedian.name}
+                              </Text>
+                            </RouteLink>
+                          </HStack>
+                        ))}
+                      </Flex>
+                    )}
                   </VStack>
+
+                  <Box m={2}>
+                    <FormattedDate date={event.date} />
+                  </Box>
                 </Flex>
               ))}
             </>

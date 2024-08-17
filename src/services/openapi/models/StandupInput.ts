@@ -5,6 +5,7 @@
 export type StandupInput = {
     id?: string;
     name?: string;
-    picture?: string;
+    description?: string;
+    poster?: string;
 };
 

@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ComediansGetFiltersParameter } from '../models/ComediansGetFiltersParameter';
 import type { Standup } from '../models/Standup';
 import type { StandupInput } from '../models/StandupInput';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -62,19 +61,13 @@ export class StandupService {
         });
     }
     /**
-     * @param filters
      * @returns Standup All existing stand-ups
      * @throws ApiError
      */
-    public static standupsGet(
-        filters: ComediansGetFiltersParameter,
-    ): CancelablePromise<Array<Standup>> {
+    public static standupsGet(): CancelablePromise<Array<Standup>> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/standups',
-            query: {
-                'filters': filters,
-            },
         });
     }
     /**

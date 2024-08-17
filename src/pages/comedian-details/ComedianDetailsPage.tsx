@@ -35,6 +35,8 @@ import {
 import moment from "moment";
 import "moment/locale/pt-br";
 import { ComedianServiceTemp } from "../../services/tempGenerated/ComedianServiceTemp";
+import { Link as RouteLink } from "react-router-dom";
+import FormattedDate from "../../components/FormattedDate";
 
 interface ComedianProps {
   name: string;
@@ -355,19 +357,27 @@ const ComedianDetailsPage = () => {
                   />
                   <VStack alignItems="start" spacing={0} flex="1" ml={3}>
                     <HStack justifyContent="space-between" w="100%">
-                      <Text
-                        textAlign="left"
-                        fontWeight="bold"
-                        fontSize="md"
-                        color="green.700"
-                      >
-                        {show.standup ? show.standup.name : show.name}
-                      </Text>
-                      <Text fontSize="xs" color="black" ml="auto">
-                        {moment(show.date)
-                          .locale("pt-br")
-                          .format("DD [de] MMMM, y")}
-                      </Text>
+                      {show.standup ? (
+                        <RouteLink to={`/standups/${show.standup?.id}`}>
+                          <Text
+                            textAlign="left"
+                            fontWeight="bold"
+                            fontSize="md"
+                            color="green.700"
+                          >
+                            {show.standup.name}
+                          </Text>
+                        </RouteLink>
+                      ) : (
+                        <Text
+                          textAlign="left"
+                          fontWeight="bold"
+                          fontSize="md"
+                          color="green.700"
+                        >
+                          {show.name}
+                        </Text>
+                      )}
                     </HStack>
                     <VStack alignItems="start" spacing={0} mt={2}>
                       <Text fontSize="sm" color="black" fontWeight="bold">
@@ -382,6 +392,7 @@ const ComedianDetailsPage = () => {
                       </Text>
                     </VStack>
                   </VStack>
+                  <FormattedDate date={show.date} />
                 </Flex>
               ))}
               <Center>
@@ -427,20 +438,27 @@ const ComedianDetailsPage = () => {
                   />
                   <VStack alignItems="start" spacing={0} flex="1" ml={3}>
                     <HStack justifyContent="space-between" w="100%">
-                      <Text
-                        textAlign="left"
-                        fontWeight="bold"
-                        fontSize="md"
-                        color="green.700"
-                      >
-                        {show.standup ? show.standup.name : show.name}
-                      </Text>
-                      {/* TODO - use moment to translate the date */}
-                      <Text fontSize="xs" color="black" ml="auto">
-                        {moment(show.date)
-                          .locale("pt-br")
-                          .format("DD [de] MMMM, y")}
-                      </Text>
+                      {show.standup ? (
+                        <RouteLink to={`/standups/${show.standup?.id}`}>
+                          <Text
+                            textAlign="left"
+                            fontWeight="bold"
+                            fontSize="md"
+                            color="green.700"
+                          >
+                            {show.standup.name}
+                          </Text>
+                        </RouteLink>
+                      ) : (
+                        <Text
+                          textAlign="left"
+                          fontWeight="bold"
+                          fontSize="md"
+                          color="green.700"
+                        >
+                          {show.name}
+                        </Text>
+                      )}
                     </HStack>
                     <VStack alignItems="start" spacing={0} mt={2}>
                       {/* TODO - add location as an Entity in BE */}
@@ -456,6 +474,8 @@ const ComedianDetailsPage = () => {
                       </Text>
                     </VStack>
                   </VStack>
+
+                  <FormattedDate date={show.date} />
                 </Flex>
               ))}
               <Center>

@@ -28,6 +28,7 @@ import "moment/locale/pt-br";
 import { EventServiceTemp } from "../../services/tempGenerated/EventServiceTemp";
 import classes from "./StandupDetailsPage.module.scss";
 import moment from "moment";
+import FormattedDate from "../../components/FormattedDate";
 const StandupDetailsPage = () => {
   const { handleRequest } = useApi();
 
@@ -105,6 +106,15 @@ const StandupDetailsPage = () => {
             <Heading size="md" color="green.700" mt={5}>
               {standup.name}
             </Heading>
+            <Box maxW="400px" mx="auto" textAlign="left">
+              <Text fontSize="xs" mt={3} color="green.600" textAlign="justify">
+                {standup.description?.split("\n\n").map((paragraph, index) => (
+                  <p key={index} style={{ marginBottom: "1em" }}>
+                    {paragraph}
+                  </p>
+                ))}
+              </Text>
+            </Box>
           </Box>
         </Box>
       </GridItem>
@@ -131,34 +141,27 @@ const StandupDetailsPage = () => {
               key={index}
               p={2}
               boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-              border="2px solid"
+              border="1px solid"
               borderColor="green.600"
-              borderRadius="20px"
+              borderRadius="15px"
               alignItems="center"
               cursor="pointer"
               className={classes.show_card}
             >
               <VStack alignItems="start" spacing={0} flex="1" ml={3}>
-                <HStack justifyContent="space-between" w="100%">
-                  <Text fontSize="sm" color="black" fontWeight="bold">
-                    {show.location?.name}
-                  </Text>
-                  <Text fontSize="xs" color="black" ml="auto">
-                    {moment(show.date)
-                      .locale("pt-br")
-                      .format("DD [de] MMMM, y")}
-                  </Text>
-                </HStack>
-                <VStack alignItems="start" spacing={0} mt={2}>
-                  <Text fontSize="xs" color="black">
-                    {show.location?.street +
-                      " " +
-                      show.location?.number +
-                      ", " +
-                      show.location?.city}
-                  </Text>
-                </VStack>
+                <Text fontSize="sm" color="black" fontWeight="bold">
+                  {show.location?.name}
+                </Text>
+
+                <Text fontSize="xs" color="black">
+                  {show.location?.street +
+                    " " +
+                    show.location?.number +
+                    ", " +
+                    show.location?.city}
+                </Text>
               </VStack>
+              <FormattedDate date={show.date} />
             </Flex>
           ))}
         </VStack>
