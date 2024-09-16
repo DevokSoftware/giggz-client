@@ -39,6 +39,7 @@ import { Link as RouteLink } from "react-router-dom";
 import FormattedDate from "../../components/FormattedDate";
 import Pagination from "../../components/Pagination";
 import { QueryPagination } from "../../components/types/Types";
+import { displayLocationAddress } from "../../components/utils";
 
 const ComedianDetailsPage = () => {
   const { handleRequest: handleRequestComedian } = useApi();
@@ -262,7 +263,7 @@ const ComedianDetailsPage = () => {
               href={comedian.twitter}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="TikTok"
+              aria-label="Twitter"
               icon={<FaTwitter />}
               variant="ghost"
               fontSize="20px"
@@ -285,34 +286,43 @@ const ComedianDetailsPage = () => {
         size="sm"
       >
         <TabList pl={3} pr={3} justifyContent="center">
-          <HStack spacing={4}>
+          <HStack spacing={3}>
             <Tab
+              fontSize="xs"
               background="white"
               border={`2px solid ${theme.colors.green[500]}`}
-              borderRadius="10px"
+              borderRadius="8px"
               color="green.500"
               boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
               _selected={{ color: "white", background: "green.400" }}
+              pl="2"
+              pr="2"
             >
-              Conteúdos Digitais
+              Conteúdos
             </Tab>
             <Tab
+              fontSize="xs"
               background="white"
               border={`2px solid ${theme.colors.green[500]}`}
-              borderRadius="10px"
+              borderRadius="8px"
               color="green.500"
               boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
               _selected={{ color: "white", background: "green.400" }}
+              pl="2"
+              pr="2"
             >
-              Próximos Eventos
+              Próx. Eventos
             </Tab>
             <Tab
+              fontSize="xs"
               background="white"
               border={`2px solid ${theme.colors.green[500]}`}
-              borderRadius="10px"
+              borderRadius="8px"
               color="green.500"
               boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
               _selected={{ color: "white", background: "green.400" }}
+              pl="2"
+              pr="2"
             >
               Eventos Passados
             </Tab>
@@ -410,15 +420,16 @@ const ComedianDetailsPage = () => {
                           )}
                         </HStack>
                         <VStack alignItems="start" spacing={0} mt={2}>
-                          <Text fontSize="sm" color="black" fontWeight="bold">
+                          <Text
+                            textAlign="left"
+                            fontSize="sm"
+                            color="black"
+                            fontWeight="bold"
+                          >
                             {show.location?.name}
                           </Text>
-                          <Text fontSize="xs" color="black">
-                            {show.location?.street +
-                              " " +
-                              show.location?.number +
-                              ", " +
-                              show.location?.city}
+                          <Text textAlign="left" fontSize="xs" color="black">
+                            {displayLocationAddress(show.location)}
                           </Text>
                         </VStack>
                       </VStack>
@@ -494,16 +505,16 @@ const ComedianDetailsPage = () => {
                           )}
                         </HStack>
                         <VStack alignItems="start" spacing={0} mt={2}>
-                          {/* TODO - add location as an Entity in BE */}
-                          <Text fontSize="sm" color="black" fontWeight="bold">
+                          <Text
+                            textAlign="left"
+                            fontSize="sm"
+                            color="black"
+                            fontWeight="bold"
+                          >
                             {show.location?.name}
                           </Text>
-                          <Text fontSize="xs" color="black">
-                            {show.location?.street +
-                              " " +
-                              show.location?.number +
-                              ", " +
-                              show.location?.city}
+                          <Text textAlign="left" fontSize="xs" color="black">
+                            {displayLocationAddress(show.location)}
                           </Text>
                         </VStack>
                       </VStack>

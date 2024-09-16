@@ -53,6 +53,7 @@ import { debounce } from "lodash"; // Import debounce from lodash
 import { RangeDatePicker } from "../../components/RangeDatePicker";
 import { QueryPagination } from "../../components/types/Types";
 import FormattedDate from "../../components/FormattedDate";
+import { displayLocationAddress } from "../../components/utils";
 
 interface ComedianOption extends OptionBase {
   label: string;
@@ -304,7 +305,11 @@ const EventsPage = () => {
             <>
               <HStack mt={3} justifyContent="end" mr={3}>
                 <Text fontSize="xs" color="gray.400">
-                  {eventPagination.numberOfResults} resultados encontrados
+                  {eventPagination.numberOfResults === 1 ? (
+                    <>1 resultado encontrado</>
+                  ) : (
+                    eventPagination.numberOfResults + " resultados encontrados"
+                  )}
                 </Text>
               </HStack>
               {events?.length === 0 && (
@@ -312,7 +317,7 @@ const EventsPage = () => {
                   <Text
                     textAlign="left"
                     fontWeight="bold"
-                    fontSize="sm"
+                    fontSize="md"
                     color="green.600"
                   >
                     Sem eventos
@@ -329,7 +334,7 @@ const EventsPage = () => {
                   cursor="pointer"
                   className={classes.show_card}
                   m={2}
-                  h={{ base: "auto", sm: "130px" }}
+                  h={{ base: "140px", sm: "130px" }}
                 >
                   <HStack w="100px">
                     <Image
@@ -365,39 +370,29 @@ const EventsPage = () => {
                     )}
 
                     <VStack alignItems="start" spacing={0} mt={2}>
-                      {/* TODO - add location as an Entity in BE */}
                       <Text fontSize="sm" color="black" fontWeight="bold">
                         {event.location?.name}
                       </Text>
-                      <Text fontSize="xs" color="black">
-                        {event.location?.street +
-                          " " +
-                          event.location?.number +
-                          ", " +
-                          event.location?.city}
+                      <Text fontSize="xs" color="black" textAlign="left">
+                        {displayLocationAddress(event.location)}
                       </Text>
                     </VStack>
                     {isMobile ? (
-                      <Box mt={3}>
-                        {event.comedians?.map((comedian, index) => (
-                          <HStack mr={3}>
+                      <HStack mt={3}>
+                        {event.comedians?.map((comedian) => (
+                          <RouteLink to={`/comedians/${comedian.id}`}>
                             <Image
                               src={comedian.picture}
                               boxSize="20px"
                               objectFit="cover"
                               borderRadius="full"
                             />
-                            <RouteLink to={`/comedians/${comedian.id}`}>
-                              <Text fontSize="sm" color="green.600">
-                                {comedian.name}
-                              </Text>
-                            </RouteLink>
-                          </HStack>
+                          </RouteLink>
                         ))}
-                      </Box>
+                      </HStack>
                     ) : (
                       <Flex mt={3}>
-                        {event.comedians?.map((comedian, index) => (
+                        {event.comedians?.map((comedian) => (
                           <HStack mr={3}>
                             <Image
                               src={comedian.picture}

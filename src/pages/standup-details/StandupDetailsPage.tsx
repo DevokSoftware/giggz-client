@@ -12,6 +12,7 @@ import {
   HStack,
   Image,
   SimpleGrid,
+  Spinner,
   Text,
   useTheme,
   VStack,
@@ -32,9 +33,15 @@ import moment from "moment";
 import FormattedDate from "../../components/FormattedDate";
 import Pagination from "../../components/Pagination";
 import { QueryPagination } from "../../components/types/Types";
+import { displayLocationAddress } from "../../components/utils";
 const StandupDetailsPage = () => {
   const theme = useTheme();
-  const { handleRequest } = useApi();
+  const { isLoading: isLoadingStandup, handleRequest: handleRequestStandup } =
+    useApi();
+  const {
+    isLoading: isLoadingStandupEvents,
+    handleRequest: handleRequestStandupEvents,
+  } = useApi();
   const { standupId } = useParams();
   const [standup, setStandup] = useState<Standup>();
   const [events, setEvents] = useState<EventResponse[]>([]);
@@ -57,7 +64,7 @@ const StandupDetailsPage = () => {
         page: eventPagination.currentPage - 1,
       };
 
-      const eventsResponse = await handleRequest(
+      const eventsResponse = await handleRequestStandupEvents(
         EventServiceTemp.eventsGet(updatedPageable, {
           standupId: parseInt(standupId, 10),
         })
@@ -85,7 +92,7 @@ const StandupDetailsPage = () => {
     if (standupId) {
       const fetchStandup = async () => {
         try {
-          const standupResponse = await handleRequest(
+          const standupResponse = await handleRequestStandup(
             StandupService.standupsStandupIdGet(parseInt(standupId, 10))
           );
           setStandup(standupResponse);
@@ -97,7 +104,7 @@ const StandupDetailsPage = () => {
       fetchStandup();
       fetchEvents();
     }
-  }, [handleRequest]);
+  }, [handleRequestStandup]);
 
   useEffect(() => {
     fetchEvents();
@@ -107,7 +114,15 @@ const StandupDetailsPage = () => {
     return <></>;
   }
 
-  return (
+  return isLoadingStandup ? (
+    <Spinner
+      thickness="4px"
+      speed="0.65s"
+      emptyColor="gray.200"
+      color="green.600"
+      size="xl"
+    />
+  ) : (
     <Grid templateColumns={{ base: "1fr", md: "repeat(5, 1fr)" }} gap={4}>
       <GridItem colSpan={{ base: 5, md: 2 }}>
         <Box mx="auto">
@@ -150,53 +165,62 @@ const StandupDetailsPage = () => {
           <Heading textAlign="left" size="md" color="green.600">
             Todas as datas:
           </Heading>
-          {events?.length === 0 && (
-            <Center>
-              <Text
-                textAlign="left"
-                fontWeight="bold"
-                fontSize="sm"
-                color="green.600"
-              >
-                Sem eventos
-              </Text>
-            </Center>
-          )}
-          {events?.map((show, index) => (
-            <Flex
-              key={index}
-              p={2}
-              boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-              border="1px solid"
-              borderColor="green.600"
-              borderRadius="15px"
-              alignItems="center"
-              cursor="pointer"
-              className={classes.show_card}
-            >
-              <VStack alignItems="start" spacing={0} flex="1" ml={3}>
-                <Text fontSize="sm" color="black" fontWeight="bold">
-                  {show.location?.name}
-                </Text>
-
-                <Text fontSize="xs" color="black">
-                  {show.location?.street +
-                    " " +
-                    show.location?.number +
-                    ", " +
-                    show.location?.city}
-                </Text>
-              </VStack>
-              <FormattedDate date={show.date} />
-            </Flex>
-          ))}
-          <Center>
-            <Pagination
-              currentPage={eventPagination.currentPage}
-              totalPages={eventPagination.totalPages || 0}
-              onPageChange={handlePageChange}
+          {isLoadingStandupEvents ? (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="green.600"
+              size="xl"
+              mx="auto"
             />
-          </Center>
+          ) : (
+            <>
+              {events?.length === 0 && (
+                <Center>
+                  <Text
+                    textAlign="left"
+                    fontWeight="bold"
+                    fontSize="sm"
+                    color="green.600"
+                  >
+                    Sem eventos
+                  </Text>
+                </Center>
+              )}
+              {events?.map((show, index) => (
+                <Flex
+                  key={index}
+                  p={2}
+                  boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                  border="1px solid"
+                  borderColor="green.600"
+                  borderRadius="15px"
+                  alignItems="center"
+                  cursor="pointer"
+                  className={classes.show_card}
+                >
+                  <VStack alignItems="start" spacing={0} flex="1" ml={3}>
+                    <Text fontSize="sm" color="black" fontWeight="bold">
+                      {show.location?.name}
+                    </Text>
+
+                    <Text fontSize="xs" color="black">
+                      {displayLocationAddress(show.location)}
+                    </Text>
+                  </VStack>
+                  <FormattedDate date={show.date} />
+                </Flex>
+              ))}
+              <Center>
+                <Pagination
+                  currentPage={eventPagination.currentPage}
+                  totalPages={eventPagination.totalPages || 0}
+                  onPageChange={handlePageChange}
+                />
+              </Center>
+            </>
+          )}
         </VStack>
       </GridItem>
     </Grid>

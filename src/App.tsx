@@ -8,11 +8,18 @@ import {
   Code,
   Grid,
   extendTheme,
+  Container,
+  Stack,
+  Heading,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
 import ComediansPage from "./pages/comedians/ComediansPage";
 import Navbar from "./components/Navbar";
+import "@fontsource/open-sans";
+import "@fontsource/raleway";
+import "@fontsource/raleway/400.css";
+import "@fontsource/open-sans/700.css";
 
 import {
   BrowserRouter as Router,
@@ -27,6 +34,10 @@ import EventsPage from "./pages/events/EventsPage";
 import StandupDetailsPage from "./pages/standup-details/StandupDetailsPage";
 
 const theme = extendTheme({
+  fonts: {
+    heading: `'Raleway', sans-serif`,
+    body: `'Raleway', sans-serif`,
+  },
   styles: {
     global: {
       body: {

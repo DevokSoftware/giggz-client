@@ -8,6 +8,7 @@ if (!container) throw new Error("Failed to find the root element");
 const root = ReactDOM.createRoot(container);
 
 root.render(
+  // Commenting the StrictMode fixed the double calls to the BE. check if this happens in PRD
   <React.StrictMode>
     <ColorModeScript />
     <App />

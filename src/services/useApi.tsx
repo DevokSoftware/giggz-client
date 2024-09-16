@@ -5,8 +5,8 @@ export function useApi() {
   const [error, setError] = useState<ApiError | undefined>(undefined);
   const [isLoading, setIsloading] = useState<boolean>(true);
 
-  OpenAPI.BASE = process.env.REACT_APP_API_ENDPOINT as string;
-  //OpenAPI.BASE = "http://localhost:8080/api";
+  //OpenAPI.BASE = process.env.REACT_APP_API_ENDPOINT as string;
+  OpenAPI.BASE = "http://localhost:8080/api";
   const handleRequest = useCallback(async function <T>(request: Promise<T>) {
     setIsloading(true);
     try {
