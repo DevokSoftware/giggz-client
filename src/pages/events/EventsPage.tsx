@@ -334,7 +334,7 @@ const EventsPage = () => {
                   cursor="pointer"
                   className={classes.show_card}
                   m={2}
-                  h={{ base: "140px", sm: "130px" }}
+                  h={{ base: "125px", sm: "130px" }}
                 >
                   <HStack w="100px">
                     <Image
@@ -370,10 +370,21 @@ const EventsPage = () => {
                     )}
 
                     <VStack alignItems="start" spacing={0} mt={2}>
-                      <Text fontSize="sm" color="black" fontWeight="bold">
+                      <Text
+                        fontSize="sm"
+                        color="black"
+                        fontWeight="bold"
+                        noOfLines={1}
+                        textAlign="left"
+                      >
                         {event.location?.name}
                       </Text>
-                      <Text fontSize="xs" color="black" textAlign="left">
+                      <Text
+                        fontSize="xs"
+                        color="black"
+                        textAlign="left"
+                        noOfLines={1}
+                      >
                         {displayLocationAddress(event.location)}
                       </Text>
                     </VStack>

@@ -538,10 +538,16 @@ const ComedianDetailsPage = () => {
                             fontSize="sm"
                             color="black"
                             fontWeight="bold"
+                            noOfLines={1}
                           >
                             {show.location?.name}
                           </Text>
-                          <Text textAlign="left" fontSize="xs" color="black">
+                          <Text
+                            textAlign="left"
+                            fontSize="xs"
+                            color="black"
+                            noOfLines={1}
+                          >
                             {displayLocationAddress(show.location)}
                           </Text>
                         </VStack>

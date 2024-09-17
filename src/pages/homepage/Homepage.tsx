@@ -93,7 +93,7 @@ const Homepage = () => {
         Brevemente..
       </Text>
 
-      <Box mx="auto" maxW={{ base: "300px", md: "500px" }} mt={5}>
+      <Box mx="auto" maxW={{ base: "95%", md: "500px" }} mt={5}>
         <InputWithIcon
           icon={CiMail}
           onChange={() => {}}
