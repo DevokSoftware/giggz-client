@@ -32,6 +32,7 @@ import {
 import ComedianDetailsPage from "./pages/comedian-details/ComedianDetailsPage";
 import EventsPage from "./pages/events/EventsPage";
 import StandupDetailsPage from "./pages/standup-details/StandupDetailsPage";
+import Homepage from "./pages/homepage/Homepage";
 
 const theme = extendTheme({
   fonts: {
@@ -55,7 +56,9 @@ export const App = () => {
           <Navbar />
           <Box pt={20}>
             <Routes>
-              <Route path="/" element={<Navigate to="/comedians" />} />
+              <Route path="/" element={<Outlet />}>
+                <Route path="" element={<Homepage />} />
+              </Route>
               <Route path="/comedians" element={<Outlet />}>
                 <Route path="" element={<ComediansPage />} />
                 <Route
@@ -72,7 +75,7 @@ export const App = () => {
               <Route path="/shows" element={<Outlet />}>
                 <Route path="" element={<EventsPage />} />
               </Route>
-              <Route path="*" element={<Navigate to="/comedians" />} />
+              <Route path="*" element={<Navigate to="/homepage" />} />
             </Routes>
           </Box>
         </Box>

@@ -92,8 +92,6 @@ const ComedianDetailsPage = () => {
         }
       };
       fetchComedians();
-      fetchFutureEvents();
-      fetchPastEvents();
     }
   }, [handleRequestComedian]);
 
@@ -380,22 +378,33 @@ const ComedianDetailsPage = () => {
                   {futureComedianEvents?.map((show, index) => (
                     <Flex
                       key={index}
-                      p={2}
                       boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
                       border="2px solid"
                       borderColor="green.600"
                       borderRadius="20px"
-                      alignItems="center"
                       cursor="pointer"
                       className={classes.show_card}
+                      h={{ base: "110px", sm: "100px" }}
                     >
-                      <Image
-                        src={show.standup ? show.standup?.poster : show.poster}
-                        boxSize="70px"
-                        objectFit="cover"
-                        borderRadius="full"
-                      />
-                      <VStack alignItems="start" spacing={0} flex="1" ml={3}>
+                      <HStack w="100px">
+                        <Image
+                          borderTopLeftRadius="18px"
+                          borderBottomLeftRadius="18px"
+                          src={
+                            show.standup ? show.standup?.poster : show.poster
+                          }
+                          objectFit="cover"
+                          w="100%"
+                          h="100%"
+                        />
+                      </HStack>
+                      <VStack
+                        alignItems="start"
+                        spacing={0}
+                        flex="1"
+                        ml={3}
+                        m={2}
+                      >
                         <HStack justifyContent="space-between" w="100%">
                           {show.standup ? (
                             <RouteLink to={`/standups/${show.standup?.id}`}>
@@ -425,15 +434,23 @@ const ComedianDetailsPage = () => {
                             fontSize="sm"
                             color="black"
                             fontWeight="bold"
+                            noOfLines={1}
                           >
                             {show.location?.name}
                           </Text>
-                          <Text textAlign="left" fontSize="xs" color="black">
+                          <Text
+                            textAlign="left"
+                            fontSize="xs"
+                            color="black"
+                            noOfLines={1}
+                          >
                             {displayLocationAddress(show.location)}
                           </Text>
                         </VStack>
                       </VStack>
-                      <FormattedDate date={show.date} />
+                      <Box m={2}>
+                        <FormattedDate date={show.date} />
+                      </Box>
                     </Flex>
                   ))}
                   <Center>
@@ -465,22 +482,33 @@ const ComedianDetailsPage = () => {
                   {pastComedianEvents?.map((show, index) => (
                     <Flex
                       key={index}
-                      p={2}
                       boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
                       border="2px solid"
                       borderColor="green.600"
                       borderRadius="20px"
-                      alignItems="center"
                       cursor="pointer"
                       className={classes.show_card}
+                      h={{ base: "110px", sm: "100px" }}
                     >
-                      <Image
-                        src={show.standup ? show.standup?.poster : show.poster}
-                        boxSize="70px"
-                        objectFit="cover"
-                        borderRadius="full"
-                      />
-                      <VStack alignItems="start" spacing={0} flex="1" ml={3}>
+                      <HStack w="100px">
+                        <Image
+                          borderTopLeftRadius="18px"
+                          borderBottomLeftRadius="18px"
+                          src={
+                            show.standup ? show.standup?.poster : show.poster
+                          }
+                          objectFit="cover"
+                          w="100%"
+                          h="100%"
+                        />
+                      </HStack>
+                      <VStack
+                        alignItems="start"
+                        spacing={0}
+                        flex="1"
+                        ml={3}
+                        m={2}
+                      >
                         <HStack justifyContent="space-between" w="100%">
                           {show.standup ? (
                             <RouteLink to={`/standups/${show.standup?.id}`}>
@@ -518,8 +546,9 @@ const ComedianDetailsPage = () => {
                           </Text>
                         </VStack>
                       </VStack>
-
-                      <FormattedDate date={show.date} />
+                      <Box m={2}>
+                        <FormattedDate date={show.date} />
+                      </Box>
                     </Flex>
                   ))}
                   <Center>

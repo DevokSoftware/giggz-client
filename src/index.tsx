@@ -9,8 +9,10 @@ const root = ReactDOM.createRoot(container);
 
 root.render(
   // Commenting the StrictMode fixed the double calls to the BE. check if this happens in PRD
-  <React.StrictMode>
+  // <React.StrictMode>
+  <>
     <ColorModeScript />
     <App />
-  </React.StrictMode>
+  </>
+  // </React.StrictMode>
 );
