@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type LoginRequest = {
+export type SignupRequest = {
     email: string;
     password: string;
 };

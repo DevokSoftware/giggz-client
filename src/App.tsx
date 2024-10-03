@@ -33,6 +33,12 @@ import ComedianDetailsPage from "./pages/comedian-details/ComedianDetailsPage";
 import EventsPage from "./pages/events/EventsPage";
 import StandupDetailsPage from "./pages/standup-details/StandupDetailsPage";
 import Homepage from "./pages/homepage/Homepage";
+import SignUpPage from "./pages/signup/SignUpPage";
+import OAuth2RedirectHandler from "./components/auth/OAuth2RedirectHandler";
+import PrivateRoute from "./components/auth/PrivateRoute";
+import ProfilePage from "./pages/user/profile/ProfilePage";
+import { useAuth } from "./components/auth/authUtils";
+import LoginPage from "./pages/signup/LoginPage";
 
 const theme = extendTheme({
   fonts: {
@@ -56,9 +62,19 @@ export const App = () => {
           <Navbar />
           <Box pt={20}>
             <Routes>
-              <Route path="/" element={<Outlet />}>
-                <Route path="" element={<Homepage />} />
+              <Route
+                path="/profile"
+                element={<PrivateRoute redirectPath="/login" />}
+              >
+                <Route path="" element={<ProfilePage />} />
               </Route>
+
+              <Route
+                path="/oauth2/redirect"
+                element={<OAuth2RedirectHandler />}
+              ></Route>
+              <Route path="/" element={<Navigate to="/homepage" />} />
+              <Route path="*" element={<Navigate to="/homepage" />} />
               <Route path="/comedians" element={<Outlet />}>
                 <Route path="" element={<ComediansPage />} />
                 <Route
@@ -75,7 +91,16 @@ export const App = () => {
               <Route path="/shows" element={<Outlet />}>
                 <Route path="" element={<EventsPage />} />
               </Route>
-              <Route path="*" element={<Navigate to="/homepage" />} />
+
+              <Route path="/signup" element={<Outlet />}>
+                <Route path="" element={<SignUpPage />} />
+              </Route>
+              <Route path="/login" element={<Outlet />}>
+                <Route path="" element={<LoginPage />} />
+              </Route>
+              <Route path="/homepage" element={<Outlet />}>
+                <Route path="" element={<Homepage />} />
+              </Route>
             </Routes>
           </Box>
         </Box>

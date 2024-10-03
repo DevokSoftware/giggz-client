@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouteLink } from "react-router-dom";
 import { FaInstagram, FaTwitter, FaBars } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -55,7 +56,7 @@ const Navbar = () => {
             </HStack>
             <Spacer />
             <HStack spacing={4}>
-              <IconButton
+              {/* <IconButton
                 as="a"
                 href="https://www.instagram.com"
                 target="_blank"
@@ -76,7 +77,17 @@ const Navbar = () => {
                 variant="ghost"
                 fontSize="25px"
                 color="white"
-              />
+              /> */}
+              <Link as={RouteLink} to="/profile">
+                <IconButton
+                  as="a"
+                  aria-label="Profile"
+                  icon={<CgProfile />}
+                  variant="ghost"
+                  fontSize="25px"
+                  color="white"
+                />
+              </Link>
             </HStack>
           </>
         ) : (
@@ -119,7 +130,7 @@ const Navbar = () => {
                       </Text>
                     </Link>
                     <HStack spacing={4} mt={6}>
-                      <IconButton
+                      {/* <IconButton
                         as="a"
                         href="https://www.instagram.com"
                         target="_blank"
@@ -140,7 +151,17 @@ const Navbar = () => {
                         variant="outline"
                         fontSize="24px"
                         color="green.600"
-                      />
+                      /> */}
+                      <Link as={RouteLink} to="/profile" color="green.600">
+                        <IconButton
+                          as="a"
+                          aria-label="Profile"
+                          icon={<CgProfile />}
+                          variant="outline"
+                          fontSize="24px"
+                          color="green.600"
+                        />
+                      </Link>
                     </HStack>
                   </VStack>
                 </DrawerBody>

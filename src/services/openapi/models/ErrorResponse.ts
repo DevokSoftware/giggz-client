@@ -2,8 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type LoginRequest = {
-    email: string;
-    password: string;
+export type ErrorResponse = {
+    /**
+     * Description of the error that occurred.
+     */
+    error?: string;
 };
 

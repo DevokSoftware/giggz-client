@@ -10,6 +10,7 @@ export type UpdateEventRequest = {
     price?: number;
     url?: string;
     locationId?: string;
+    standupId?: string;
     comedianIds?: Array<string>;
 };
 

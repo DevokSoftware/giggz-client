@@ -2,8 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type LoginRequest = {
-    email: string;
-    password: string;
+export type ValidateToken200Response = {
+    message?: string;
 };
 

@@ -10,6 +10,7 @@ export type CreateEventRequest = {
     price?: number;
     url?: string;
     locationId?: string;
+    standupId?: string;
     comedianIds?: Array<string>;
 };
 

@@ -2,13 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type JwtToken = {
+export type TokenRefreshRequest = {
     /**
-     * The newly generated access token.
-     */
-    accessToken: string;
-    /**
-     * The refresh token (in case it was rotated).
+     * The refresh token used to request a new access token.
      */
     refreshToken: string;
 };
