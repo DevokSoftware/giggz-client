@@ -10,10 +10,9 @@ export function useApi() {
   const [error, setError] = useState<ApiError | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const getAccessToken = () => localStorage.getItem("accessToken") || "";
-  const getRefreshToken = () => localStorage.getItem("refreshToken" || "");
+  const getRefreshToken = () => localStorage.getItem("refreshToken") || "";
 
-  //OpenAPI.BASE = process.env.REACT_APP_API_ENDPOINT as string;
-  OpenAPI.BASE = "http://localhost:8080/api";
+  OpenAPI.BASE = process.env.REACT_APP_API_ENDPOINT as string;
   const handleRequest = useCallback(async function <T>(request: Promise<T>) {
     OpenAPI.TOKEN = "";
     setIsLoading(true);
@@ -56,11 +55,14 @@ export function useApi() {
             localStorage.setItem("refreshToken", token.refreshToken);
             OpenAPI.TOKEN = token.accessToken;
             const retryResponse = await request();
+            setError(undefined);
             return retryResponse;
           } catch (refreshError) {
             console.log(refreshError);
             // Handle refresh token failure (e.g., log out the user)
             //TODO handleLogout();
+          } finally {
+            setIsLoading(false);
           }
         } else {
           // No refresh token available, log out the user

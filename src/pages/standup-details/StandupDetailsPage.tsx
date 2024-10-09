@@ -10,6 +10,7 @@ import {
   GridItem,
   Heading,
   HStack,
+  Icon,
   Image,
   SimpleGrid,
   Spinner,
@@ -21,6 +22,7 @@ import {
 import useApi from "../../services/useApi";
 import {
   EventResponse,
+  EventService,
   EventsGetFiltersParameter,
   Pageable,
   Standup,
@@ -33,7 +35,8 @@ import moment from "moment";
 import FormattedDate from "../../components/FormattedDate";
 import Pagination from "../../components/Pagination";
 import { QueryPagination } from "../../components/types/Types";
-import { displayLocationAddress } from "../../components/utils";
+import { displayLocationAddress, isPastDate } from "../../components/utils";
+import { FaRegEye } from "react-icons/fa";
 const StandupDetailsPage = () => {
   const theme = useTheme();
   const { isLoading: isLoadingStandup, handleRequest: handleRequestStandup } =
@@ -42,6 +45,7 @@ const StandupDetailsPage = () => {
     isLoading: isLoadingStandupEvents,
     handleRequest: handleRequestStandupEvents,
   } = useApi();
+  const { isLoading: isLoadingWithToken, handleRequestWithToken } = useApi();
   const { standupId } = useParams();
   const [standup, setStandup] = useState<Standup>();
   const [events, setEvents] = useState<EventResponse[]>([]);
@@ -64,11 +68,18 @@ const StandupDetailsPage = () => {
         page: eventPagination.currentPage - 1,
       };
 
-      const eventsResponse = await handleRequestStandupEvents(
-        EventServiceTemp.eventsGet(updatedPageable, {
-          standupId: parseInt(standupId, 10),
-        })
-      );
+      const eventsResponse =
+        localStorage.getItem("accessToken") != null
+          ? await handleRequestWithToken(() =>
+              EventServiceTemp.eventsGet(updatedPageable, {
+                standupId: parseInt(standupId, 10),
+              })
+            )
+          : await handleRequestStandupEvents(
+              EventServiceTemp.eventsGet(updatedPageable, {
+                standupId: parseInt(standupId, 10),
+              })
+            );
       setEventsPageable(updatedPageable);
       setEventPagination({
         ...eventPagination,
@@ -109,6 +120,15 @@ const StandupDetailsPage = () => {
   useEffect(() => {
     fetchEvents();
   }, [eventPagination.currentPage]);
+
+  const setAttendedEvent = async (event: EventResponse) => {
+    await handleRequestWithToken(() =>
+      EventService.eventsEventIdAttendedPost(parseInt(event.id, 10), {
+        isAttended: !event.isAttendedByLoggedUser,
+      })
+    );
+    fetchEvents();
+  };
 
   if (standup == null) {
     return <></>;
@@ -165,7 +185,7 @@ const StandupDetailsPage = () => {
           <Heading textAlign="left" size="md" color="green.600">
             Todas as datas:
           </Heading>
-          {isLoadingStandupEvents ? (
+          {isLoadingStandupEvents && isLoadingWithToken ? (
             <Spinner
               thickness="4px"
               speed="0.65s"
@@ -201,11 +221,28 @@ const StandupDetailsPage = () => {
                   className={classes.show_card}
                 >
                   <VStack alignItems="start" spacing={0} flex="1" ml={3}>
-                    <Text fontSize="sm" color="black" fontWeight="bold">
-                      {show.location?.name}
-                    </Text>
-
-                    <Text fontSize="xs" color="black">
+                    <HStack>
+                      <Text fontSize="sm" color="black" fontWeight="bold">
+                        {show.location?.name}
+                      </Text>
+                      {isPastDate(show.date) && (
+                        <Icon
+                          as={FaRegEye}
+                          onClick={() => {
+                            setAttendedEvent(show);
+                          }}
+                          color={
+                            show.isAttendedByLoggedUser
+                              ? "green.500"
+                              : "gray.500"
+                          }
+                          fontSize="xl"
+                          padding="0"
+                          ml={1}
+                        />
+                      )}
+                    </HStack>
+                    <Text fontSize="xs" color="black" mt={1}>
                       {displayLocationAddress(show.location)}
                     </Text>
                   </VStack>

@@ -20,6 +20,7 @@ import {
   Grid,
   GridItem,
   useBreakpointValue,
+  IconButton,
 } from "@chakra-ui/react";
 import classes from "./EventsPage.module.scss";
 import Pagination from "../../components/Pagination";
@@ -33,12 +34,15 @@ import {
   EventService,
   EventsGetFiltersParameter,
   Pageable,
+  PageEventResponse,
 } from "../../services/openapi";
 import useApi from "../../services/useApi";
 import moment from "moment";
 import {
+  FaBars,
   FaCalculator,
   FaLocationArrow,
+  FaRegEye,
   FaSearchLocation,
 } from "react-icons/fa";
 import { InputWithIcon } from "../../components/InputWithIcon";
@@ -53,7 +57,7 @@ import { debounce } from "lodash"; // Import debounce from lodash
 import { RangeDatePicker } from "../../components/RangeDatePicker";
 import { QueryPagination } from "../../components/types/Types";
 import FormattedDate from "../../components/FormattedDate";
-import { displayLocationAddress } from "../../components/utils";
+import { displayLocationAddress, isPastDate } from "../../components/utils";
 
 interface ComedianOption extends OptionBase {
   label: string;
@@ -71,6 +75,10 @@ interface EventFilters {
 const EventsPage = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { isLoading, handleRequest: eventsHandleRequest } = useApi();
+  const {
+    isLoading: isLoadingWithToken,
+    handleRequestWithToken: eventsHandleRequestWithToken,
+  } = useApi();
   const { handleRequest: comediansHandleRequest } = useApi();
   const [pageable, setPageable] = useState<Pageable>({
     sort: ["date", "asc"],
@@ -112,9 +120,15 @@ const EventsPage = () => {
         ...pageable,
         page: eventPagination.currentPage - 1,
       };
-      const eventsResponse = await eventsHandleRequest(
-        EventServiceTemp.eventsGet(updatedPageable, filters)
-      );
+      const eventsResponse =
+        localStorage.getItem("accessToken") != null
+          ? await eventsHandleRequestWithToken(() =>
+              EventServiceTemp.eventsGet(updatedPageable, filters)
+            )
+          : await eventsHandleRequest(
+              EventServiceTemp.eventsGet(updatedPageable, filters)
+            );
+      console.log(isLoading);
       setPageable(updatedPageable);
       setEvents(eventsResponse?.content || []);
       setEventPagination({
@@ -130,7 +144,11 @@ const EventsPage = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [eventsHandleRequest, eventPagination.currentPage]);
+  }, [
+    eventsHandleRequest,
+    // eventsHandleRequestWithToken,
+    eventPagination.currentPage,
+  ]);
 
   // Debounce the function to wait for a pause in typing
   const fetchComediansDebounced = debounce(async () => {
@@ -205,6 +223,15 @@ const EventsPage = () => {
       startDate: start,
       endDate: end,
     }));
+  };
+
+  const setAttendedEvent = async (event: EventResponse) => {
+    await eventsHandleRequestWithToken(() =>
+      EventService.eventsEventIdAttendedPost(parseInt(event.id, 10), {
+        isAttended: !event.isAttendedByLoggedUser,
+      })
+    );
+    fetchEvents();
   };
 
   return (
@@ -293,7 +320,7 @@ const EventsPage = () => {
             </Button>
           </HStack>
 
-          {isLoading ? (
+          {isLoading && isLoadingWithToken ? (
             <Spinner
               thickness="4px"
               speed="0.65s"
@@ -347,28 +374,45 @@ const EventsPage = () => {
                     />
                   </HStack>
                   <VStack alignItems="start" spacing={0} flex="1" ml={5} m={2}>
-                    {event.standup ? (
-                      <RouteLink to={`/standups/${event.standup?.id}`}>
+                    <HStack>
+                      {event.standup ? (
+                        <RouteLink to={`/standups/${event.standup?.id}`}>
+                          <Text
+                            textAlign="left"
+                            fontWeight="bold"
+                            fontSize="md"
+                            color="green.700"
+                          >
+                            {event.standup.name}
+                          </Text>
+                        </RouteLink>
+                      ) : (
                         <Text
                           textAlign="left"
                           fontWeight="bold"
                           fontSize="md"
                           color="green.700"
                         >
-                          {event.standup.name}
+                          {event.name}
                         </Text>
-                      </RouteLink>
-                    ) : (
-                      <Text
-                        textAlign="left"
-                        fontWeight="bold"
-                        fontSize="md"
-                        color="green.700"
-                      >
-                        {event.name}
-                      </Text>
-                    )}
-
+                      )}
+                      {isPastDate(event.date) && (
+                        <Icon
+                          as={FaRegEye}
+                          onClick={() => {
+                            setAttendedEvent(event);
+                          }}
+                          color={
+                            event.isAttendedByLoggedUser
+                              ? "green.500"
+                              : "gray.500"
+                          }
+                          fontSize="xl"
+                          padding="0"
+                          ml={1}
+                        />
+                      )}
+                    </HStack>
                     <VStack alignItems="start" spacing={0} mt={2}>
                       <Text
                         fontSize="sm"

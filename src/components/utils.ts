@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Location } from "../services/openapi";
 
 export function displayLocationAddress(location?: Location): string {
@@ -9,4 +10,8 @@ export function displayLocationAddress(location?: Location): string {
     : "";
 
   return streetAndNumber + (streetAndNumber ? ", " : "") + location.city;
+}
+
+export function isPastDate(date?: string): boolean {
+  return moment(date).isBefore(moment.now());
 }

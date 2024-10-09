@@ -83,6 +83,8 @@ const ComediansPage = () => {
       currentPage: page,
     });
   };
+
+  
   return (
     <Box mt={{ base: 2, sm: 3, md: 10, lg: 10 }}>
       <Box

@@ -20,7 +20,7 @@ const ProfilePage: React.FC = () => {
     const fetchStandup = async () => {
       try {
         const attendedEventsResponse = await handleRequestWithToken(() =>
-          UserService.usersUserIdEventsAttendedGet(102)
+          UserService.meEventsAttendedGet()
         );
         setEvents(attendedEventsResponse || []);
         // const standupResponse = await handleRequestWithToken(UserService.profileGet());
@@ -70,8 +70,8 @@ const ProfilePage: React.FC = () => {
                       sm: "100px",
                       lg: "130px",
                     }}
-                    src={event.standup?.poster}
-                    alt={event.standup?.name}
+                    src={event.standup ? event.standup?.poster : event.poster}
+                    alt={event.standup ? event.standup?.name : event.name}
                     mx="auto"
                     objectFit="cover"
                     cursor="pointer"
@@ -81,7 +81,7 @@ const ProfilePage: React.FC = () => {
                     color="green.700"
                     mt={{ base: 1, lg: 2 }}
                   >
-                    {event.standup?.name}
+                    {event.standup ? event.standup?.name : event.name}
                   </Heading>
                   <Text fontSize="sm" color="gray.500">
                     {moment(event.date).format("DD/MMM/YYYY")}

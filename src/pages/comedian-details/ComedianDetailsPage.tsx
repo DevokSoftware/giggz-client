@@ -20,8 +20,15 @@ import {
   TabPanel,
   SimpleGrid,
   Link,
+  Icon,
 } from "@chakra-ui/react";
-import { FaTiktok, FaYoutube, FaInstagram, FaTwitter } from "react-icons/fa";
+import {
+  FaTiktok,
+  FaYoutube,
+  FaInstagram,
+  FaTwitter,
+  FaRegEye,
+} from "react-icons/fa";
 import classes from "./ComedianDetails.module.scss";
 import useApi from "../../services/useApi";
 import {
@@ -30,6 +37,8 @@ import {
   ComedianService,
   ComediansComedianIdEventsGetFiltersParameter,
   ContentResponse,
+  EventResponse,
+  EventService,
   Pageable,
 } from "../../services/openapi";
 import moment from "moment";
@@ -45,6 +54,7 @@ const ComedianDetailsPage = () => {
   const { handleRequest: handleRequestComedian } = useApi();
 
   const { handleRequest: handleRequestComedianEvents } = useApi();
+  const { isLoading, handleRequestWithToken } = useApi();
   const [comedian, setComedian] = useState<ComedianResponse>();
 
   const [futureComedianEvents, setFutureComedianEvents] =
@@ -187,6 +197,16 @@ const ComedianDetailsPage = () => {
   useEffect(() => {
     fetchPastEvents();
   }, [pastEventsPagination.currentPage]);
+
+  const setAttendedEvent = async (event: EventResponse) => {
+    await handleRequestWithToken(() =>
+      EventService.eventsEventIdAttendedPost(parseInt(event.id, 10), {
+        isAttended: !event.isAttendedByLoggedUser,
+      })
+    );
+    fetchPastEvents();
+    fetchFutureEvents();
+  };
 
   if (comedian == null) {
     return <></>;
@@ -509,28 +529,44 @@ const ComedianDetailsPage = () => {
                         ml={3}
                         m={2}
                       >
-                        <HStack justifyContent="space-between" w="100%">
-                          {show.standup ? (
-                            <RouteLink to={`/standups/${show.standup?.id}`}>
+                        <HStack>
+                          <>
+                            {show.standup ? (
+                              <RouteLink to={`/standups/${show.standup?.id}`}>
+                                <Text
+                                  textAlign="left"
+                                  fontWeight="bold"
+                                  fontSize="md"
+                                  color="green.700"
+                                >
+                                  {show.standup.name}
+                                </Text>
+                              </RouteLink>
+                            ) : (
                               <Text
                                 textAlign="left"
                                 fontWeight="bold"
                                 fontSize="md"
                                 color="green.700"
                               >
-                                {show.standup.name}
+                                {show.name}
                               </Text>
-                            </RouteLink>
-                          ) : (
-                            <Text
-                              textAlign="left"
-                              fontWeight="bold"
-                              fontSize="md"
-                              color="green.700"
-                            >
-                              {show.name}
-                            </Text>
-                          )}
+                            )}
+                            <Icon
+                              as={FaRegEye}
+                              onClick={() => {
+                                setAttendedEvent(show);
+                              }}
+                              color={
+                                show.isAttendedByLoggedUser
+                                  ? "green.500"
+                                  : "gray.500"
+                              }
+                              fontSize="xl"
+                              padding="0"
+                              ml={1}
+                            />
+                          </>
                         </HStack>
                         <VStack alignItems="start" spacing={0} mt={2}>
                           <Text

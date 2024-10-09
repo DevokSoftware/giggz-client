@@ -30,10 +30,10 @@ export class UserService {
         });
     }
     /**
-     * Get Events attended by the user
+     * Get Events attended by user
      * Retrieve all the Events attended by the user
      * @param userId
-     * @returns EventResponse Successfully retrieved standups attended by the user
+     * @returns EventResponse Successfully retrieved Events attended by the user
      * @throws ApiError
      */
     public static usersUserIdEventsAttendedGet(
@@ -45,6 +45,21 @@ export class UserService {
             path: {
                 'userId': userId,
             },
+            errors: {
+                401: `Unauthorized (invalid or missing token)`,
+            },
+        });
+    }
+    /**
+     * Get Events attended by logged user
+     * Retrieve all the Events attended by logged user
+     * @returns EventResponse Successfully retrieved events attended by logged user
+     * @throws ApiError
+     */
+    public static meEventsAttendedGet(): CancelablePromise<Array<EventResponse>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/me/events/attended',
             errors: {
                 401: `Unauthorized (invalid or missing token)`,
             },

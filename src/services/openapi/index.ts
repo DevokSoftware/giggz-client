@@ -7,6 +7,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { AttendedEventInput } from './models/AttendedEventInput';
 export type { AuthSignupPost200Response } from './models/AuthSignupPost200Response';
 export type { AuthSignupPost400Response } from './models/AuthSignupPost400Response';
 export type { ComedianEventResponse } from './models/ComedianEventResponse';

@@ -38,7 +38,7 @@ const SignUpPage = () => {
   const signUpWithGoogle = async () => {
     // Redirect user to Spring Security's OAuth2 login endpoint
     window.location.href =
-      "http://localhost:8080/api/oauth2/authorization/google";
+      process.env.REACT_APP_API_ENDPOINT + "/oauth2/authorization/google";
   };
 
   return (

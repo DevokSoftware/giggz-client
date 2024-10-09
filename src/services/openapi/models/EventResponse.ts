@@ -16,5 +16,6 @@ export type EventResponse = {
     location?: Location;
     comedians?: Array<EventComedianResponse>;
     standup?: Standup;
+    isAttendedByLoggedUser?: boolean;
 };
 

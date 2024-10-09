@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AttendedEventInput } from '../models/AttendedEventInput';
 import type { CreateEventRequest } from '../models/CreateEventRequest';
 import type { EventResponse } from '../models/EventResponse';
 import type { EventsGetFiltersParameter } from '../models/EventsGetFiltersParameter';
@@ -94,6 +95,26 @@ export class EventService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/events',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param eventId
+     * @param requestBody
+     * @returns EventResponse Event attended
+     * @throws ApiError
+     */
+    public static eventsEventIdAttendedPost(
+        eventId: number,
+        requestBody: AttendedEventInput,
+    ): CancelablePromise<EventResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/events/{eventId}/attended',
+            path: {
+                'eventId': eventId,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });
