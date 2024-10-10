@@ -73,8 +73,8 @@ export const App = () => {
                 path="/oauth2/redirect"
                 element={<OAuth2RedirectHandler />}
               ></Route>
-              <Route path="/" element={<Navigate to="/homepage" />} />
-              <Route path="*" element={<Navigate to="/homepage" />} />
+              <Route path="/" element={<Navigate to="/comedians" />} />
+              <Route path="*" element={<Navigate to="/comedians" />} />
               <Route path="/comedians" element={<Outlet />}>
                 <Route path="" element={<ComediansPage />} />
                 <Route
@@ -98,7 +98,7 @@ export const App = () => {
               <Route path="/login" element={<Outlet />}>
                 <Route path="" element={<LoginPage />} />
               </Route>
-              <Route path="/homepage" element={<Outlet />}>
+              <Route path="/comedians" element={<Outlet />}>
                 <Route path="" element={<Homepage />} />
               </Route>
             </Routes>

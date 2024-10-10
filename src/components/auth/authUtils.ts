@@ -19,17 +19,15 @@ export function useAuth() {
       return true; // Token is valid
     } catch (error) {
       localStorage.removeItem("accessToken"); // Token invalid, remove it
+      localStorage.removeItem("refreshToken");
       return false;
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
   };
 
   return { isAuthenticated, handleLogout, isLoading, error };
 }
-
-export const handleLogout = () => {
-  localStorage.removeItem("accessToken");
-};

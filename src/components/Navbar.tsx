@@ -19,15 +19,27 @@ import {
   VStack,
   useDisclosure,
   useBreakpointValue,
+  Icon,
 } from "@chakra-ui/react";
-import { Link as RouteLink } from "react-router-dom";
+import { Link as RouteLink, useNavigate } from "react-router-dom";
 import { FaInstagram, FaTwitter, FaBars } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
+import { CiLogout } from "react-icons/ci";
+import { MdEvent } from "react-icons/md";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { useAuth } from "./auth/authUtils";
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isDesktop = useBreakpointValue({ base: false, md: true });
+  const navigate = useNavigate();
+  const { handleLogout } = useAuth();
 
+  const logoutUser = () => {
+    handleLogout();
+    navigate("/login");
+    onClose();
+  };
   return (
     <Box bg="green.600" p={4} position="fixed" width="100%" zIndex="1000">
       <Flex alignItems="center">
@@ -46,12 +58,18 @@ const Navbar = () => {
 
         {isDesktop ? (
           <>
-            <HStack ml={8} spacing={6}>
+            <HStack ml={8} spacing={8}>
               <Link as={RouteLink} to="/comedians" color="white">
-                <Text fontSize="md">Comediantes</Text>
+                <HStack>
+                  <Icon as={FaPeopleGroup} fontSize="xl" padding="0" />
+                  <Text fontSize="md">Comediantes</Text>
+                </HStack>
               </Link>
               <Link as={RouteLink} to="/shows" color="white">
-                <Text fontSize="md">Eventos</Text>
+                <HStack>
+                  <Icon as={MdEvent} fontSize="xl" padding="0" />
+                  <Text fontSize="md">Eventos</Text>
+                </HStack>
               </Link>
             </HStack>
             <Spacer />
@@ -88,6 +106,16 @@ const Navbar = () => {
                   color="white"
                 />
               </Link>
+
+              <IconButton
+                as="a"
+                aria-label="Logout"
+                onClick={() => logoutUser()}
+                icon={<CiLogout />}
+                variant="ghost"
+                fontSize="25px"
+                color="white"
+              />
             </HStack>
           </>
         ) : (
@@ -119,52 +147,84 @@ const Navbar = () => {
                 </DrawerHeader>
                 <DrawerBody>
                   <VStack spacing={4} align="start">
-                    <Link as={RouteLink} to="/comedians" color="green.600">
-                      <Text fontSize="md" fontWeight="semibold">
-                        Comediantes
-                      </Text>
+                    <Link
+                      as={RouteLink}
+                      to="/comedians"
+                      color="green.600"
+                      onClick={onClose}
+                    >
+                      <HStack>
+                        <Icon as={FaPeopleGroup} fontSize="xl" padding="0" />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Comediantes
+                        </Text>
+                      </HStack>
                     </Link>
-                    <Link as={RouteLink} to="/shows" color="green.600">
-                      <Text fontSize="md" fontWeight="semibold">
-                        Eventos
-                      </Text>
+                    <Link
+                      as={RouteLink}
+                      to="/shows"
+                      color="green.600"
+                      onClick={onClose}
+                    >
+                      <HStack>
+                        <Icon as={MdEvent} fontSize="xl" padding="0" />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Eventos
+                        </Text>
+                      </HStack>
                     </Link>
-                    <HStack spacing={4} mt={6}>
-                      {/* <IconButton
-                        as="a"
-                        href="https://www.instagram.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Instagram"
-                        icon={<FaInstagram />}
-                        variant="outline"
-                        fontSize="24px"
-                        color="green.600"
-                      />
-                      <IconButton
-                        as="a"
-                        href="https://www.twitter.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Twitter"
-                        icon={<FaTwitter />}
-                        variant="outline"
-                        fontSize="24px"
-                        color="green.600"
-                      /> */}
-                      <Link as={RouteLink} to="/profile" color="green.600">
-                        <IconButton
-                          as="a"
-                          aria-label="Profile"
-                          icon={<CgProfile />}
-                          variant="outline"
-                          fontSize="24px"
-                          color="green.600"
-                        />
-                      </Link>
-                    </HStack>
+                    <Link
+                      as={RouteLink}
+                      to="/profile"
+                      color="green.600"
+                      onClick={onClose}
+                    >
+                      <HStack>
+                        <Icon as={CgProfile} fontSize="xl" padding="0" />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Perfil
+                        </Text>
+                      </HStack>
+                    </Link>
                   </VStack>
                 </DrawerBody>
+                <DrawerFooter justifyContent="flex-start">
+                  <VStack spacing={4} align="start" w="100%">
+                    {/* Social Media Icons
+                    <HStack margin="auto">
+                      <Icon
+                        as={FaInstagram}
+                        fontSize="xl"
+                        padding="0"
+                        color="green.600"
+                      />
+                      <Icon
+                        as={FaTwitter}
+                        fontSize="xl"
+                        padding="0"
+                        color="green.600"
+                        ml={2}
+                      />
+                    </HStack> */}
+
+                    {/* Logout */}
+                    <HStack onClick={() => logoutUser()} mt={3}>
+                      <Icon
+                        as={CiLogout}
+                        fontSize="xl"
+                        padding="0"
+                        color="green.600"
+                      />
+                      <Text
+                        fontSize="md"
+                        fontWeight="semibold"
+                        color="green.600"
+                      >
+                        Logout
+                      </Text>
+                    </HStack>
+                  </VStack>
+                </DrawerFooter>
               </DrawerContent>
             </Drawer>
           </>
