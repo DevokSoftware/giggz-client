@@ -22,13 +22,15 @@ const OAuth2RedirectHandler: React.FC = () => {
     if (accessToken) {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      navigate("/profile", { state: { from: location } });
-    } else {
-      navigate("/login", { state: { from: location, error: error } });
-    }
-  }, [accessToken, error, navigate, location]);
 
-  return null;
+      if (window.opener) {
+        window.opener.location.href = "/profile";
+      }
+    }
+    window.close();
+  }, [accessToken, refreshToken, error]);
+
+  return null; // This component does not render anything
 };
 
 export default OAuth2RedirectHandler;

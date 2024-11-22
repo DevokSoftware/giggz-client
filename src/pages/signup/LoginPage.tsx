@@ -7,14 +7,23 @@ import {
   FormLabel,
   Text,
   VStack,
+  Divider,
+  HStack,
+  Icon,
+  IconButton,
+  Image,
+  useTheme,
 } from "@chakra-ui/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import useApi from "../../services/useApi";
 import { AuthenticationService } from "../../services/openapi";
 import { useNavigate } from "react-router-dom";
+import { FaGoogle } from "react-icons/fa";
+import classes from "./LoginSignupPage.module.scss";
 
 const LoginPage = () => {
   const { isLoading, handleRequest, error } = useApi();
+  const theme = useTheme();
   const navigate = useNavigate();
   const signUpWithEmail = async (values: {
     email: string;
@@ -30,7 +39,7 @@ const LoginPage = () => {
       }
       if (!error) {
         console.log(error);
-        navigate("/comedians");
+        navigate("/profile");
       }
     } catch (err: any) {
       console.error(err.message);
@@ -40,15 +49,24 @@ const LoginPage = () => {
   // Handle Google sign-in through backend
   const signUpWithGoogle = async () => {
     // Redirect user to Spring Security's OAuth2 login endpoint
-    window.location.href =
-      process.env.REACT_APP_API_ENDPOINT + "/oauth2/authorization/google";
+    const width = 600; // Width of the popup
+    const height = 600; // Height of the popup
+    const left = window.innerWidth / 2 - width / 2; // Center horizontally
+    const top = window.innerHeight / 2 - height / 2; // Center vertically
+
+    // Open a new popup window for Spring Security's OAuth2 login endpoint
+    window.open(
+      `${process.env.REACT_APP_API_ENDPOINT}/oauth2/authorization/google`,
+      "GoogleLoginPopup", // Name of the window
+      `width=${width},height=${height},top=${top},left=${left}` // Popup features
+    );
   };
 
   return (
-    <Box maxW="md" mx="auto" mt={10} p={5} boxShadow="md" borderRadius="md">
-      <Text fontSize="2xl" mb={6}>
+    <Box maxW="md" mx="auto" mt={8} p={5}>
+      {/* <Text as="b" fontSize="xl" mb={6} textAlign="center" color="green.700">
         Login
-      </Text>
+      </Text> */}
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={(values, { setSubmitting }) => {
@@ -60,39 +78,75 @@ const LoginPage = () => {
           <Form>
             <VStack spacing={4}>
               <FormControl id="email" isRequired>
-                <FormLabel>Email</FormLabel>
+                <FormLabel color="green.700">Email</FormLabel>
                 <Field
+                  borderColor="gray.400"
+                  _hover={{ borderColor: "gray.500" }}
+                  color="green.600"
                   name="email"
                   as={Input}
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Insere o teu e-mail"
                 />
                 <ErrorMessage name="email" component={Text} />
               </FormControl>
 
               <FormControl id="password" isRequired>
-                <FormLabel>Password</FormLabel>
+                <FormLabel color="green.700">Password</FormLabel>
                 <Field
+                  borderColor="gray.400"
+                  _hover={{ borderColor: "gray.500" }}
+                  color="green.600"
                   name="password"
                   as={Input}
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Insere a tua password"
                 />
                 <ErrorMessage name="password" component={Text} />
               </FormControl>
 
-              <Button
-                type="submit"
-                colorScheme="blue"
-                isLoading={isSubmitting}
-                width="full"
-              >
-                Login with Email
-              </Button>
+              <HStack width="full" mt={2}>
+                <Button
+                  type="submit"
+                  color="white"
+                  backgroundColor="green.500"
+                  _hover={{ backgroundColor: "green.400" }}
+                  isLoading={isSubmitting}
+                  width="full"
+                  value="Entrar"
+                >
+                  Entrar
+                </Button>
 
-              <Button colorScheme="red" onClick={signUpWithGoogle} width="full">
-                Login with Google
-              </Button>
+                <Text fontSize="xs" w="20%" color="green.700">
+                  ou
+                </Text>
+
+                <Image
+                  borderRadius="full"
+                  border={`1px solid ${theme.colors.gray[300]}`}
+                  boxSize="40px"
+                  src="/google.webp"
+                  mx="auto"
+                  objectFit="cover"
+                  cursor="pointer"
+                  onClick={() => signUpWithGoogle()}
+                />
+              </HStack>
+
+              <Divider my={2} />
+
+              <Text textAlign="center" fontSize="xs" as="b" color="green.600">
+                Ainda não tens conta?&nbsp;
+                <Button
+                  variant="link"
+                  colorScheme="green"
+                  fontSize="xs"
+                  onClick={() => navigate("/signup")}
+                >
+                  Regista-te!
+                </Button>
+              </Text>
             </VStack>
           </Form>
         )}

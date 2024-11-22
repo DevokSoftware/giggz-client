@@ -218,7 +218,7 @@ const ComedianDetailsPage = () => {
         <Image
           className={classes.comedian_image}
           borderRadius="full"
-          src={comedian.picture}
+          src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
           alt={`${comedian.name}'s image`}
           mx="auto"
           //modify this boxShadow
@@ -552,7 +552,7 @@ const ComedianDetailsPage = () => {
                                 {show.name}
                               </Text>
                             )}
-                            <Icon
+                            {/* <Icon
                               as={FaRegEye}
                               onClick={() => {
                                 setAttendedEvent(show);
@@ -565,7 +565,7 @@ const ComedianDetailsPage = () => {
                               fontSize="xl"
                               padding="0"
                               ml={1}
-                            />
+                            /> */}
                           </>
                         </HStack>
                         <VStack alignItems="start" spacing={0} mt={2}>

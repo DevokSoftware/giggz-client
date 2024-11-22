@@ -84,7 +84,6 @@ const ComediansPage = () => {
     });
   };
 
-  
   return (
     <Box mt={{ base: 2, sm: 3, md: 10, lg: 10 }}>
       <Box
@@ -126,7 +125,7 @@ const ComediansPage = () => {
                           sm: "100px",
                           lg: "130px",
                         }}
-                        src={comedian.picture}
+                        src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
                         alt={comedian.name}
                         mx="auto"
                         objectFit="cover"

@@ -33,12 +33,12 @@ import ComedianDetailsPage from "./pages/comedian-details/ComedianDetailsPage";
 import EventsPage from "./pages/events/EventsPage";
 import StandupDetailsPage from "./pages/standup-details/StandupDetailsPage";
 import Homepage from "./pages/homepage/Homepage";
-import SignUpPage from "./pages/signup/SignUpPage";
 import OAuth2RedirectHandler from "./components/auth/OAuth2RedirectHandler";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import ProfilePage from "./pages/user/profile/ProfilePage";
 import { useAuth } from "./components/auth/authUtils";
 import LoginPage from "./pages/signup/LoginPage";
+import SignupPage from "./pages/signup/SignupPage";
 
 const theme = extendTheme({
   fonts: {
@@ -73,8 +73,8 @@ export const App = () => {
                 path="/oauth2/redirect"
                 element={<OAuth2RedirectHandler />}
               ></Route>
-              <Route path="/" element={<Navigate to="/comedians" />} />
-              <Route path="*" element={<Navigate to="/comedians" />} />
+              <Route path="/" element={<Navigate to="/homepage" />} />
+              <Route path="*" element={<Navigate to="/homepage" />} />
               <Route path="/comedians" element={<Outlet />}>
                 <Route path="" element={<ComediansPage />} />
                 <Route
@@ -93,12 +93,12 @@ export const App = () => {
               </Route>
 
               <Route path="/signup" element={<Outlet />}>
-                <Route path="" element={<SignUpPage />} />
+                <Route path="" element={<SignupPage />} />
               </Route>
               <Route path="/login" element={<Outlet />}>
                 <Route path="" element={<LoginPage />} />
               </Route>
-              <Route path="/comedians" element={<Outlet />}>
+              <Route path="/homepage" element={<Outlet />}>
                 <Route path="" element={<Homepage />} />
               </Route>
             </Routes>

@@ -143,45 +143,46 @@ const StandupDetailsPage = () => {
       size="xl"
     />
   ) : (
-    <Grid templateColumns={{ base: "1fr", md: "repeat(5, 1fr)" }} gap={4}>
-      <GridItem colSpan={{ base: 5, md: 2 }}>
-        <Box mx="auto">
-          <Box textAlign="center" p={4}>
-            <Image
-              // className={classes.comedian_image}
-              borderRadius="20px"
-              src={standup.poster}
-              mx="auto"
-              //modify this boxShadow
-              boxShadow="3px 3px 13px 2px rgb(0 128 0 / 20%)"
-              border={`1px solid ${theme.colors.green[600]}`}
-              boxSize={{
-                base: "120px",
-                sm: "120px",
-                md: "150px",
-                lg: "200px",
-              }}
-              objectFit="cover"
-            />
+    <Box mt={{ base: 2, sm: 3, md: 5, lg: 5 }}>
+      <Box
+        pl={{ base: 4, sm: 5, md: 10, lg: 20 }}
+        pr={{ base: 4, sm: 5, md: 10, lg: 20 }}
+        maxW="1000px"
+        mx="auto"
+      >
+        <Box mx="auto" textAlign="center">
+          <Image
+            // className={classes.comedian_image}
+            borderRadius="20px"
+            src={standup.poster}
+            mx="auto"
+            //modify this boxShadow
+            boxShadow="3px 3px 13px 2px rgb(0 128 0 / 20%)"
+            border={`1px solid ${theme.colors.green[600]}`}
+            boxSize={{
+              base: "120px",
+              sm: "120px",
+              md: "150px",
+              lg: "200px",
+            }}
+            objectFit="cover"
+          />
 
-            <Heading size="md" color="green.700" mt={5}>
-              {standup.name}
-            </Heading>
-            <Box maxW="400px" mx="auto" textAlign="left">
-              <Text fontSize="xs" mt={3} color="green.600" textAlign="justify">
-                {standup.description?.split("\n\n").map((paragraph, index) => (
-                  <p key={index} style={{ marginBottom: "1em" }}>
-                    {paragraph}
-                  </p>
-                ))}
-              </Text>
-            </Box>
+          <Heading size="md" color="green.700" mt={5}>
+            {standup.name}
+          </Heading>
+          <Box mx="auto" textAlign="left">
+            <Text fontSize="xs" mt={3} color="gray.600" textAlign="justify">
+              {standup.description?.split("\n\n").map((paragraph, index) => (
+                <p key={index} style={{ marginBottom: "1em" }}>
+                  {paragraph}
+                </p>
+              ))}
+            </Text>
           </Box>
         </Box>
-      </GridItem>
 
-      <GridItem colSpan={{ base: 5, md: 3 }} padding={5}>
-        <VStack spacing={4} align="stretch" maxW="700px">
+        <VStack spacing={4} align="stretch" mt={10}>
           <Heading textAlign="left" size="md" color="green.600">
             Todas as datas:
           </Heading>
@@ -222,10 +223,16 @@ const StandupDetailsPage = () => {
                 >
                   <VStack alignItems="start" spacing={0} flex="1" ml={3}>
                     <HStack>
-                      <Text fontSize="sm" color="black" fontWeight="bold">
+                      <Text
+                        fontSize="sm"
+                        color="black"
+                        fontWeight="bold "
+                        noOfLines={1}
+                        textAlign="left"
+                      >
                         {show.location?.name}
                       </Text>
-                      {isPastDate(show.date) && (
+                      {/* {isPastDate(show.date) && (
                         <Icon
                           as={FaRegEye}
                           onClick={() => {
@@ -240,7 +247,7 @@ const StandupDetailsPage = () => {
                           padding="0"
                           ml={1}
                         />
-                      )}
+                      )} */}
                     </HStack>
                     <Text fontSize="xs" color="black" mt={1}>
                       {displayLocationAddress(show.location)}
@@ -259,8 +266,8 @@ const StandupDetailsPage = () => {
             </>
           )}
         </VStack>
-      </GridItem>
-    </Grid>
+      </Box>
+    </Box>
   );
 };
 

@@ -106,16 +106,18 @@ const Navbar = () => {
                   color="white"
                 />
               </Link>
-
-              <IconButton
-                as="a"
-                aria-label="Logout"
-                onClick={() => logoutUser()}
-                icon={<CiLogout />}
-                variant="ghost"
-                fontSize="25px"
-                color="white"
-              />
+              {localStorage.getItem("accessToken") && (
+                <IconButton
+                  as="a"
+                  aria-label="Logout"
+                  onClick={() => logoutUser()}
+                  icon={<CiLogout />}
+                  variant="ghost"
+                  fontSize="25px"
+                  color="white"
+                  cursor="pointer"
+                />
+              )}
             </HStack>
           </>
         ) : (
@@ -208,21 +210,23 @@ const Navbar = () => {
                     </HStack> */}
 
                     {/* Logout */}
-                    <HStack onClick={() => logoutUser()} mt={3}>
-                      <Icon
-                        as={CiLogout}
-                        fontSize="xl"
-                        padding="0"
-                        color="green.600"
-                      />
-                      <Text
-                        fontSize="md"
-                        fontWeight="semibold"
-                        color="green.600"
-                      >
-                        Logout
-                      </Text>
-                    </HStack>
+                    {localStorage.getItem("accessToken") && (
+                      <HStack onClick={() => logoutUser()} mt={3}>
+                        <Icon
+                          as={CiLogout}
+                          fontSize="xl"
+                          padding="0"
+                          color="green.600"
+                        />
+                        <Text
+                          fontSize="md"
+                          fontWeight="semibold"
+                          color="green.600"
+                        >
+                          Logout
+                        </Text>
+                      </HStack>
+                    )}
                   </VStack>
                 </DrawerFooter>
               </DrawerContent>

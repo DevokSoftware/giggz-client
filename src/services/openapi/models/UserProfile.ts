@@ -14,7 +14,11 @@ export type UserProfile = {
     /**
      * The name of the user.
      */
-    name: string;
+    firstName?: string;
+    /**
+     * The name of the user.
+     */
+    lastName?: string;
     /**
      * The timestamp when the user account was created.
      */

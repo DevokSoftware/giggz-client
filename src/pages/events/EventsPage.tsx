@@ -128,7 +128,6 @@ const EventsPage = () => {
           : await eventsHandleRequest(
               EventServiceTemp.eventsGet(updatedPageable, filters)
             );
-      console.log(isLoading);
       setPageable(updatedPageable);
       setEvents(eventsResponse?.content || []);
       setEventPagination({
@@ -396,7 +395,7 @@ const EventsPage = () => {
                           {event.name}
                         </Text>
                       )}
-                      {isPastDate(event.date) && (
+                      {/* {isPastDate(event.date) && (
                         <Icon
                           as={FaRegEye}
                           onClick={() => {
@@ -411,7 +410,7 @@ const EventsPage = () => {
                           padding="0"
                           ml={1}
                         />
-                      )}
+                      )} */}
                     </HStack>
                     <VStack alignItems="start" spacing={0} mt={2}>
                       <Text
@@ -437,7 +436,7 @@ const EventsPage = () => {
                         {event.comedians?.map((comedian) => (
                           <RouteLink to={`/comedians/${comedian.id}`}>
                             <Image
-                              src={comedian.picture}
+                              src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
                               boxSize="20px"
                               objectFit="cover"
                               borderRadius="full"
@@ -450,7 +449,7 @@ const EventsPage = () => {
                         {event.comedians?.map((comedian) => (
                           <HStack mr={3}>
                             <Image
-                              src={comedian.picture}
+                              src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
                               boxSize="20px"
                               objectFit="cover"
                               borderRadius="full"

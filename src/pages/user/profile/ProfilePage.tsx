@@ -7,28 +7,51 @@ import {
   SimpleGrid,
   Heading,
   Image,
+  Button,
 } from "@chakra-ui/react";
 import useApi from "../../../services/useApi";
-import { EventResponse, UserService } from "../../../services/openapi";
+import {
+  EventResponse,
+  UserProfile,
+  UserService,
+} from "../../../services/openapi";
 import moment from "moment";
 
+import classes from "./ProfilePage.module.scss";
+import { useNavigate } from "react-router-dom";
+
 const ProfilePage: React.FC = () => {
+  const navigate = useNavigate();
   const { isLoading, handleRequestWithToken, handleRequest } = useApi();
   const [events, setEvents] = useState<EventResponse[]>([]);
+  const [profile, setProfile] = useState<UserProfile>();
+
+  // const fetchAttendedEvents = async () => {
+  //   try {
+  //     const attendedEventsResponse = await handleRequestWithToken(() =>
+  //       UserService.meEventsAttendedGet()
+  //     );
+  //     setEvents(attendedEventsResponse || []);
+  //     // const standupResponse = await handleRequestWithToken(UserService.profileGet());
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  const fetchProfile = async () => {
+    try {
+      const profileResponse = await handleRequestWithToken(() =>
+        UserService.meProfileGet()
+      );
+      setProfile(profileResponse);
+      // const standupResponse = await handleRequestWithToken(UserService.profileGet());
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchStandup = async () => {
-      try {
-        const attendedEventsResponse = await handleRequestWithToken(() =>
-          UserService.meEventsAttendedGet()
-        );
-        setEvents(attendedEventsResponse || []);
-        // const standupResponse = await handleRequestWithToken(UserService.profileGet());
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchStandup();
+    // fetchAttendedEvents();
+    fetchProfile();
   }, [handleRequest]);
 
   return (
@@ -47,10 +70,29 @@ const ProfilePage: React.FC = () => {
             color="green.600"
             size="xl"
           />
+        ) : events.length === 0 ? (
+          <>
+            <Text fontSize="md" color="green.700" textAlign="center">
+              Em breve poderás registar aqui todos os eventos que assististe no
+              passado! :)
+            </Text>
+            {/* <Button
+              mt="3"
+              w="xs"
+              colorScheme="green"
+              value="Entrar"
+              onClick={() => {
+                navigate("/shows");
+              }}
+            >
+              Registar Eventos
+            </Button> */}
+          </>
         ) : (
           <>
-            <Text fontSize="md" color="green.700" textAlign="left">
-              John Smith, este são os eventos em que marcaste presença!
+            <Text fontSize="md" color="green.700" textAlign="center">
+              {profile?.firstName}, este são os eventos em que marcaste
+              presença!
             </Text>
 
             <SimpleGrid
@@ -75,6 +117,7 @@ const ProfilePage: React.FC = () => {
                     mx="auto"
                     objectFit="cover"
                     cursor="pointer"
+                    className={classes.show_card}
                   />
                   <Heading
                     fontSize="sm"

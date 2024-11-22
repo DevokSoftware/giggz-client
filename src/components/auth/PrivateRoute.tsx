@@ -13,7 +13,6 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ redirectPath }) => {
   React.useEffect(() => {
     const checkAuthStatus = async () => {
       const token = localStorage.getItem("accessToken");
-      console.log(token);
       setAuthStatus(token !== null && token !== "");
     };
 

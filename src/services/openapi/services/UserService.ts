@@ -51,6 +51,21 @@ export class UserService {
         });
     }
     /**
+     * Get logged user's profile
+     * Retrieve the authenticated user's profile information.
+     * @returns UserProfile Successfully retrieved logged user's profile
+     * @throws ApiError
+     */
+    public static meProfileGet(): CancelablePromise<UserProfile> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/me/profile',
+            errors: {
+                401: `Unauthorized (invalid or missing token)`,
+            },
+        });
+    }
+    /**
      * Get Events attended by logged user
      * Retrieve all the Events attended by logged user
      * @returns EventResponse Successfully retrieved events attended by logged user
