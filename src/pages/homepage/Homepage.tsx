@@ -70,7 +70,7 @@ const Homepage = () => {
             />
             <Feature
               title="Conteúdo"
-              description="Links diretos para podcasts, stand-up specials e vídeos no YouTube."
+              description="Links diretos para podcasts, stand-up specials, patreon e vídeos no YouTube."
               // icon="/youtube_icon.png"
               icon={FiPlayCircle}
             />
@@ -81,7 +81,7 @@ const Homepage = () => {
             /> */}
             <Feature
               title="Pesquisar eventos"
-              description="Encontra eventos por localização, data ou comediante."
+              description="Encontra eventos numa localização, data ou comediante à tua escolha."
               // icon="/comedy.webp"
               icon={MdEvent}
             />
@@ -131,14 +131,19 @@ const Homepage = () => {
         </Box>
         {/* Trending Section */}
         <Box mt="10vh">
-          <Heading size="md" mb={4} textAlign="center" color="green.500">
-            Trending Now!
+          <Heading size="md" mb={6} textAlign="center" color="green.500">
+            Eventos em destaque!
           </Heading>
-          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6}>
+          <SimpleGrid columns={{ base: 1, md: 4 }} spacing={6}>
             <TrendingCard
               title="Andre Pinheiro"
               description="Doubles - Freakshow - Dec 10th, Lisbon"
               image="/comedians/andrepinheiro.png"
+            />
+            <TrendingCard
+              title="Diogo Batáguas"
+              description="Conteúdo do Batáguas - Mar 20th, Porto"
+              image="/comedians/diogobataguas.png"
             />
             <TrendingCard
               title="Joana Marques"
@@ -146,9 +151,9 @@ const Homepage = () => {
               image="/comedians/joanamarques.png"
             />
             <TrendingCard
-              title="Diogo Batáguas"
-              description="Conteúdo do Batáguas - Mar 20th, Porto"
-              image="/comedians/diogobataguas.png"
+              title="Salvador Martinha"
+              description="Aura Super Jovem - Apr 7th, Coimbra"
+              image="/comedians/salvadormartinha.png"
             />
           </SimpleGrid>
         </Box>
@@ -193,7 +198,7 @@ const TrendingCard = ({ title, description, image }: any) => (
     overflow="hidden"
     align="center"
     textAlign="center"
-    boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+    boxShadow="0px 0px 9px 2px #276749a8;"
     // border="1px solid"
     // borderColor="green.600"
     borderRadius="10px"
