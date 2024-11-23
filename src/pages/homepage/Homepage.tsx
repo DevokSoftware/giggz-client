@@ -23,8 +23,9 @@ const Homepage = () => {
   return (
     <>
       <Box
+        pl={{ base: 3, sm: 5, md: 10, lg: 20 }}
+        pr={{ base: 3, sm: 5, md: 10, lg: 20 }}
         mt={{ base: 2, sm: 3, md: 4, lg: 4 }}
-        px={{ base: 4, md: 10 }}
         maxW="1300px"
         mx="auto"
       >
@@ -49,7 +50,7 @@ const Homepage = () => {
             </Text>
             <HStack spacing={4}>
               <Button
-                fontSize="xs"
+                fontSize="sm"
                 background="green.400"
                 border={`2px solid ${theme.colors.green[500]}`}
                 borderRadius="8px"
@@ -63,7 +64,7 @@ const Homepage = () => {
                 Encontra Comediantes
               </Button>
               <Button
-                fontSize="xs"
+                fontSize="sm"
                 background="green.400"
                 border={`2px solid ${theme.colors.green[500]}`}
                 borderRadius="8px"
@@ -120,7 +121,7 @@ const Homepage = () => {
           </SimpleGrid>
         </Box>
         {/* Trending Section */}
-        <Box mt="10vh">
+        <Box mt="5vh">
           <Heading size="md" mb={4} textAlign="center" color="green.600">
             Trending Now
           </Heading>
@@ -144,7 +145,7 @@ const Homepage = () => {
         </Box>
         {/* Footer */}
       </Box>
-      <Box bg="green.600" color="white" py={8} mt={15} textAlign="center">
+      <Box bg="green.600" color="white" py={8} mt="5vh" textAlign="center">
         <Text fontSize="sm">© 2024 Giggz. All rights reserved.</Text>
         <Text fontSize="sm">“A day without laughter is a day wasted.”</Text>
       </Box>

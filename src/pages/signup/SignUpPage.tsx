@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 // Validation schema using Yup
 
-const SignupPage = () => {
+const SignUpPage = () => {
   const { isLoading, handleRequest } = useApi();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -174,4 +174,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default SignUpPage;

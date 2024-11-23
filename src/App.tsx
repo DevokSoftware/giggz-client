@@ -1,18 +1,4 @@
-import * as React from "react";
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  extendTheme,
-  Container,
-  Stack,
-  Heading,
-} from "@chakra-ui/react";
-import { ColorModeSwitcher } from "./ColorModeSwitcher";
+import { ChakraProvider, Box, extendTheme } from "@chakra-ui/react";
 
 import ComediansPage from "./pages/comedians/ComediansPage";
 import Navbar from "./components/Navbar";
@@ -25,7 +11,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link as RouteLink,
   Navigate,
   Outlet,
 } from "react-router-dom";
@@ -36,9 +21,8 @@ import Homepage from "./pages/homepage/Homepage";
 import OAuth2RedirectHandler from "./components/auth/OAuth2RedirectHandler";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import ProfilePage from "./pages/user/profile/ProfilePage";
-import { useAuth } from "./components/auth/authUtils";
 import LoginPage from "./pages/signup/LoginPage";
-import SignupPage from "./pages/signup/SignupPage";
+import SignUpPage from "./pages/signup/SignupPage";
 
 const theme = extendTheme({
   fonts: {
@@ -93,7 +77,7 @@ export const App = () => {
               </Route>
 
               <Route path="/signup" element={<Outlet />}>
-                <Route path="" element={<SignupPage />} />
+                <Route path="" element={<SignUpPage />} />
               </Route>
               <Route path="/login" element={<Outlet />}>
                 <Route path="" element={<LoginPage />} />
