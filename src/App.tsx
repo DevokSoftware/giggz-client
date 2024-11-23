@@ -22,7 +22,7 @@ import OAuth2RedirectHandler from "./components/auth/OAuth2RedirectHandler";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import ProfilePage from "./pages/user/profile/ProfilePage";
 import LoginPage from "./pages/signup/LoginPage";
-import SignUpPage from "./pages/signup/SignupPage";
+import SignUpPage from "./pages/signup/SignUpPage";
 
 const theme = extendTheme({
   fonts: {
