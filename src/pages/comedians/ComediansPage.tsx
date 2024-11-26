@@ -118,7 +118,7 @@ const ComediansPage = () => {
                       <Image
                         className={classes.comedian_image}
                         boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
-                        borderRadius="full"
+                        borderRadius="25px"
                         border={`3px solid ${theme.colors.white}`}
                         boxSize={{
                           base: "90px",
@@ -134,7 +134,7 @@ const ComediansPage = () => {
                     </RouteLink>
                     <Heading
                       fontSize="sm"
-                      color="green.700"
+                      color="green.600"
                       mt={{ base: 1, lg: 2 }}
                     >
                       {comedian.name}

@@ -354,9 +354,10 @@ const ComedianDetailsPage = () => {
                   <Link href={content.url} isExternal>
                     <Image
                       boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                      p={1}
                       className={classes.content_image}
-                      borderRadius="full"
-                      border={`3px solid ${theme.colors.white}`}
+                      borderRadius="20px"
+                      border={`1px solid ${theme.colors.gray[200]}`}
                       boxSize={{
                         base: "70px",
                         sm: "70px",
@@ -365,7 +366,6 @@ const ComedianDetailsPage = () => {
                       }}
                       src={getContentIcon(content.contentType)}
                       mx="auto"
-                      objectFit="cover"
                       cursor="pointer"
                     />
                   </Link>
@@ -399,7 +399,7 @@ const ComedianDetailsPage = () => {
                     <Flex
                       key={index}
                       boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-                      border="2px solid"
+                      border="1px solid"
                       borderColor="green.600"
                       borderRadius="20px"
                       cursor="pointer"
@@ -503,7 +503,7 @@ const ComedianDetailsPage = () => {
                     <Flex
                       key={index}
                       boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-                      border="2px solid"
+                      border="1px solid"
                       borderColor="green.600"
                       borderRadius="20px"
                       cursor="pointer"
