@@ -354,6 +354,7 @@ const ComedianDetailsPage = () => {
                   <Link href={content.url} isExternal>
                     <Image
                       boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                      backgroundColor="white"
                       p={1}
                       className={classes.content_image}
                       borderRadius="20px"
