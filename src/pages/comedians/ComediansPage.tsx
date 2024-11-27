@@ -121,9 +121,9 @@ const ComediansPage = () => {
                         borderRadius="25px"
                         border={`3px solid ${theme.colors.white}`}
                         boxSize={{
-                          base: "90px",
-                          sm: "100px",
-                          lg: "130px",
+                          base: "110px",
+                          sm: "120px",
+                          lg: "140px",
                         }}
                         src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
                         alt={comedian.name}

@@ -360,10 +360,10 @@ const ComedianDetailsPage = () => {
                       borderRadius="20px"
                       border={`1px solid ${theme.colors.gray[200]}`}
                       boxSize={{
-                        base: "70px",
-                        sm: "70px",
-                        md: "80px",
-                        lg: "90px",
+                        base: "90px",
+                        sm: "90px",
+                        md: "100px",
+                        lg: "100px",
                       }}
                       src={getContentIcon(content.contentType)}
                       mx="auto"

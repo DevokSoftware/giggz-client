@@ -30,7 +30,7 @@ const Homepage = () => {
       <Box
         pl={{ base: 3, sm: 5, md: 10, lg: 20 }}
         pr={{ base: 3, sm: 5, md: 10, lg: 20 }}
-        mt={{ base: 2, sm: 3, md: 10, lg: 10 }}
+        mt={{ base: 1, sm: 2, md: 10, lg: 10 }}
         maxW="1200px"
         mx="auto"
       >
@@ -40,7 +40,6 @@ const Homepage = () => {
           justify="space-between"
           align="center"
           p={3}
-          mb={8}
           borderColor="green.600"
           borderRadius="20px"
         >
@@ -48,7 +47,11 @@ const Homepage = () => {
             <Heading size="xl" color="green.500">
               Descobre a comédia como nunca antes
             </Heading>
-            <Text fontSize="md" color="gray.600">
+            <Text
+              fontSize="md"
+              color="gray.600"
+              textAlign={{ base: "justify", md: "center", lg: "center" }}
+            >
               Encontra os teus comediantes favoritos, os seus próximos eventos e
               todo o seu conteúdo online num só lugar. Planeia a tua próxima
               noite de comédia hoje!
@@ -57,11 +60,16 @@ const Homepage = () => {
         </Flex>
 
         {/* Features Section */}
-        <Box mt="5vh">
+        <Box mt={{ base: 2, sm: 2, md: 8, lg: 8 }}>
           {/* <Heading size="md" mb={4} textAlign="center" color="green.600">
             Algumas características:
           </Heading> */}
-          <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={6} mb={10}>
+          <SimpleGrid
+            columns={{ base: 1, sm: 2, md: 3 }}
+            spacing={5}
+            pl={{ base: 3, sm: 5, md: 10, lg: 10 }}
+            pr={{ base: 3, sm: 5, md: 10, lg: 10 }}
+          >
             <Feature
               title="Comediantes"
               description="Explora os perfis dos teus comediantes favoritos com acesso rápido ao seu conteúdo."
@@ -130,11 +138,16 @@ const Homepage = () => {
           </HStack> */}
         </Box>
         {/* Trending Section */}
-        <Box mt="10vh">
-          <Heading size="md" mb={6} textAlign="center" color="green.500">
+        <Box mt={{ base: 4, sm: 4, md: 10, lg: 10 }} mb={3}>
+          <Heading size="md" mb={4} textAlign="center" color="green.500">
             Eventos em destaque!
           </Heading>
-          <SimpleGrid columns={{ base: 1, md: 4 }} spacing={6}>
+          <SimpleGrid
+            columns={{ base: 1, md: 4 }}
+            spacing={5}
+            pl={{ base: 3, sm: 5, md: 10, lg: 10 }}
+            pr={{ base: 3, sm: 5, md: 10, lg: 10 }}
+          >
             <TrendingCard
               title="Andre Pinheiro"
               description="Doubles - Freakshow - Dec 10th, Lisbon"
@@ -177,7 +190,7 @@ const Feature = ({ title, description, icon }: any) => (
     // borderColor="green.600"
     borderRadius="20px"
     className={classes.show_card}
-    spacing={4}
+    spacing={3}
     textAlign="center"
   >
     {/* <Image src={icon} alt={title} boxSize="80px" borderRadius="10px" /> */}
@@ -185,7 +198,7 @@ const Feature = ({ title, description, icon }: any) => (
     <Heading size="md" color="green.700">
       {title}
     </Heading>
-    <Text fontSize="sm" color="gray.600">
+    <Text fontSize="sm" color="gray.600" textAlign="center">
       {description}
     </Text>
   </VStack>
@@ -198,7 +211,7 @@ const TrendingCard = ({ title, description, image }: any) => (
     overflow="hidden"
     align="center"
     textAlign="center"
-    boxShadow="0px 0px 9px 2px #276749a8;"
+    boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
     // border="1px solid"
     // borderColor="green.600"
     borderRadius="10px"
