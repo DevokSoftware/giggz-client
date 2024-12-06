@@ -40,3 +40,38 @@
   z-index: 2000;
   background-color: red($color: #000000);
 }
+
+:global {
+  .react-datepicker__header {
+    background-color: #2f855a;
+    font-family: "Raleway", sans-serif;
+  }
+  .react-datepicker__current-month {
+    color: white;
+  }
+  .react-datepicker__day-name {
+    color: white;
+  }
+  .react-datepicker__day--in-range {
+    background-color: #2f855a;
+    // border: 1px solid black;
+    color: white;
+  }
+  .react-datepicker__day--in-range:hover {
+    background-color: #22c55e;
+  }
+  .react-datepicker__day--keyboard-selected {
+    background-color: #2f855a !important;
+    // border: 1px solid black;
+    color: white;
+  }
+  .react-datepicker__day--in-selecting-range {
+    background-color: #2f855a !important;
+    // border: 1px solid black;
+    color: white;
+  }
+  .react-datepicker__day {
+    font-family: "Raleway", sans-serif;
+    // margin: 3px;
+  }
+}

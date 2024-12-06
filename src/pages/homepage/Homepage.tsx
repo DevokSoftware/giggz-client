@@ -1,5 +1,5 @@
 // Homepage.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Heading,
@@ -14,16 +14,38 @@ import {
   Flex,
   Stack,
   Icon,
+  Spinner,
 } from "@chakra-ui/react";
 import classes from "./Homepage.module.scss";
 import { useNavigate } from "react-router-dom";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { MdEvent } from "react-icons/md";
 import { FiPlayCircle } from "react-icons/fi";
+import { EventResponse, EventService } from "../../services/openapi";
+import useApi from "../../services/useApi";
+import moment from "moment";
 
 const Homepage = () => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const [events, setEvents] = useState<EventResponse[]>([]);
+  const { isLoading, handleRequest } = useApi();
+
+  const fetchEvents = async () => {
+    try {
+      const eventsResponse = await handleRequest(
+        EventService.eventsTrendingGet()
+      );
+      setEvents(eventsResponse || []);
+    } catch (error) {
+      // TODO handle this errors in a generic way
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, [handleRequest]);
 
   return (
     <>
@@ -138,37 +160,32 @@ const Homepage = () => {
           </HStack> */}
         </Box>
         {/* Trending Section */}
-        <Box mt={{ base: 4, sm: 4, md: 10, lg: 10 }} mb={3}>
+        <Box mt={{ base: 8, sm: 8, md: 10, lg: 10 }} mb={3}>
           <Heading size="md" mb={4} textAlign="center" color="green.500">
             Eventos em destaque!
           </Heading>
-          <SimpleGrid
-            columns={{ base: 1, md: 4 }}
-            spacing={5}
-            pl={{ base: 3, sm: 5, md: 10, lg: 10 }}
-            pr={{ base: 3, sm: 5, md: 10, lg: 10 }}
-          >
-            <TrendingCard
-              title="Andre Pinheiro"
-              description="Doubles - Freakshow - Dec 10th, Lisbon"
-              image="/comedians/andrepinheiro.png"
+
+          {isLoading ? (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="green.600"
+              size="xl"
+              mt={10}
             />
-            <TrendingCard
-              title="Diogo Batáguas"
-              description="Conteúdo do Batáguas - Mar 20th, Porto"
-              image="/comedians/diogobataguas.png"
-            />
-            <TrendingCard
-              title="Joana Marques"
-              description="Extremamente Desagradável ao vivo - Jan 18th, Lisbon"
-              image="/comedians/joanamarques.png"
-            />
-            <TrendingCard
-              title="Salvador Martinha"
-              description="Aura Super Jovem - Apr 7th, Coimbra"
-              image="/comedians/salvadormartinha.png"
-            />
-          </SimpleGrid>
+          ) : (
+            <SimpleGrid
+              columns={{ base: 1, md: 4 }}
+              spacing={5}
+              pl={{ base: 3, sm: 5, md: 10, lg: 10 }}
+              pr={{ base: 3, sm: 5, md: 10, lg: 10 }}
+            >
+              {events?.map((event, index) => (
+                <TrendingCard event={event} />
+              ))}
+            </SimpleGrid>
+          )}
         </Box>
 
         {/* Footer */}
@@ -204,29 +221,51 @@ const Feature = ({ title, description, icon }: any) => (
   </VStack>
 );
 
-const TrendingCard = ({ title, description, image }: any) => (
-  <Flex
-    direction="column"
-    bg="white"
-    overflow="hidden"
-    align="center"
-    textAlign="center"
-    boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-    // border="1px solid"
-    // borderColor="green.600"
-    borderRadius="10px"
-    className={classes.show_card}
-  >
-    <Image src={image} alt={title} objectFit="cover" w="100%" h="200px" />
-    <Box p={4}>
-      <Heading size="md" color="green.700">
-        {title}
-      </Heading>
-      <Text fontSize="sm" color="gray.600" mt={2}>
-        {description}
-      </Text>
-    </Box>
-  </Flex>
-);
+const TrendingCard = ({ event }: { event: EventResponse }) => {
+  const formatDate = (date?: string) => {
+    const momentDate = moment(date);
+    const currentYear = moment().year();
+    const formattedDate = momentDate.format("D [de] MMMM"); // e.g., "22 de Janeiro"
 
+    // Add year if it's not the current year
+    return momentDate.year() !== currentYear
+      ? `${formattedDate}, ${momentDate.year()}`
+      : formattedDate;
+  };
+
+  return (
+    <Flex
+      direction="column"
+      bg="white"
+      overflow="hidden"
+      align="center"
+      textAlign="center"
+      boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+      // border="1px solid"
+      // borderColor="green.600"
+      borderRadius="10px"
+      className={classes.show_card}
+    >
+      <Image
+        src={
+          event?.comedians
+            ? `${process.env.PUBLIC_URL}/comedians/${event?.comedians[0].picture}.png`
+            : ""
+        }
+        alt={"title"}
+        objectFit="cover"
+        w="100%"
+        h="200px"
+      />
+      <Box p={4}>
+        <Heading size="md" color="green.700" noOfLines={2}>
+          {event.standup ? event.standup?.name : event.name}
+        </Heading>
+        <Text fontSize="sm" color="gray.600" mt={2}>
+          {event.location?.city + ", " + formatDate(event.date)}
+        </Text>
+      </Box>
+    </Flex>
+  );
+};
 export default Homepage;

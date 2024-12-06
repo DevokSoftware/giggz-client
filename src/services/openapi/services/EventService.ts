@@ -119,4 +119,14 @@ export class EventService {
             mediaType: 'application/json',
         });
     }
+    /**
+     * @returns EventResponse Trending events
+     * @throws ApiError
+     */
+    public static eventsTrendingGet(): CancelablePromise<Array<EventResponse>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/events/trending',
+        });
+    }
 }

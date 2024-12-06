@@ -11,5 +11,6 @@ export type UpdateComedianRequest = {
     tiktok?: string;
     twitter?: string;
     contents?: Array<ContentInput>;
+    inactive?: boolean;
 };
 

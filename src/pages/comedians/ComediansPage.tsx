@@ -36,45 +36,45 @@ const ComediansPage = () => {
   });
   const [filters, setFilters] = useState<ComediansGetFiltersParameter>({});
   const [comedians, setComedians] = useState<ComedianResponse[]>([]);
-  const [filteredComedians, setFilteredComedians] = useState(comedians);
   const [comedianPagination, setComedianPagination] = useState<QueryPagination>(
     {
       currentPage: 1,
     }
   );
 
-  useEffect(() => {
-    const fetchComedians = async () => {
-      try {
-        const updatedPageable = {
-          ...pageable,
-          page: comedianPagination.currentPage - 1,
-        };
+  const fetchComedians = async () => {
+    try {
+      const updatedPageable = {
+        ...pageable,
+        page: comedianPagination.currentPage - 1,
+      };
 
-        const comediansResponse = await handleRequest(
-          ComedianServiceTemp.comediansGet(updatedPageable, filters)
-        );
-        setPageable(updatedPageable);
-        setComedians(comediansResponse?.content || []);
-        setFilteredComedians(comediansResponse?.content || []);
-        setComedianPagination({
-          ...comedianPagination,
-          numberOfResults: comediansResponse?.totalElements || 0,
-          totalPages: comediansResponse?.totalPages || 0,
-        });
-      } catch (error) {
-        // TODO handle this errors in a generic way
-        console.error(error);
-      }
-    };
+      console.log(filters);
+      const comediansResponse = await handleRequest(
+        ComedianServiceTemp.comediansGet(updatedPageable, filters)
+      );
+      setPageable(updatedPageable);
+      setComedians(comediansResponse?.content || []);
+      setComedianPagination({
+        ...comedianPagination,
+        numberOfResults: comediansResponse?.totalElements || 0,
+        totalPages: comediansResponse?.totalPages || 0,
+      });
+    } catch (error) {
+      // TODO handle this errors in a generic way
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
     fetchComedians();
-  }, [handleRequest, comedianPagination.currentPage]); //TODO: it is being called twice. check if this useEffect is working properly
+  }, [handleRequest, comedianPagination.currentPage, filters]); //TODO: it is being called twice. check if this useEffect is working properly
 
   const handleSearch = (searchTerm: string) => {
-    const filtered = comedians.filter((comedian) =>
-      comedian.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredComedians(filtered);
+    setFilters({
+      ...filters,
+      name: searchTerm,
+    });
   };
 
   const handlePageChange = (page: number) => {
@@ -108,7 +108,7 @@ const ComediansPage = () => {
                 columns={{ base: 2, sm: 3, md: 3, lg: 4 }}
                 spacing={4}
               >
-                {filteredComedians.map((comedian) => (
+                {comedians.map((comedian) => (
                   <Box
                     key={comedian.id}
                     p={{ base: 3, lg: 4 }}

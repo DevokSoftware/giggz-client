@@ -14,5 +14,6 @@ export type ComedianResponse = {
     tiktok?: string;
     twitter?: string;
     contents?: Array<ContentResponse>;
+    inactive?: boolean;
 };
 

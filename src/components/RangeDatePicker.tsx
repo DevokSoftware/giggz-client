@@ -31,6 +31,7 @@ export const RangeDatePicker: React.FC<DatePickerProps> = ({
       portalId="root-portal"
       dateFormat="dd/MM/yyyy"
       placeholderText={placeholder}
+      calendarClassName={classes.calendarDatePicker}
     />
   );
 };

@@ -233,6 +233,13 @@ const EventsPage = () => {
     fetchEvents();
   };
 
+  const handleClick = (linkUrl?: string) => {
+    if (!linkUrl) {
+      return;
+    }
+    window.open(linkUrl, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <Box mt={{ base: 2, sm: 3, md: 5, lg: 5 }}>
       <Box
@@ -370,6 +377,7 @@ const EventsPage = () => {
                       objectFit="cover"
                       w="100%"
                       h="100%"
+                      onClick={() => handleClick(event.url)}
                     />
                   </HStack>
                   <VStack alignItems="start" spacing={0} flex="1" ml={5} m={2}>
