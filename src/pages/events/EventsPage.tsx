@@ -28,23 +28,14 @@ import SearchBox from "../../components/SearchBox";
 import { Link as RouteLink } from "react-router-dom";
 import {
   ComedianResponse,
-  ComedianService,
   ComediansGetFiltersParameter,
   EventResponse,
   EventService,
   EventsGetFiltersParameter,
   Pageable,
-  PageEventResponse,
 } from "../../services/openapi";
 import useApi from "../../services/useApi";
-import moment from "moment";
-import {
-  FaBars,
-  FaCalculator,
-  FaLocationArrow,
-  FaRegEye,
-  FaSearchLocation,
-} from "react-icons/fa";
+
 import { InputWithIcon } from "../../components/InputWithIcon";
 
 import { IoCalendarNumberOutline, IoLocationOutline } from "react-icons/io5";
@@ -389,6 +380,7 @@ const EventsPage = () => {
                             fontWeight="bold"
                             fontSize="md"
                             color="green.700"
+                            noOfLines={1}
                           >
                             {event.standup.name}
                           </Text>
@@ -399,6 +391,7 @@ const EventsPage = () => {
                           fontWeight="bold"
                           fontSize="md"
                           color="green.700"
+                          noOfLines={1}
                         >
                           {event.name}
                         </Text>

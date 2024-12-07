@@ -47,7 +47,6 @@ const Navbar = () => {
           <Heading
             size="lg"
             color="white"
-            fontFamily="monospace"
             fontWeight="bold"
             letterSpacing="wide"
             textTransform="uppercase"
@@ -143,12 +142,18 @@ const Navbar = () => {
                   borderBottomWidth="1px"
                   borderBottomColor="green.600"
                 >
-                  <Text fontSize="2xl" color="green.600" fontWeight="bold">
-                    GIGGZ
-                  </Text>
+                  <Heading
+                    size="2xl"
+                    color="green.600"
+                    fontWeight="bold"
+                    letterSpacing="wide"
+                    textTransform="uppercase"
+                  >
+                    Giggz
+                  </Heading>
                 </DrawerHeader>
-                <DrawerBody>
-                  <VStack spacing={4} align="start">
+                <DrawerBody mt={4}>
+                  <VStack spacing={6} align="start">
                     <Link
                       as={RouteLink}
                       to="/comedians"
@@ -156,8 +161,8 @@ const Navbar = () => {
                       onClick={onClose}
                     >
                       <HStack>
-                        <Icon as={FaPeopleGroup} fontSize="xl" padding="0" />
-                        <Text fontSize="md" fontWeight="semibold">
+                        <Icon as={FaPeopleGroup} fontSize="2xl" padding="0" />
+                        <Text fontSize="lg" fontWeight="semibold">
                           Comediantes
                         </Text>
                       </HStack>
@@ -169,8 +174,8 @@ const Navbar = () => {
                       onClick={onClose}
                     >
                       <HStack>
-                        <Icon as={MdEvent} fontSize="xl" padding="0" />
-                        <Text fontSize="md" fontWeight="semibold">
+                        <Icon as={MdEvent} fontSize="2xl" padding="0" />
+                        <Text fontSize="lg" fontWeight="semibold">
                           Eventos
                         </Text>
                       </HStack>
@@ -182,8 +187,8 @@ const Navbar = () => {
                       onClick={onClose}
                     >
                       <HStack>
-                        <Icon as={CgProfile} fontSize="xl" padding="0" />
-                        <Text fontSize="md" fontWeight="semibold">
+                        <Icon as={CgProfile} fontSize="2xl" padding="0" />
+                        <Text fontSize="lg" fontWeight="semibold">
                           Perfil
                         </Text>
                       </HStack>

@@ -24,6 +24,7 @@ import { FiPlayCircle } from "react-icons/fi";
 import { EventResponse, EventService } from "../../services/openapi";
 import useApi from "../../services/useApi";
 import moment from "moment";
+import { Link as RouteLink } from "react-router-dom";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -160,33 +161,39 @@ const Homepage = () => {
           </HStack> */}
         </Box>
         {/* Trending Section */}
-        <Box mt={{ base: 8, sm: 8, md: 10, lg: 10 }} mb={3}>
-          <Heading size="md" mb={4} textAlign="center" color="green.500">
-            Eventos em destaque!
-          </Heading>
+        {events.length > 0 && (
+          <Box
+            mt={{ base: 5, sm: 5, md: 10, lg: 10 }}
+            mb={3}
+            p={{ base: 6, md: 0, lg: 0 }}
+          >
+            <Heading size="md" mb={4} textAlign="center" color="green.500">
+              Eventos em destaque!
+            </Heading>
 
-          {isLoading ? (
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="green.600"
-              size="xl"
-              mt={10}
-            />
-          ) : (
-            <SimpleGrid
-              columns={{ base: 1, md: 4 }}
-              spacing={5}
-              pl={{ base: 3, sm: 5, md: 10, lg: 10 }}
-              pr={{ base: 3, sm: 5, md: 10, lg: 10 }}
-            >
-              {events?.map((event, index) => (
-                <TrendingCard event={event} />
-              ))}
-            </SimpleGrid>
-          )}
-        </Box>
+            {isLoading ? (
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="green.600"
+                size="xl"
+                mt={10}
+              />
+            ) : (
+              <SimpleGrid
+                columns={{ base: 1, md: 4 }}
+                spacing={5}
+                pl={{ base: 3, sm: 5, md: 10, lg: 10 }}
+                pr={{ base: 3, sm: 5, md: 10, lg: 10 }}
+              >
+                {events?.map((event, index) => (
+                  <TrendingCard event={event} />
+                ))}
+              </SimpleGrid>
+            )}
+          </Box>
+        )}
 
         {/* Footer */}
       </Box>
@@ -234,38 +241,45 @@ const TrendingCard = ({ event }: { event: EventResponse }) => {
   };
 
   return (
-    <Flex
-      direction="column"
-      bg="white"
-      overflow="hidden"
-      align="center"
-      textAlign="center"
-      boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-      // border="1px solid"
-      // borderColor="green.600"
-      borderRadius="10px"
-      className={classes.show_card}
+    <RouteLink
+      to={`/comedians/${event?.comedians ? event?.comedians[0].id : ""}`}
     >
-      <Image
-        src={
-          event?.comedians
-            ? `${process.env.PUBLIC_URL}/comedians/${event?.comedians[0].picture}.png`
-            : ""
-        }
-        alt={"title"}
-        objectFit="cover"
-        w="100%"
-        h="200px"
-      />
-      <Box p={4}>
-        <Heading size="md" color="green.700" noOfLines={2}>
-          {event.standup ? event.standup?.name : event.name}
-        </Heading>
-        <Text fontSize="sm" color="gray.600" mt={2}>
-          {event.location?.city + ", " + formatDate(event.date)}
-        </Text>
-      </Box>
-    </Flex>
+      <Flex
+        direction="column"
+        bg="white"
+        overflow="hidden"
+        align="center"
+        textAlign="center"
+        // boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+        boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+        // border="1px solid"
+        // borderColor="green.600"
+        borderRadius="10px"
+        className={classes.show_card}
+        h="100%"
+      >
+        <Image
+          src={
+            event?.comedians
+              ? `${process.env.PUBLIC_URL}/comedians/${event?.comedians[0].picture}.png`
+              : ""
+          }
+          alt={"title"}
+          objectFit="cover"
+          w={{ base: "100%", md: "100%", lg: "100%" }}
+          h={{ base: "140px", md: "200px", lg: "200px" }}
+        />
+
+        <Box p={2}>
+          <Heading size="sm" color="green.700" noOfLines={2}>
+            {event.standup ? event.standup?.name : event.name}
+          </Heading>
+          <Text fontSize="xs" color="gray.600" mt={1}>
+            {event.location?.city + ", " + formatDate(event.date)}
+          </Text>
+        </Box>
+      </Flex>
+    </RouteLink>
   );
 };
 export default Homepage;

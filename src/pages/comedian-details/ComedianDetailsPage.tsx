@@ -222,8 +222,10 @@ const ComedianDetailsPage = () => {
           alt={`${comedian.name}'s image`}
           mx="auto"
           //modify this boxShadow
-          boxShadow="3px 3px 13px 2px rgb(0 128 0 / 20%)"
-          border={`2px solid ${theme.colors.green[600]}`}
+          // boxShadow="3px 3px 13px 2px rgb(0 128 0 / 20%)"
+          boxShadow="0px 0px 5px 2px rgb(0 8 1 / 45%)"
+          border={`2px solid ${theme.colors.gray[200]}`}
+          // border={`2px solid ${theme.colors.green[600]}`}
           boxSize={{
             base: "120px",
             sm: "120px",
@@ -232,8 +234,11 @@ const ComedianDetailsPage = () => {
           }}
           objectFit="cover"
         />
+        <Heading mt={4} size="md" color="green.700">
+          {comedian.name}
+        </Heading>
 
-        <Flex mt={1} mb={4} justify="center">
+        <Flex justify="center">
           {comedian && comedian.instagram && (
             <IconButton
               as="a"
@@ -245,6 +250,8 @@ const ComedianDetailsPage = () => {
               variant="ghost"
               fontSize="20px"
               color="purple.500"
+              ml={0.5}
+              mr={0.5}
             />
           )}
           {comedian && comedian.tiktok && (
@@ -258,7 +265,8 @@ const ComedianDetailsPage = () => {
               variant="ghost"
               fontSize="20px"
               color="black"
-              mr={1}
+              ml={0.5}
+              mr={0.5}
             />
           )}
           {comedian && comedian.youtube && (
@@ -272,7 +280,8 @@ const ComedianDetailsPage = () => {
               variant="ghost"
               fontSize="20px"
               color="red.500"
-              mr={1}
+              ml={0.5}
+              mr={0.5}
             />
           )}
           {comedian && comedian.twitter && (
@@ -286,13 +295,11 @@ const ComedianDetailsPage = () => {
               variant="ghost"
               fontSize="20px"
               color="blue.500"
-              mr={1}
+              ml={0.5}
+              mr={0.5}
             />
           )}
         </Flex>
-        <Heading size="md" color="green.700">
-          {comedian.name}
-        </Heading>
       </Box>
 
       <Tabs
@@ -305,96 +312,103 @@ const ComedianDetailsPage = () => {
       >
         <TabList pl={3} pr={3} justifyContent="center">
           <HStack spacing={3}>
-            <Tab
-              fontSize="xs"
-              background="white"
-              border={`2px solid ${theme.colors.green[500]}`}
-              borderRadius="8px"
-              color="green.500"
-              boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
-              _selected={{ color: "white", background: "green.400" }}
-              pl="2"
-              pr="2"
-            >
-              Conteúdos
-            </Tab>
-            <Tab
-              fontSize="xs"
-              background="white"
-              border={`2px solid ${theme.colors.green[500]}`}
-              borderRadius="8px"
-              color="green.500"
-              boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
-              _selected={{ color: "white", background: "green.400" }}
-              pl="2"
-              pr="2"
-            >
-              Próx. Eventos
-            </Tab>
-            <Tab
-              fontSize="xs"
-              background="white"
-              border={`2px solid ${theme.colors.green[500]}`}
-              borderRadius="8px"
-              color="green.500"
-              boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
-              _selected={{ color: "white", background: "green.400" }}
-              pl="2"
-              pr="2"
-            >
-              Eventos Passados
-            </Tab>
+            {comedian.contents?.length !== 0 && (
+              <Tab
+                fontSize="xs"
+                background="white"
+                border={`2px solid ${theme.colors.green[500]}`}
+                borderRadius="8px"
+                color="green.500"
+                boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+                _selected={{ color: "white", background: "green.400" }}
+                pl="2"
+                pr="2"
+              >
+                Conteúdos
+              </Tab>
+            )}
+            {futureComedianEvents?.length !== 0 && (
+              <Tab
+                fontSize="xs"
+                background="white"
+                border={`2px solid ${theme.colors.green[500]}`}
+                borderRadius="8px"
+                color="green.500"
+                boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+                _selected={{ color: "white", background: "green.400" }}
+                pl="2"
+                pr="2"
+              >
+                Próx. Eventos
+              </Tab>
+            )}
+            {pastComedianEvents?.length !== 0 && (
+              <Tab
+                fontSize="xs"
+                background="white"
+                border={`2px solid ${theme.colors.green[500]}`}
+                borderRadius="8px"
+                color="green.500"
+                boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+                _selected={{ color: "white", background: "green.400" }}
+                pl="2"
+                pr="2"
+              >
+                Eventos Passados
+              </Tab>
+            )}
           </HStack>
         </TabList>
         <TabPanels>
-          <TabPanel>
-            <SimpleGrid columns={{ base: 2, sm: 3, md: 3, lg: 4 }} spacing={4}>
-              {comedian.contents?.map((content) => (
-                <Box p={2} textAlign="center">
+          {comedian.contents?.length !== 0 && (
+            <TabPanel>
+              <SimpleGrid
+                columns={{ base: 2, sm: 3, md: 3, lg: 4 }}
+                spacing={{ base: 4, md: 6, lg: 6 }}
+              >
+                {comedian.contents?.map((content) => (
                   <Link href={content.url} isExternal>
-                    <Image
+                    <Box
+                      p={2}
+                      textAlign="center"
                       boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                      // boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
                       backgroundColor="white"
-                      p={1}
-                      className={classes.content_image}
-                      borderRadius="20px"
+                      borderRadius="15px"
                       border={`1px solid ${theme.colors.gray[200]}`}
-                      boxSize={{
-                        base: "90px",
-                        sm: "90px",
-                        md: "100px",
-                        lg: "100px",
-                      }}
-                      src={getContentIcon(content.contentType)}
-                      mx="auto"
-                      cursor="pointer"
-                    />
+                    >
+                      <Image
+                        p={1}
+                        className={classes.content_image}
+                        // borderRadius="20px"
+                        // border={`1px solid ${theme.colors.gray[200]}`}
+                        boxSize={{
+                          base: "90px",
+                          sm: "90px",
+                          md: "100px",
+                          lg: "100px",
+                        }}
+                        src={getContentIcon(content.contentType)}
+                        mx="auto"
+                        cursor="pointer"
+                      />
+
+                      <Heading
+                        fontSize="sm"
+                        color="grey.500"
+                        mt={{ base: 1, lg: 1 }}
+                      >
+                        {content.name}
+                      </Heading>
+                    </Box>
                   </Link>
-                  <Heading
-                    fontSize="sm"
-                    color="green.600"
-                    mt={{ base: 1, lg: 2 }}
-                  >
-                    {content.name}
-                  </Heading>
-                </Box>
-              ))}
-            </SimpleGrid>
-          </TabPanel>
-          <TabPanel>
-            <VStack spacing={4} align="stretch">
-              {futureComedianEvents?.length === 0 ? (
-                <Center>
-                  <Text
-                    textAlign="left"
-                    fontWeight="bold"
-                    fontSize="sm"
-                    color="green.600"
-                  >
-                    Sem eventos
-                  </Text>
-                </Center>
-              ) : (
+                ))}
+              </SimpleGrid>
+            </TabPanel>
+          )}
+          {futureComedianEvents?.length !== 0 && (
+            <TabPanel>
+              <VStack spacing={4} align="stretch">
                 <>
                   {futureComedianEvents?.map((show, index) => (
                     <Flex
@@ -482,23 +496,12 @@ const ComedianDetailsPage = () => {
                     />
                   </Center>
                 </>
-              )}
-            </VStack>
-          </TabPanel>
-          <TabPanel>
-            <VStack spacing={4} align="stretch">
-              {pastComedianEvents?.length === 0 ? (
-                <Center>
-                  <Text
-                    textAlign="left"
-                    fontWeight="bold"
-                    fontSize="sm"
-                    color="green.600"
-                  >
-                    Sem eventos
-                  </Text>
-                </Center>
-              ) : (
+              </VStack>
+            </TabPanel>
+          )}
+          {pastComedianEvents?.length !== 0 && (
+            <TabPanel>
+              <VStack spacing={4} align="stretch">
                 <>
                   {pastComedianEvents?.map((show, index) => (
                     <Flex
@@ -602,9 +605,9 @@ const ComedianDetailsPage = () => {
                     />
                   </Center>
                 </>
-              )}
-            </VStack>
-          </TabPanel>
+              </VStack>
+            </TabPanel>
+          )}
         </TabPanels>
       </Tabs>
     </Box>
