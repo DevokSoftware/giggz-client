@@ -351,7 +351,8 @@ const EventsPage = () => {
               {events?.map((event, index) => (
                 <Flex
                   key={index}
-                  boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                  // boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                  boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
                   border="1px solid"
                   borderColor="green.600"
                   borderRadius="20px"

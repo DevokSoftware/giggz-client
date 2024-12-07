@@ -319,7 +319,7 @@ const ComedianDetailsPage = () => {
                 border={`2px solid ${theme.colors.green[500]}`}
                 borderRadius="8px"
                 color="green.500"
-                boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+                // boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
                 _selected={{ color: "white", background: "green.400" }}
                 pl="2"
                 pr="2"
@@ -334,7 +334,7 @@ const ComedianDetailsPage = () => {
                 border={`2px solid ${theme.colors.green[500]}`}
                 borderRadius="8px"
                 color="green.500"
-                boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+                // boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
                 _selected={{ color: "white", background: "green.400" }}
                 pl="2"
                 pr="2"
@@ -349,7 +349,7 @@ const ComedianDetailsPage = () => {
                 border={`2px solid ${theme.colors.green[500]}`}
                 borderRadius="8px"
                 color="green.500"
-                boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
+                // boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
                 _selected={{ color: "white", background: "green.400" }}
                 pl="2"
                 pr="2"
@@ -395,7 +395,7 @@ const ComedianDetailsPage = () => {
                       />
                       <Heading
                         fontSize="sm"
-                        color="grey.500"
+                        color="gray.600"
                         mb={1}
                         noOfLines={2}
                         overflow="hidden"
