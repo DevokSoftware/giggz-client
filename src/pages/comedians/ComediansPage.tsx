@@ -137,6 +137,7 @@ const ComediansPage = () => {
                       color="green.600"
                       // color="grey.500"
                       mt={{ base: 1, lg: 2 }}
+                      noOfLines={1}
                     >
                       {comedian.name}
                     </Heading>

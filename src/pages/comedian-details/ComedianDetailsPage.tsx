@@ -369,34 +369,37 @@ const ComedianDetailsPage = () => {
                 {comedian.contents?.map((content) => (
                   <Link href={content.url} isExternal>
                     <Box
-                      p={2}
+                      p={1}
                       textAlign="center"
                       boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
-                      // boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
                       backgroundColor="white"
                       borderRadius="15px"
                       border={`1px solid ${theme.colors.gray[200]}`}
+                      h="100%" // Make the box height equal for all grid items
+                      display="flex" // Use flexbox to align content inside
+                      flexDirection="column" // Stack elements vertically
+                      justifyContent="space-between"
                     >
                       <Image
                         p={1}
                         className={classes.content_image}
-                        // borderRadius="20px"
-                        // border={`1px solid ${theme.colors.gray[200]}`}
                         boxSize={{
-                          base: "90px",
-                          sm: "90px",
-                          md: "100px",
-                          lg: "100px",
+                          base: "60px",
+                          sm: "60px",
+                          md: "80px",
+                          lg: "80px",
                         }}
                         src={getContentIcon(content.contentType)}
                         mx="auto"
                         cursor="pointer"
                       />
-
                       <Heading
                         fontSize="sm"
                         color="grey.500"
-                        mt={{ base: 1, lg: 1 }}
+                        mb={1}
+                        noOfLines={2}
+                        overflow="hidden"
+                        textOverflow="ellipsis"
                       >
                         {content.name}
                       </Heading>
@@ -448,6 +451,7 @@ const ComedianDetailsPage = () => {
                                 fontWeight="bold"
                                 fontSize="md"
                                 color="green.700"
+                                noOfLines={1}
                               >
                                 {show.standup.name}
                               </Text>
@@ -458,6 +462,7 @@ const ComedianDetailsPage = () => {
                               fontWeight="bold"
                               fontSize="md"
                               color="green.700"
+                              noOfLines={1}
                             >
                               {show.name}
                             </Text>
@@ -542,6 +547,7 @@ const ComedianDetailsPage = () => {
                                   fontWeight="bold"
                                   fontSize="md"
                                   color="green.700"
+                                  noOfLines={1}
                                 >
                                   {show.standup.name}
                                 </Text>
@@ -552,6 +558,7 @@ const ComedianDetailsPage = () => {
                                 fontWeight="bold"
                                 fontSize="md"
                                 color="green.700"
+                                noOfLines={1}
                               >
                                 {show.name}
                               </Text>

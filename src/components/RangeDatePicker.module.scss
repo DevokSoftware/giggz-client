@@ -74,4 +74,9 @@
     font-family: "Raleway", sans-serif;
     // margin: 3px;
   }
+  .react-datepicker__input-container input:focus {
+    outline: none; /* Remove the default outline */
+    box-shadow: none; /* Remove the default box-shadow */
+    border: none; /* Remove the border if you want */
+  }
 }
