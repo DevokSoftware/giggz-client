@@ -8,6 +8,7 @@ interface InputWithIconProps {
   icon: IconType;
   placeholder: string;
   readOnly?: boolean;
+  onKeyDown?: (event?: any) => void;
 }
 
 export const InputWithIcon: React.FC<InputWithIconProps> = ({
@@ -16,6 +17,7 @@ export const InputWithIcon: React.FC<InputWithIconProps> = ({
   icon: Icon,
   placeholder,
   readOnly,
+  onKeyDown,
 }: InputWithIconProps) => {
   return (
     <InputGroup borderColor="green.600">
@@ -38,6 +40,7 @@ export const InputWithIcon: React.FC<InputWithIconProps> = ({
             fontSize: "sm",
           },
         }}
+        onKeyDown={(event) => (onKeyDown ? onKeyDown(event) : undefined)}
       />
     </InputGroup>
   );

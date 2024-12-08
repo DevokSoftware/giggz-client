@@ -51,8 +51,9 @@ import FormattedDate from "../../components/FormattedDate";
 import { displayLocationAddress, isPastDate } from "../../components/utils";
 
 interface ComedianOption extends OptionBase {
-  label: string;
+  label: any;
   value: number;
+  name: string;
 }
 
 interface EventFilters {
@@ -146,15 +147,34 @@ const EventsPage = () => {
       const comedianFilters: ComediansGetFiltersParameter = {
         name: comedianNameSearch,
       };
+      console.log("111");
       const comediansResponse = await comediansHandleRequest(
         ComedianServiceTemp.comediansGet({}, comedianFilters)
       );
+      console.log("2222");
       const comediansOptions: ComedianOption[] = [];
-      comediansOptions.push({ label: " ", value: -1 });
+      comediansOptions.push({ label: " ", value: -1, name: "" });
       comediansOptions.push(
         ...(comediansResponse?.content?.map((comedian: ComedianResponse) => ({
-          label: comedian.name,
+          label: (
+            <HStack>
+              <Image
+                className={classes.comedian_image}
+                // boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                borderRadius="25px"
+                boxSize="25px"
+                src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
+                alt={comedian.name}
+                objectFit="cover"
+                cursor="pointer"
+              />
+              <Text color="green.700" noOfLines={1} fontSize="xs">
+                {comedian.name}
+              </Text>
+            </HStack>
+          ),
           value: comedian.id as unknown as number,
+          name: comedian.name,
         })) || [])
       );
 
@@ -166,10 +186,14 @@ const EventsPage = () => {
 
   useEffect(() => {
     fetchComediansDebounced();
-    return () => {
-      fetchComediansDebounced.cancel();
-    };
-  }, [comedianNameSearch]);
+  }, [comediansHandleRequest]);
+
+  // useEffect(() => {
+  //   fetchComediansDebounced();
+  //   return () => {
+  //     fetchComediansDebounced.cancel();
+  //   };
+  // }, [comedianNameSearch]);
 
   const handlePageChange = (page: number) => {
     setEventPagination({
@@ -182,7 +206,8 @@ const EventsPage = () => {
     option: (provided, state) => ({
       ...provided,
       fontSize: "sm",
-      height: "30px",
+      height: "35px",
+      noOfLines: 1,
     }),
     placeholder: (provided, state) => ({
       ...provided,
@@ -204,6 +229,10 @@ const EventsPage = () => {
       ...provided,
       marginLeft: "25px",
     }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 9999, // Set a high z-index to ensure it's on top
+    }),
   };
 
   const onChangeDate = (dates: any) => {
@@ -213,6 +242,12 @@ const EventsPage = () => {
       startDate: start,
       endDate: end,
     }));
+  };
+
+  const handleKeyPress = (event: any) => {
+    if (event.key === "Enter") {
+      fetchEvents();
+    }
   };
 
   const setAttendedEvent = async (event: EventResponse) => {
@@ -256,6 +291,7 @@ const EventsPage = () => {
               }
               value={eventFilters.name}
               placeholder="Nome"
+              onKeyDown={handleKeyPress}
             />
             <InputWithIcon
               icon={IoLocationOutline}
@@ -267,13 +303,14 @@ const EventsPage = () => {
               }
               value={eventFilters.city}
               placeholder="Cidade"
+              onKeyDown={handleKeyPress}
             />
             <InputGroup borderColor="green.600">
               <InputLeftElement>
                 <MdOutlinePerson color="green" />
               </InputLeftElement>
               <Select<ComedianOption, false>
-                name="colors"
+                name="comedians"
                 placeholder="Comediante"
                 options={comediansOptions}
                 onInputChange={(e) => setComedianNameSearch(e)}
@@ -286,6 +323,12 @@ const EventsPage = () => {
                     ...prevFilters,
                     comedian: value || undefined,
                   }))
+                }
+                filterOption={(option, inputValue) =>
+                  // Customize the search logic here
+                  option.data.name
+                    .toLowerCase()
+                    .includes(inputValue.toLowerCase())
                 }
               />
             </InputGroup>
