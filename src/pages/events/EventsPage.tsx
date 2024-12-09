@@ -403,6 +403,8 @@ const EventsPage = () => {
                   className={classes.show_card}
                   mb={3}
                   mt={3}
+                  ml={2}
+                  mr={2}
                   h={{ base: "125px", sm: "130px" }}
                 >
                   <HStack w="100px">

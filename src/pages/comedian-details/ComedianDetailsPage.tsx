@@ -411,14 +411,14 @@ const ComedianDetailsPage = () => {
           )}
           {futureComedianEvents?.length !== 0 && (
             <TabPanel>
-              <VStack spacing={4} align="stretch">
+              <VStack spacing={3} align="stretch">
                 <>
                   {futureComedianEvents?.map((show, index) => (
                     <Flex
                       key={index}
-                      boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                      boxShadow="0px 0px 5px 2px rgb(0 8 1 / 30%)"
                       border="1px solid"
-                      borderColor="green.600"
+                      borderColor="gray.300"
                       borderRadius="20px"
                       cursor="pointer"
                       className={classes.show_card}
@@ -506,14 +506,14 @@ const ComedianDetailsPage = () => {
           )}
           {pastComedianEvents?.length !== 0 && (
             <TabPanel>
-              <VStack spacing={4} align="stretch">
+              <VStack spacing={3} align="stretch">
                 <>
                   {pastComedianEvents?.map((show, index) => (
                     <Flex
                       key={index}
-                      boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                      boxShadow="0px 0px 5px 2px rgb(0 8 1 / 30%)"
                       border="1px solid"
-                      borderColor="green.600"
+                      borderColor="gray.300"
                       borderRadius="20px"
                       cursor="pointer"
                       className={classes.show_card}
