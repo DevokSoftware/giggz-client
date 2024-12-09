@@ -156,23 +156,22 @@ const StandupDetailsPage = () => {
             borderRadius="20px"
             src={standup.poster}
             mx="auto"
-            //modify this boxShadow
-            boxShadow="3px 3px 13px 2px rgb(0 128 0 / 20%)"
-            border={`1px solid ${theme.colors.green[600]}`}
-            boxSize={{
-              base: "120px",
-              sm: "120px",
-              md: "150px",
-              lg: "200px",
+            boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+            border={`3px solid ${theme.colors.white}`}
+            maxH={{
+              base: "180px",
+              sm: "180px",
+              md: "250px",
+              lg: "270px",
             }}
-            objectFit="cover"
+            // objectFit="cover"
           />
 
-          <Heading size="md" color="green.700" mt={5}>
+          <Heading size="md" color="green.700" mt={5} textTransform="uppercase">
             {standup.name}
           </Heading>
           <Box mx="auto" textAlign="left">
-            <Text fontSize="xs" mt={3} color="gray.600" textAlign="justify">
+            <Text fontSize="sm" mt={7} color="gray.600" textAlign="justify">
               {standup.description?.split("\n\n").map((paragraph, index) => (
                 <p key={index} style={{ marginBottom: "1em" }}>
                   {paragraph}
@@ -213,9 +212,10 @@ const StandupDetailsPage = () => {
                 <Flex
                   key={index}
                   p={2}
-                  boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                  // boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                  boxShadow="0px 0px 5px 2px rgb(0 8 1 / 30%)"
                   border="1px solid"
-                  borderColor="green.600"
+                  borderColor="gray.300"
                   borderRadius="15px"
                   alignItems="center"
                   cursor="pointer"

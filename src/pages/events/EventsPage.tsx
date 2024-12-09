@@ -395,13 +395,14 @@ const EventsPage = () => {
                 <Flex
                   key={index}
                   // boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
-                  boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                  boxShadow="0px 0px 5px 2px rgb(0 8 1 / 30%)"
                   border="1px solid"
-                  borderColor="green.600"
+                  borderColor="gray.300"
                   borderRadius="20px"
                   cursor="pointer"
                   className={classes.show_card}
-                  m={2}
+                  mb={3}
+                  mt={3}
                   h={{ base: "125px", sm: "130px" }}
                 >
                   <HStack w="100px">
