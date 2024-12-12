@@ -21,6 +21,7 @@ import {
   SimpleGrid,
   Link,
   Icon,
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   FaTiktok,
@@ -393,16 +394,18 @@ const ComedianDetailsPage = () => {
                         mx="auto"
                         cursor="pointer"
                       />
-                      <Heading
-                        fontSize="sm"
-                        color="gray.600"
-                        mb={1}
-                        noOfLines={1}
-                        overflow="hidden"
-                        textOverflow="ellipsis"
-                      >
-                        {content.name}
-                      </Heading>
+                      <Tooltip label={content.name} fontSize="sm">
+                        <Heading
+                          fontSize="sm"
+                          color="gray.600"
+                          mb={1}
+                          noOfLines={1}
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                        >
+                          {content.name}
+                        </Heading>
+                      </Tooltip>
                     </Box>
                   </Link>
                 ))}
