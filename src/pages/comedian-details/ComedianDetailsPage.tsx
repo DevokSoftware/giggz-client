@@ -363,8 +363,8 @@ const ComedianDetailsPage = () => {
           {comedian.contents?.length !== 0 && (
             <TabPanel>
               <SimpleGrid
-                columns={{ base: 2, sm: 3, md: 3, lg: 4 }}
-                spacing={{ base: 4, md: 6, lg: 6 }}
+                columns={{ base: 2, sm: 3, md: 3, lg: 3 }}
+                spacing={{ base: 3, md: 4, lg: 4 }}
               >
                 {comedian.contents?.map((content) => (
                   <Link href={content.url} isExternal>
@@ -397,7 +397,7 @@ const ComedianDetailsPage = () => {
                         fontSize="sm"
                         color="gray.600"
                         mb={1}
-                        noOfLines={2}
+                        noOfLines={1}
                         overflow="hidden"
                         textOverflow="ellipsis"
                       >
