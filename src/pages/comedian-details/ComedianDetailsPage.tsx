@@ -426,6 +426,7 @@ const ComedianDetailsPage = () => {
                       cursor="pointer"
                       className={classes.show_card}
                       h={{ base: "110px", sm: "100px" }}
+                      backgroundColor="white"
                     >
                       <HStack w="100px">
                         <Image
@@ -521,6 +522,7 @@ const ComedianDetailsPage = () => {
                       cursor="pointer"
                       className={classes.show_card}
                       h={{ base: "110px", sm: "100px" }}
+                      backgroundColor="white"
                     >
                       <HStack w="100px">
                         <Image

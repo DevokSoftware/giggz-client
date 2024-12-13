@@ -9,6 +9,7 @@ interface InputWithIconProps {
   placeholder: string;
   readOnly?: boolean;
   onKeyDown?: (event?: any) => void;
+  backgroundColor?: string;
 }
 
 export const InputWithIcon: React.FC<InputWithIconProps> = ({
@@ -18,6 +19,7 @@ export const InputWithIcon: React.FC<InputWithIconProps> = ({
   placeholder,
   readOnly,
   onKeyDown,
+  backgroundColor,
 }: InputWithIconProps) => {
   return (
     <InputGroup borderColor="green.600">
@@ -25,6 +27,7 @@ export const InputWithIcon: React.FC<InputWithIconProps> = ({
         <Icon color="green" />
       </InputLeftElement>
       <Input
+        backgroundColor={backgroundColor}
         disabled={readOnly || false}
         color="green.700"
         fontSize="sm"

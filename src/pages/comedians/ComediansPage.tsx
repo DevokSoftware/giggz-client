@@ -48,8 +48,6 @@ const ComediansPage = () => {
         ...pageable,
         page: comedianPagination.currentPage - 1,
       };
-
-      console.log(filters);
       const comediansResponse = await handleRequest(
         ComedianServiceTemp.comediansGet(updatedPageable, filters)
       );

@@ -292,6 +292,7 @@ const EventsPage = () => {
               value={eventFilters.name}
               placeholder="Nome"
               onKeyDown={handleKeyPress}
+              backgroundColor="white"
             />
             <InputWithIcon
               icon={IoLocationOutline}
@@ -304,6 +305,7 @@ const EventsPage = () => {
               value={eventFilters.city}
               placeholder="Cidade"
               onKeyDown={handleKeyPress}
+              backgroundColor="white"
             />
             <InputGroup borderColor="green.600">
               <InputLeftElement>
@@ -333,7 +335,7 @@ const EventsPage = () => {
               />
             </InputGroup>
 
-            <InputGroup borderColor="green.600">
+            <InputGroup borderColor="green.600" backgroundColor="white">
               <InputLeftElement>
                 <IoCalendarNumberOutline color="green" />
               </InputLeftElement>
@@ -395,6 +397,7 @@ const EventsPage = () => {
                 <Flex
                   key={index}
                   // boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+                  backgroundColor="white"
                   boxShadow="0px 0px 5px 2px rgb(0 8 1 / 30%)"
                   border="1px solid"
                   borderColor="gray.300"

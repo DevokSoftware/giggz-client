@@ -220,6 +220,7 @@ const StandupDetailsPage = () => {
                   alignItems="center"
                   cursor="pointer"
                   className={classes.show_card}
+                  backgroundColor="white"
                 >
                   <VStack alignItems="start" spacing={0} flex="1" ml={3}>
                     <HStack>
