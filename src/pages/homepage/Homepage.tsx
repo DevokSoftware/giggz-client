@@ -216,6 +216,7 @@ const Feature = ({ title, description, icon }: any) => (
     className={classes.show_card}
     spacing={3}
     textAlign="center"
+    backgroundColor="white"
   >
     {/* <Image src={icon} alt={title} boxSize="80px" borderRadius="10px" /> */}
     <Icon as={icon} fontSize="5xl" padding="0" color="green.700" />
@@ -246,7 +247,7 @@ const TrendingCard = ({ event }: { event: EventResponse }) => {
     >
       <Flex
         direction="column"
-        bg="white"
+        backgroundColor="white"
         overflow="hidden"
         align="center"
         textAlign="center"

@@ -104,12 +104,12 @@ const ComediansPage = () => {
             <>
               <SimpleGrid
                 columns={{ base: 2, sm: 3, md: 3, lg: 4 }}
-                spacing={4}
+                spacing={{ base: 3, lg: 4 }}
               >
                 {comedians.map((comedian) => (
                   <Box
                     key={comedian.id}
-                    p={{ base: 3, lg: 4 }}
+                    p={{ base: 2, lg: 4 }}
                     textAlign="center"
                   >
                     <RouteLink to={`/comedians/${comedian.id}`}>
