@@ -124,6 +124,7 @@ const ComediansPage = () => {
                       transition="transform 0.3s ease-out"
                       _hover={{ transform: "scale(1.05)" }}
                       pb={3}
+                      margin="auto"
                     >
                       <RouteLink to={`/comedians/${comedian.id}`}>
                         <Image
