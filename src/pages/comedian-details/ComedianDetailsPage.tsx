@@ -218,7 +218,7 @@ const ComedianDetailsPage = () => {
       <Box textAlign="center" p={4}>
         <Image
           className={classes.comedian_image}
-          borderRadius="full"
+          borderRadius="25px"
           src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
           alt={`${comedian.name}'s image`}
           mx="auto"
@@ -228,8 +228,8 @@ const ComedianDetailsPage = () => {
           border={`2px solid ${theme.colors.gray[200]}`}
           // border={`2px solid ${theme.colors.green[600]}`}
           boxSize={{
-            base: "120px",
-            sm: "120px",
+            base: "140px",
+            sm: "140px",
             md: "150px",
             lg: "200px",
           }}
@@ -304,7 +304,6 @@ const ComedianDetailsPage = () => {
       </Box>
 
       <Tabs
-        mt={4}
         maxW="800px"
         mx="auto"
         variant="soft-rounded"
@@ -414,7 +413,7 @@ const ComedianDetailsPage = () => {
           )}
           {futureComedianEvents?.length !== 0 && (
             <TabPanel>
-              <VStack spacing={3} align="stretch">
+              <VStack spacing={{ base: 3, lg: 4 }} align="stretch">
                 <>
                   {futureComedianEvents?.map((show, index) => (
                     <Flex
@@ -510,7 +509,7 @@ const ComedianDetailsPage = () => {
           )}
           {pastComedianEvents?.length !== 0 && (
             <TabPanel>
-              <VStack spacing={3} align="stretch">
+              <VStack spacing={{ base: 3, lg: 4 }} align="stretch">
                 <>
                   {pastComedianEvents?.map((show, index) => (
                     <Flex

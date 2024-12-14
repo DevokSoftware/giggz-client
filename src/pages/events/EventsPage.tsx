@@ -279,7 +279,7 @@ const EventsPage = () => {
             spacing={3}
             ml={2}
             mr={2}
-            columns={{ base: 2, sm: 3, md: 3, lg: 4 }}
+            columns={{ base: 2, sm: 2, md: 4, lg: 4 }}
           >
             <InputWithIcon
               icon={PiTextAaThin}
@@ -404,8 +404,8 @@ const EventsPage = () => {
                   borderRadius="20px"
                   cursor="pointer"
                   className={classes.show_card}
-                  mb={3}
-                  mt={3}
+                  mb={{ base: 3, lg: 4 }}
+                  mt={{ base: 3, lg: 4 }}
                   ml={2}
                   mr={2}
                   h={{ base: "125px", sm: "130px" }}
