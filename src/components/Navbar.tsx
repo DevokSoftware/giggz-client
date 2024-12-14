@@ -121,13 +121,16 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <IconButton
-              icon={<FaBars />}
-              onClick={onOpen}
-              variant="ghost"
-              color="white"
-              aria-label="Open menu"
-            />
+            <HStack justifyContent="flex-end" w="100%">
+              <IconButton
+                icon={<FaBars />}
+                onClick={onOpen}
+                variant="ghost"
+                color="white"
+                aria-label="Open menu"
+                fontSize="2xl"
+              />
+            </HStack>
             <Drawer isOpen={isOpen} onClose={onClose} placement="left">
               <DrawerOverlay />
               <DrawerContent

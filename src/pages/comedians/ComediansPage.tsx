@@ -103,7 +103,7 @@ const ComediansPage = () => {
           ) : (
             <>
               <SimpleGrid
-                columns={{ base: 2, sm: 3, md: 3, lg: 4 }}
+                columns={{ base: 2, sm: 2, md: 3, lg: 4 }}
                 spacing={{ base: 3, lg: 4 }}
               >
                 {comedians.map((comedian) => (
@@ -112,32 +112,45 @@ const ComediansPage = () => {
                     p={{ base: 2, lg: 4 }}
                     textAlign="center"
                   >
-                    <RouteLink to={`/comedians/${comedian.id}`}>
-                      <Image
-                        className={classes.comedian_image}
-                        boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
-                        borderRadius="25px"
-                        border={`3px solid ${theme.colors.white}`}
-                        boxSize={{
-                          base: "130px",
-                          sm: "150px",
-                          lg: "180px",
-                        }}
-                        src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
-                        alt={comedian.name}
-                        mx="auto"
-                        objectFit="cover"
-                        cursor="pointer"
-                      />
-                    </RouteLink>
-                    <Heading
-                      fontSize="sm"
-                      color="green.600"
-                      // color="grey.500"
-                      mt={{ base: 1, lg: 2 }}
+                    <Box
+                      boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                      borderRadius="25px"
+                      border={`3px solid ${theme.colors.white}`}
+                      boxSize={{
+                        base: "165px",
+                        sm: "165px",
+                        lg: "230px",
+                      }}
+                      transition="transform 0.3s ease-out"
+                      _hover={{ transform: "scale(1.05)" }}
+                      pb={3}
                     >
-                      {comedian.name}
-                    </Heading>
+                      <RouteLink to={`/comedians/${comedian.id}`}>
+                        <Image
+                          className={classes.comedian_image}
+                          // boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                          borderRadius="25px"
+                          // border={`3px solid ${theme.colors.white}`}
+                          w="100%"
+                          h="90%"
+                          src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
+                          alt={comedian.name}
+                          mx="auto"
+                          objectFit="cover"
+                          cursor="pointer"
+                          borderBottomRadius="0"
+                        />
+                      </RouteLink>
+                      <Heading
+                        fontSize="sm"
+                        color="gray.600"
+                        // color="grey.500"
+                        mt={{ base: 1, lg: 2 }}
+                        noOfLines={1}
+                      >
+                        {comedian.name}
+                      </Heading>
+                    </Box>
                   </Box>
                 ))}
               </SimpleGrid>

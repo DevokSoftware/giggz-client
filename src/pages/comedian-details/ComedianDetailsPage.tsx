@@ -228,8 +228,8 @@ const ComedianDetailsPage = () => {
           border={`2px solid ${theme.colors.gray[200]}`}
           // border={`2px solid ${theme.colors.green[600]}`}
           boxSize={{
-            base: "140px",
-            sm: "140px",
+            base: "170px",
+            sm: "170px",
             md: "150px",
             lg: "200px",
           }}

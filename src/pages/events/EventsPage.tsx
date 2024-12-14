@@ -483,18 +483,33 @@ const EventsPage = () => {
                       </Text>
                     </VStack>
                     {isMobile ? (
-                      <HStack mt={3}>
+                      <Flex mt={3}>
                         {event.comedians?.map((comedian) => (
-                          <RouteLink to={`/comedians/${comedian.id}`}>
-                            <Image
-                              src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
-                              boxSize="20px"
-                              objectFit="cover"
-                              borderRadius="full"
-                            />
-                          </RouteLink>
+                          <HStack mr={1}>
+                            <RouteLink to={`/comedians/${comedian.id}`}>
+                              <Image
+                                src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
+                                boxSize="25px"
+                                objectFit="cover"
+                                borderRadius="full"
+                              />
+                            </RouteLink>
+                            {event.comedians?.length === 1 && (
+                              <RouteLink to={`/comedians/${comedian.id}`}>
+                                <Text
+                                  fontSize="sm"
+                                  color="green.600"
+                                  noOfLines={1}
+                                  textAlign="left"
+                                  whiteSpace="nowrap"
+                                >
+                                  {comedian.name}
+                                </Text>
+                              </RouteLink>
+                            )}
+                          </HStack>
                         ))}
-                      </HStack>
+                      </Flex>
                     ) : (
                       <Flex mt={3}>
                         {event.comedians?.map((comedian) => (
