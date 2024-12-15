@@ -49,7 +49,10 @@ import { Link as RouteLink } from "react-router-dom";
 import FormattedDate from "../../components/FormattedDate";
 import Pagination from "../../components/Pagination";
 import { QueryPagination } from "../../components/types/Types";
-import { displayLocationAddress } from "../../components/utils";
+import {
+  displayLocationAddress,
+  openTabWithExternUrl,
+} from "../../components/utils";
 
 const ComedianDetailsPage = () => {
   const { handleRequest: handleRequestComedian } = useApi();
@@ -437,6 +440,7 @@ const ComedianDetailsPage = () => {
                           objectFit="cover"
                           w="100%"
                           h="100%"
+                          onClick={() => openTabWithExternUrl(show.url)}
                         />
                       </HStack>
                       <VStack
@@ -533,6 +537,7 @@ const ComedianDetailsPage = () => {
                           objectFit="cover"
                           w="100%"
                           h="100%"
+                          onClick={() => openTabWithExternUrl(show.url)}
                         />
                       </HStack>
                       <VStack

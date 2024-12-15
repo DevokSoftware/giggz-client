@@ -159,8 +159,8 @@ const StandupDetailsPage = () => {
             boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
             border={`3px solid ${theme.colors.white}`}
             maxH={{
-              base: "180px",
-              sm: "180px",
+              base: "210px",
+              sm: "210px",
               md: "250px",
               lg: "270px",
             }}

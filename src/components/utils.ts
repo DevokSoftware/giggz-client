@@ -15,3 +15,10 @@ export function displayLocationAddress(location?: Location): string {
 export function isPastDate(date?: string): boolean {
   return moment(date).isBefore(moment.now());
 }
+
+export function openTabWithExternUrl(linkUrl?: string) {
+  if (!linkUrl) {
+    return;
+  }
+  window.open(linkUrl, "_blank", "noopener,noreferrer");
+}

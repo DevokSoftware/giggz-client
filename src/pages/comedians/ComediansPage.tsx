@@ -114,26 +114,30 @@ const ComediansPage = () => {
                   >
                     <Box
                       boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
-                      borderRadius="25px"
+                      borderRadius="15px"
                       border={`3px solid ${theme.colors.white}`}
                       boxSize={{
-                        base: "165px",
-                        sm: "165px",
-                        lg: "230px",
+                        base: "145px",
+                        sm: "145px",
+                        lg: "210px",
                       }}
                       transition="transform 0.3s ease-out"
                       _hover={{ transform: "scale(1.05)" }}
-                      pb={3}
+                      // pb={3}
                       margin="auto"
                     >
                       <RouteLink to={`/comedians/${comedian.id}`}>
                         <Image
                           className={classes.comedian_image}
                           // boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
-                          borderRadius="25px"
+                          borderRadius="15px"
                           // border={`3px solid ${theme.colors.white}`}
                           w="100%"
-                          h="90%"
+                          h={{
+                            base: "115px",
+                            sm: "155px",
+                            lg: "170px",
+                          }}
                           src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
                           alt={comedian.name}
                           mx="auto"

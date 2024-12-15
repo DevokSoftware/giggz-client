@@ -48,7 +48,11 @@ import { debounce } from "lodash"; // Import debounce from lodash
 import { RangeDatePicker } from "../../components/RangeDatePicker";
 import { QueryPagination } from "../../components/types/Types";
 import FormattedDate from "../../components/FormattedDate";
-import { displayLocationAddress, isPastDate } from "../../components/utils";
+import {
+  displayLocationAddress,
+  isPastDate,
+  openTabWithExternUrl,
+} from "../../components/utils";
 
 interface ComedianOption extends OptionBase {
   label: any;
@@ -259,13 +263,6 @@ const EventsPage = () => {
     fetchEvents();
   };
 
-  const handleClick = (linkUrl?: string) => {
-    if (!linkUrl) {
-      return;
-    }
-    window.open(linkUrl, "_blank", "noopener,noreferrer");
-  };
-
   return (
     <Box mt={{ base: 2, sm: 3, md: 5, lg: 5 }}>
       <Box
@@ -418,7 +415,7 @@ const EventsPage = () => {
                       objectFit="cover"
                       w="100%"
                       h="100%"
-                      onClick={() => handleClick(event.url)}
+                      onClick={() => openTabWithExternUrl(event.url)}
                     />
                   </HStack>
                   <VStack alignItems="start" spacing={0} flex="1" ml={5} m={2}>
