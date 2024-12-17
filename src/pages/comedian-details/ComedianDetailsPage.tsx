@@ -233,7 +233,7 @@ const ComedianDetailsPage = () => {
           boxSize={{
             base: "170px",
             sm: "170px",
-            md: "150px",
+            md: "190px",
             lg: "200px",
           }}
           objectFit="cover"
@@ -315,7 +315,7 @@ const ComedianDetailsPage = () => {
       >
         <TabList pl={3} pr={3} justifyContent="center">
           <HStack spacing={3}>
-            {comedian.contents?.length !== 0 && (
+            {
               <Tab
                 fontSize="xs"
                 background="white"
@@ -329,7 +329,7 @@ const ComedianDetailsPage = () => {
               >
                 Conteúdos
               </Tab>
-            )}
+            }
             {futureComedianEvents?.length !== 0 && (
               <Tab
                 fontSize="xs"
@@ -363,8 +363,8 @@ const ComedianDetailsPage = () => {
           </HStack>
         </TabList>
         <TabPanels>
-          {comedian.contents?.length !== 0 && (
-            <TabPanel>
+          <TabPanel>
+            {comedian.contents?.length !== 0 ? (
               <SimpleGrid
                 columns={{ base: 2, sm: 3, md: 3, lg: 3 }}
                 spacing={{ base: 3, md: 4, lg: 4 }}
@@ -412,8 +412,19 @@ const ComedianDetailsPage = () => {
                   </Link>
                 ))}
               </SimpleGrid>
-            </TabPanel>
-          )}
+            ) : (
+              <Text
+                fontWeight="bold"
+                fontSize="xs"
+                color="green.600"
+                noOfLines={1}
+              >
+                Os conteúdos online de {comedian.name} serão adicionados em
+                breve!
+              </Text>
+            )}
+          </TabPanel>
+
           {futureComedianEvents?.length !== 0 && (
             <TabPanel>
               <VStack spacing={{ base: 3, lg: 4 }} align="stretch">

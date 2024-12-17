@@ -135,7 +135,7 @@ const ComediansPage = () => {
                           w="100%"
                           h={{
                             base: "115px",
-                            sm: "155px",
+                            sm: "115px",
                             lg: "170px",
                           }}
                           src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
