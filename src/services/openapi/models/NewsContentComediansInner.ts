@@ -2,7 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type AttendedEventInput = {
-    isAttended: boolean;
+export type NewsContentComediansInner = {
+    id?: string;
+    name?: string;
+    picture?: string;
 };
 

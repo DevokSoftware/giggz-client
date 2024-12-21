@@ -5,12 +5,21 @@ import {
   OpenAPI,
   UserService,
 } from "../services/openapi";
+import { useNavigate } from "react-router-dom";
 
 export function useApi() {
   const [error, setError] = useState<ApiError | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const getAccessToken = () => localStorage.getItem("accessToken") || "";
   const getRefreshToken = () => localStorage.getItem("refreshToken") || "";
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    //TODO maybe redirect to login page
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    navigate("/login");
+  }
 
   OpenAPI.BASE = process.env.REACT_APP_API_ENDPOINT as string;
   const handleRequest = useCallback(async function <T>(request: Promise<T>) {
@@ -60,13 +69,13 @@ export function useApi() {
           } catch (refreshError) {
             console.log(refreshError);
             // Handle refresh token failure (e.g., log out the user)
-            //TODO handleLogout();
+            handleLogout();
           } finally {
             setIsLoading(false);
           }
         } else {
           // No refresh token available, log out the user
-          //TODO handleLogout();
+          handleLogout();
         }
       } else {
         setError(error);

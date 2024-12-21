@@ -29,6 +29,8 @@ import {
   FaInstagram,
   FaTwitter,
   FaRegEye,
+  FaRegStar,
+  FaStar,
 } from "react-icons/fa";
 import classes from "./ComedianDetails.module.scss";
 import useApi from "../../services/useApi";
@@ -42,7 +44,6 @@ import {
   EventService,
   Pageable,
 } from "../../services/openapi";
-import moment from "moment";
 import "moment/locale/pt-br";
 import { ComedianServiceTemp } from "../../services/tempGenerated/ComedianServiceTemp";
 import { Link as RouteLink } from "react-router-dom";
@@ -53,6 +54,7 @@ import {
   displayLocationAddress,
   openTabWithExternUrl,
 } from "../../components/utils";
+import { FaRegCircleCheck } from "react-icons/fa6";
 
 const ComedianDetailsPage = () => {
   const { handleRequest: handleRequestComedian } = useApi();
@@ -88,24 +90,37 @@ const ComedianDetailsPage = () => {
     page: 0,
   });
 
+  const [isFavorite, setIsFavorite] = useState<boolean>();
+
   const { comedianId } = useParams();
   // const [showType, setShowType] = React.useState("future");
   const theme = useTheme();
 
   useEffect(() => {
     if (comedianId) {
-      const fetchComedians = async () => {
+      const fetchComedian = async () => {
         try {
-          const comedianResponse = await handleRequestComedian(
-            ComedianService.comediansComedianIdGet(parseInt(comedianId, 10))
-          );
+          const comedianResponse =
+            localStorage.getItem("accessToken") != null
+              ? await handleRequestWithToken(() =>
+                  ComedianService.comediansComedianIdGet(
+                    parseInt(comedianId, 10)
+                  )
+                )
+              : await handleRequestComedian(
+                  ComedianService.comediansComedianIdGet(
+                    parseInt(comedianId, 10)
+                  )
+                );
+
           setComedian(comedianResponse);
+          setIsFavorite(comedianResponse?.favoriteOfLoggedUser);
         } catch (error) {
           // TODO handle this errors in a generic way
           console.error(error);
         }
       };
-      fetchComedians();
+      fetchComedian();
     }
   }, [handleRequestComedian]);
 
@@ -205,11 +220,27 @@ const ComedianDetailsPage = () => {
   const setAttendedEvent = async (event: EventResponse) => {
     await handleRequestWithToken(() =>
       EventService.eventsEventIdAttendedPost(parseInt(event.id, 10), {
-        isAttended: !event.isAttendedByLoggedUser,
+        isAttended: !event.attendedByLoggedUser,
       })
     );
     fetchPastEvents();
     fetchFutureEvents();
+  };
+
+  const setFavoriteComedian = async () => {
+    if (comedian) {
+      console.log(!isFavorite);
+      setIsFavorite(!isFavorite);
+      const comedianResponse = await handleRequestWithToken(() =>
+        ComedianService.comediansComedianIdFavoritePost(
+          parseInt(comedian.id, 10),
+          {
+            isFavorite: !comedian.favoriteOfLoggedUser,
+          }
+        )
+      );
+      setComedian(comedianResponse);
+    }
   };
 
   if (comedian == null) {
@@ -238,10 +269,31 @@ const ComedianDetailsPage = () => {
           }}
           objectFit="cover"
         />
-        <Heading mt={4} size="md" color="green.700">
-          {comedian.name}
-        </Heading>
-
+        <Center mt={4}>
+          <Heading size="md" color="green.700">
+            {comedian.name}
+          </Heading>
+          <Tooltip
+            label={
+              isFavorite ? "Remover como favorito" : "Adicionar como favorito"
+            }
+            fontSize="sm"
+            placement="right"
+            hasArrow
+            backgroundColor="green.600"
+          >
+            <Center>
+              <Icon
+                as={isFavorite ? FaStar : FaRegStar}
+                onClick={() => setFavoriteComedian()}
+                color="yellow.400"
+                fontSize="xl"
+                ml={2}
+                cursor="pointer"
+              />
+            </Center>
+          </Tooltip>
+        </Center>
         <Flex justify="center">
           {comedian && comedian.instagram && (
             <IconButton
@@ -583,20 +635,33 @@ const ComedianDetailsPage = () => {
                                 {show.name}
                               </Text>
                             )}
-                            {/* <Icon
-                              as={FaRegEye}
-                              onClick={() => {
-                                setAttendedEvent(show);
-                              }}
-                              color={
-                                show.isAttendedByLoggedUser
-                                  ? "green.500"
-                                  : "gray.500"
+                            <Tooltip
+                              label={
+                                show.attendedByLoggedUser
+                                  ? "Remover como assistido"
+                                  : "Adicionar como assistido"
                               }
-                              fontSize="xl"
-                              padding="0"
-                              ml={1}
-                            /> */}
+                              fontSize="sm"
+                              placement="bottom"
+                              hasArrow
+                              backgroundColor="green.600"
+                            >
+                              <Box>
+                                <Icon
+                                  as={FaRegCircleCheck}
+                                  onClick={() => {
+                                    setAttendedEvent(show);
+                                  }}
+                                  color={
+                                    show.attendedByLoggedUser
+                                      ? "green.500"
+                                      : "gray.400"
+                                  }
+                                  fontSize="sm"
+                                  padding="0"
+                                />
+                              </Box>
+                            </Tooltip>
                           </>
                         </HStack>
                         <VStack alignItems="start" spacing={0} mt={2}>

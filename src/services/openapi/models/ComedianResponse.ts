@@ -15,5 +15,6 @@ export type ComedianResponse = {
     twitter?: string;
     contents?: Array<ContentResponse>;
     inactive?: boolean;
+    favoriteOfLoggedUser?: boolean;
 };
 

@@ -14,6 +14,6 @@ export type ComedianEventResponse = {
     url?: string;
     location?: Location;
     standup?: Standup;
-    isAttendedByLoggedUser?: boolean;
+    attendedByLoggedUser?: boolean;
 };
 

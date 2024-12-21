@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { ComedianResponse } from '../models/ComedianResponse';
 import type { ComediansComedianIdEventsGetFiltersParameter } from '../models/ComediansComedianIdEventsGetFiltersParameter';
+import type { ComediansComedianIdFavoritePostRequest } from '../models/ComediansComedianIdFavoritePostRequest';
 import type { ComediansGetFiltersParameter } from '../models/ComediansGetFiltersParameter';
 import type { CreateComedianRequest } from '../models/CreateComedianRequest';
 import type { Pageable } from '../models/Pageable';
@@ -96,6 +97,26 @@ export class ComedianService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/comedians',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param comedianId
+     * @param requestBody
+     * @returns ComedianResponse Favorite comedian added
+     * @throws ApiError
+     */
+    public static comediansComedianIdFavoritePost(
+        comedianId: number,
+        requestBody: ComediansComedianIdFavoritePostRequest,
+    ): CancelablePromise<ComedianResponse> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/comedians/{comedianId}/favorite',
+            path: {
+                'comedianId': comedianId,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });

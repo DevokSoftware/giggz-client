@@ -23,6 +23,8 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouteLink, useNavigate } from "react-router-dom";
 import { FaInstagram, FaTwitter, FaBars } from "react-icons/fa";
+import { HiOutlineFire } from "react-icons/hi";
+
 import { CgProfile } from "react-icons/cg";
 import { CiLogout } from "react-icons/ci";
 import { MdEvent } from "react-icons/md";
@@ -57,7 +59,7 @@ const Navbar = () => {
 
         {isDesktop ? (
           <>
-            <HStack ml={8} spacing={8}>
+            <HStack ml={12} spacing={8}>
               <Link as={RouteLink} to="/comedians" color="white">
                 <HStack>
                   <Icon as={FaPeopleGroup} fontSize="xl" padding="0" />
@@ -68,6 +70,12 @@ const Navbar = () => {
                 <HStack>
                   <Icon as={MdEvent} fontSize="xl" padding="0" />
                   <Text fontSize="md">Eventos</Text>
+                </HStack>
+              </Link>
+              <Link as={RouteLink} to="/news" color="white">
+                <HStack>
+                  <Icon as={HiOutlineFire} fontSize="xl" padding="0" />
+                  <Text fontSize="md">Novidades</Text>
                 </HStack>
               </Link>
             </HStack>
@@ -183,6 +191,21 @@ const Navbar = () => {
                         </Text>
                       </HStack>
                     </Link>
+
+                    <Link
+                      as={RouteLink}
+                      to="/news"
+                      color="green.600"
+                      onClick={onClose}
+                    >
+                      <HStack>
+                        <Icon as={HiOutlineFire} fontSize="2xl" padding="0" />
+                        <Text fontSize="lg" fontWeight="semibold">
+                          Novidades
+                        </Text>
+                      </HStack>
+                    </Link>
+
                     <Link
                       as={RouteLink}
                       to="/profile"

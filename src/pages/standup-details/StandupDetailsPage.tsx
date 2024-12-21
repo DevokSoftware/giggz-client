@@ -15,6 +15,7 @@ import {
   SimpleGrid,
   Spinner,
   Text,
+  Tooltip,
   useTheme,
   VStack,
 } from "@chakra-ui/react";
@@ -31,12 +32,12 @@ import {
 import "moment/locale/pt-br";
 import { EventServiceTemp } from "../../services/tempGenerated/EventServiceTemp";
 import classes from "./StandupDetailsPage.module.scss";
-import moment from "moment";
 import FormattedDate from "../../components/FormattedDate";
 import Pagination from "../../components/Pagination";
 import { QueryPagination } from "../../components/types/Types";
 import { displayLocationAddress, isPastDate } from "../../components/utils";
-import { FaRegEye } from "react-icons/fa";
+import { FaRegCircleCheck } from "react-icons/fa6";
+
 const StandupDetailsPage = () => {
   const theme = useTheme();
   const { isLoading: isLoadingStandup, handleRequest: handleRequestStandup } =
@@ -124,7 +125,7 @@ const StandupDetailsPage = () => {
   const setAttendedEvent = async (event: EventResponse) => {
     await handleRequestWithToken(() =>
       EventService.eventsEventIdAttendedPost(parseInt(event.id, 10), {
-        isAttended: !event.isAttendedByLoggedUser,
+        isAttended: !event.attendedByLoggedUser,
       })
     );
     fetchEvents();
@@ -233,22 +234,35 @@ const StandupDetailsPage = () => {
                       >
                         {show.location?.name}
                       </Text>
-                      {/* {isPastDate(show.date) && (
-                        <Icon
-                          as={FaRegEye}
-                          onClick={() => {
-                            setAttendedEvent(show);
-                          }}
-                          color={
-                            show.isAttendedByLoggedUser
-                              ? "green.500"
-                              : "gray.500"
+                      {isPastDate(show.date) && (
+                        <Tooltip
+                          label={
+                            show.attendedByLoggedUser
+                              ? "Remover como assistido"
+                              : "Adicionar como assistido"
                           }
-                          fontSize="xl"
-                          padding="0"
-                          ml={1}
-                        />
-                      )} */}
+                          fontSize="sm"
+                          placement="bottom"
+                          hasArrow
+                          backgroundColor="green.600"
+                        >
+                          <Box>
+                            <Icon
+                              as={FaRegCircleCheck}
+                              onClick={() => {
+                                setAttendedEvent(show);
+                              }}
+                              color={
+                                show.attendedByLoggedUser
+                                  ? "green.500"
+                                  : "gray.400"
+                              }
+                              fontSize="sm"
+                              padding="0"
+                            />
+                          </Box>
+                        </Tooltip>
+                      )}
                     </HStack>
                     <Text fontSize="xs" color="black" mt={1}>
                       {displayLocationAddress(show.location)}

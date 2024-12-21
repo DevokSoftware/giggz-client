@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ComedianResponse } from '../models/ComedianResponse';
 import type { EventResponse } from '../models/EventResponse';
 import type { UserProfile } from '../models/UserProfile';
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -75,6 +76,21 @@ export class UserService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/me/events/attended',
+            errors: {
+                401: `Unauthorized (invalid or missing token)`,
+            },
+        });
+    }
+    /**
+     * Get favorite comedians by logged user
+     * Retrieve all the favorite Comedians of the logged user
+     * @returns ComedianResponse Successfully retrieved favorite Comedians of the logged user
+     * @throws ApiError
+     */
+    public static meComediansFavoritesGet(): CancelablePromise<Array<ComedianResponse>> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/me/comedians/favorites',
             errors: {
                 401: `Unauthorized (invalid or missing token)`,
             },

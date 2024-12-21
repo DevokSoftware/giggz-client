@@ -66,12 +66,22 @@ const ComediansPage = () => {
 
   useEffect(() => {
     fetchComedians();
-  }, [handleRequest, comedianPagination.currentPage, filters]); //TODO: it is being called twice. check if this useEffect is working properly
+  }, [
+    handleRequest,
+    comedianPagination.currentPage,
+    filters,
+    comedianPagination.trigger,
+  ]);
 
   const handleSearch = (searchTerm: string) => {
     setFilters({
       ...filters,
       name: searchTerm,
+    });
+    setComedianPagination({
+      ...comedianPagination,
+      currentPage: 1,
+      trigger: Date.now(),
     });
   };
 
@@ -83,94 +93,93 @@ const ComediansPage = () => {
   };
 
   return (
-    <Box mt={{ base: 2, sm: 3, md: 10, lg: 10 }}>
-      <Box
-        pl={{ base: 3, sm: 5, md: 10, lg: 20 }}
-        pr={{ base: 3, sm: 5, md: 10, lg: 20 }}
-        maxW="1300px"
-        mx="auto"
-      >
-        <>
-          <SearchBox onSearch={handleSearch} />
-          {isLoading ? (
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="green.600"
-              size="xl"
-            />
-          ) : (
-            <>
-              <SimpleGrid
-                columns={{ base: 2, sm: 2, md: 3, lg: 4 }}
-                spacing={{ base: 3, lg: 4 }}
-              >
-                {comedians.map((comedian) => (
+    <Box
+      mt={{ base: 2, sm: 3, md: 10, lg: 10 }}
+      pl={{ base: 3, sm: 5, md: 10, lg: 20 }}
+      pr={{ base: 3, sm: 5, md: 10, lg: 20 }}
+      maxW="1300px"
+      mx="auto"
+    >
+      <>
+        <SearchBox onSearch={handleSearch} />
+        {isLoading ? (
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="green.600"
+            size="xl"
+          />
+        ) : (
+          <>
+            <SimpleGrid
+              columns={{ base: 2, sm: 2, md: 3, lg: 4 }}
+              spacing={{ base: 3, lg: 4 }}
+            >
+              {comedians.map((comedian) => (
+                <Box
+                  key={comedian.id}
+                  p={{ base: 2, lg: 4 }}
+                  textAlign="center"
+                >
                   <Box
-                    key={comedian.id}
-                    p={{ base: 2, lg: 4 }}
-                    textAlign="center"
+                    boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                    borderRadius="15px"
+                    border={`3px solid ${theme.colors.white}`}
+                    boxSize={{
+                      base: "145px",
+                      sm: "145px",
+                      lg: "210px",
+                    }}
+                    transition="transform 0.3s ease-out"
+                    _hover={{ transform: "scale(1.05)" }}
+                    // pb={3}
+                    margin="auto"
                   >
-                    <Box
-                      boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
-                      borderRadius="15px"
-                      border={`3px solid ${theme.colors.white}`}
-                      boxSize={{
-                        base: "145px",
-                        sm: "145px",
-                        lg: "210px",
-                      }}
-                      transition="transform 0.3s ease-out"
-                      _hover={{ transform: "scale(1.05)" }}
-                      // pb={3}
-                      margin="auto"
+                    <RouteLink to={`/comedians/${comedian.id}`}>
+                      <Image
+                        className={classes.comedian_image}
+                        // boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                        borderRadius="15px"
+                        // border={`3px solid ${theme.colors.white}`}
+                        w="100%"
+                        h={{
+                          base: "115px",
+                          sm: "115px",
+                          lg: "170px",
+                        }}
+                        src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
+                        alt={comedian.name}
+                        mx="auto"
+                        objectFit="cover"
+                        cursor="pointer"
+                        borderBottomRadius="0"
+                      />
+                    </RouteLink>
+                    <Heading
+                      fontSize="sm"
+                      color="gray.600"
+                      // color="grey.500"
+                      mt={{ base: 1, lg: 2 }}
+                      noOfLines={1}
                     >
-                      <RouteLink to={`/comedians/${comedian.id}`}>
-                        <Image
-                          className={classes.comedian_image}
-                          // boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
-                          borderRadius="15px"
-                          // border={`3px solid ${theme.colors.white}`}
-                          w="100%"
-                          h={{
-                            base: "115px",
-                            sm: "115px",
-                            lg: "170px",
-                          }}
-                          src={`${process.env.PUBLIC_URL}/comedians/${comedian.picture}.png`}
-                          alt={comedian.name}
-                          mx="auto"
-                          objectFit="cover"
-                          cursor="pointer"
-                          borderBottomRadius="0"
-                        />
-                      </RouteLink>
-                      <Heading
-                        fontSize="sm"
-                        color="gray.600"
-                        // color="grey.500"
-                        mt={{ base: 1, lg: 2 }}
-                        noOfLines={1}
-                      >
-                        {comedian.name}
-                      </Heading>
-                    </Box>
+                      {comedian.name}
+                    </Heading>
                   </Box>
-                ))}
-              </SimpleGrid>
-            </>
-          )}
+                </Box>
+              ))}
+            </SimpleGrid>
+          </>
+        )}
 
-          <Center>
-            <Pagination
-              currentPage={comedianPagination.currentPage}
-              totalPages={comedianPagination.totalPages || 0}
-              onPageChange={handlePageChange}
-            />
-          </Center>
-        </>
-      </Box>
+        <Center>
+          <Pagination
+            currentPage={comedianPagination.currentPage}
+            totalPages={comedianPagination.totalPages || 0}
+            onPageChange={handlePageChange}
+          />
+        </Center>
+      </>
     </Box>
   );
 };

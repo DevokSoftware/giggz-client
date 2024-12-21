@@ -23,6 +23,7 @@ import PrivateRoute from "./components/auth/PrivateRoute";
 import ProfilePage from "./pages/user/profile/ProfilePage";
 import LoginPage from "./pages/signup/LoginPage";
 import SignUpPage from "./pages/signup/SignUpPage";
+import NewsPage from "./pages/news/NewsPage";
 
 const theme = extendTheme({
   fonts: {
@@ -84,6 +85,10 @@ export const App = () => {
               </Route>
               <Route path="/homepage" element={<Outlet />}>
                 <Route path="" element={<Homepage />} />
+              </Route>
+
+              <Route path="/news" element={<Outlet />}>
+                <Route path="" element={<NewsPage />} />
               </Route>
             </Routes>
           </Box>

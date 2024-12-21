@@ -2,9 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { AttendedEventInput } from '../models/AttendedEventInput';
 import type { CreateEventRequest } from '../models/CreateEventRequest';
 import type { EventResponse } from '../models/EventResponse';
+import type { EventsEventIdAttendedPostRequest } from '../models/EventsEventIdAttendedPostRequest';
 import type { EventsGetFiltersParameter } from '../models/EventsGetFiltersParameter';
 import type { Pageable } from '../models/Pageable';
 import type { PageEventResponse } from '../models/PageEventResponse';
@@ -107,7 +107,7 @@ export class EventService {
      */
     public static eventsEventIdAttendedPost(
         eventId: number,
-        requestBody: AttendedEventInput,
+        requestBody: EventsEventIdAttendedPostRequest,
     ): CancelablePromise<EventResponse> {
         return __request(OpenAPI, {
             method: 'POST',
