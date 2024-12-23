@@ -135,21 +135,24 @@ const LoginPage = () => {
                 >
                   Entrar
                 </Button>
+                {!isInAppBrowser && (
+                  <>
+                    <Text fontSize="xs" w="20%" color="green.700">
+                      ou
+                    </Text>
 
-                <Text fontSize="xs" w="20%" color="green.700">
-                  ou
-                </Text>
-
-                <Image
-                  borderRadius="full"
-                  border={`1px solid ${theme.colors.gray[300]}`}
-                  boxSize="40px"
-                  src="/google.webp"
-                  mx="auto"
-                  objectFit="cover"
-                  cursor="pointer"
-                  onClick={() => signUpWithGoogle()}
-                />
+                    <Image
+                      borderRadius="full"
+                      border={`1px solid ${theme.colors.gray[300]}`}
+                      boxSize="40px"
+                      src="/google.webp"
+                      mx="auto"
+                      objectFit="cover"
+                      cursor="pointer"
+                      onClick={() => signUpWithGoogle()}
+                    />
+                  </>
+                )}
               </HStack>
 
               <Divider my={2} />
