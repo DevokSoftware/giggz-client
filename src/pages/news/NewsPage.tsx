@@ -185,8 +185,8 @@ const NewsPage = () => {
                           boxSize={{
                             base: "80px",
                             sm: "80px",
-                            md: "100px",
-                            lg: "100px",
+                            md: "80px",
+                            lg: "80px",
                           }}
                           src={"/youtube_icon.png"}
                           mx="auto"
@@ -296,11 +296,12 @@ const NewsPage = () => {
                       >
                         <Image
                           p={1}
+                          mt={1}
                           boxSize={{
                             base: "70px",
                             sm: "70px",
-                            md: "90px",
-                            lg: "90px",
+                            md: "70px",
+                            lg: "70px",
                           }}
                           src={"/spotify_icon.png"}
                           mx="auto"
