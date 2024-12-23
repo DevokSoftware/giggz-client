@@ -45,11 +45,6 @@ const theme = extendTheme({
         flexDirection: "column",
         minHeight: "100vh",
       },
-      ".main-content": {
-        flex: "1", // Ensures main content grows to fill available space
-        display: "flex",
-        flexDirection: "column",
-      },
     },
   },
 });

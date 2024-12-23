@@ -27,7 +27,7 @@ const Footer = () => {
         justifyContent="space-between"
         maxW="1200px"
         mx="auto"
-        px={4}
+        px={2}
       >
         {/* Left Section */}
         <VStack alignItems={isDesktop ? "flex-start" : "center"} spacing={2}>
@@ -42,7 +42,7 @@ const Footer = () => {
         {/* Center Section */}
         <HStack
           spacing={8}
-          mt={isDesktop ? 0 : 4}
+          mt={isDesktop ? 0 : 0}
           justifyContent={isDesktop ? "center" : "center"}
         >
           <Text fontSize="xs" color="white">
@@ -52,7 +52,7 @@ const Footer = () => {
         </HStack>
 
         {/* Right Section */}
-        <HStack spacing={1} mt={isDesktop ? 0 : 4} ml={2}>
+        <HStack spacing={1} mt={isDesktop ? 0 : 0} ml={2}>
           <IconButton
             as={FaInstagram}
             boxSize={6}
