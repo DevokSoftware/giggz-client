@@ -163,7 +163,7 @@ const NewsPage = () => {
             </Text>
 
             <SimpleGrid
-              columns={{ base: 1, sm: 2, md: 3, lg: 5 }}
+              columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
               // borderTop={`1px solid ${theme.colors.gray[100]}`}
               // borderBottom={`1px solid ${theme.colors.gray[100]}`}
               mt={2}
@@ -276,7 +276,7 @@ const NewsPage = () => {
             </Text>
 
             <SimpleGrid
-              columns={{ base: 1, sm: 2, md: 3, lg: 5 }}
+              columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
               mt={2}
               mb={4}
               spacing={2}
