@@ -54,8 +54,9 @@ const Footer = () => {
         {/* Right Section */}
         <HStack spacing={1} mt={isDesktop ? 0 : 0} ml={2}>
           <IconButton
-            as={FaInstagram}
-            boxSize={6}
+            icon={<FaInstagram />}
+            as="a"
+            fontSize={25}
             href="https://www.instagram.com/giggz_pt"
             target="_blank"
             rel="noopener noreferrer"
@@ -66,8 +67,9 @@ const Footer = () => {
             cursor="pointer"
           />
           <IconButton
-            as={FaTwitter}
-            boxSize={6}
+            icon={<FaTwitter />}
+            as="a"
+            fontSize={25}
             href="https://www.twitter.com"
             target="_blank"
             rel="noopener noreferrer"
