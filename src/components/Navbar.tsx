@@ -43,8 +43,8 @@ const Navbar = () => {
     onClose();
   };
   return (
-    <Box bg="green.600" p={4} position="fixed" width="100%" zIndex="1000">
-      <Flex alignItems="center">
+    <Box bg="green.600" position="fixed" width="100%" zIndex="1000">
+      <Flex alignItems="center" p={4}>
         <RouteLink to="/">
           <Heading
             size="lg"

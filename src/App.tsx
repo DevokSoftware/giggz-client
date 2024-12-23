@@ -24,6 +24,7 @@ import ProfilePage from "./pages/user/profile/ProfilePage";
 import LoginPage from "./pages/signup/LoginPage";
 import SignUpPage from "./pages/signup/SignUpPage";
 import NewsPage from "./pages/news/NewsPage";
+import Footer from "./components/Footer";
 
 const theme = extendTheme({
   fonts: {
@@ -32,8 +33,22 @@ const theme = extendTheme({
   },
   styles: {
     global: {
-      body: {
+      "html, body": {
+        height: "100%",
+        margin: "0",
         background: "linear-gradient(to right, #f8fbff, #edf7ff)",
+        display: "flex",
+        flexDirection: "column",
+      },
+      "#root": {
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      },
+      ".main-content": {
+        flex: "1", // Ensures main content grows to fill available space
+        display: "flex",
+        flexDirection: "column",
       },
     },
   },
@@ -43,9 +58,16 @@ export const App = () => {
   return (
     <ChakraProvider theme={theme}>
       <Router>
-        <Box textAlign="center" fontSize="xl">
+        <Box
+          textAlign="center"
+          fontSize="xl"
+          id="root" // Match styles applied to #root in the theme
+          display="flex"
+          flexDirection="column"
+          minHeight="100vh"
+        >
           <Navbar />
-          <Box pt={20}>
+          <Box flex="1" pt={20} className="main-content">
             <Routes>
               <Route
                 path="/profile"
@@ -92,6 +114,7 @@ export const App = () => {
               </Route>
             </Routes>
           </Box>
+          <Footer />
         </Box>
       </Router>
     </ChakraProvider>
