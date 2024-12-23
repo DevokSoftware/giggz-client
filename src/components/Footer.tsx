@@ -56,7 +56,7 @@ const Footer = () => {
           <IconButton
             as={FaInstagram}
             boxSize={6}
-            href="https://www.instagram.com"
+            href="https://www.instagram.com/giggz_pt"
             target="_blank"
             rel="noopener noreferrer"
             textAlign="center"
