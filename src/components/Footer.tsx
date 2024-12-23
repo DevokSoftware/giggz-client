@@ -70,7 +70,7 @@ const Footer = () => {
             icon={<FaTwitter />}
             as="a"
             fontSize={25}
-            href="https://www.twitter.com"
+            href="https://x.com/giggz_pt"
             target="_blank"
             rel="noopener noreferrer"
             textAlign="center"

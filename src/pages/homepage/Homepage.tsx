@@ -84,81 +84,34 @@ const Homepage = () => {
 
         {/* Features Section */}
         <Box mt={{ base: 2, sm: 2, md: 8, lg: 8 }}>
-          {/* <Heading size="md" mb={4} textAlign="center" color="green.600">
-            Algumas características:
-          </Heading> */}
           <SimpleGrid
             columns={{ base: 1, sm: 2, md: 3 }}
             spacing={5}
             pl={{ base: 3, sm: 5, md: 10, lg: 10 }}
             pr={{ base: 3, sm: 5, md: 10, lg: 10 }}
           >
-            <Feature
-              title="Comediantes"
-              description="Explora os perfis dos teus comediantes favoritos com acesso rápido ao seu conteúdo."
-              // icon="/comedians/pedroteixeiradamota.png"
-              icon={FaPeopleGroup}
-            />
-            <Feature
-              title="Conteúdo"
-              description="Links diretos para podcasts, stand-up specials, patreon e vídeos no YouTube."
-              // icon="/youtube_icon.png"
-              icon={FiPlayCircle}
-            />
-            {/* <Feature
-              title="Descobre novos comediantes"
-              description="Aqui podes encontrar novos comediantes e começar a seguir o seu trabalho."
-              icon="/magnifyingglass.avif"
-            /> */}
-            <Feature
-              title="Pesquisar eventos"
-              description="Encontra eventos numa localização, data ou comediante à tua escolha."
-              // icon="/comedy.webp"
-              icon={MdEvent}
-            />
-            {/* <Feature
-              title="Stand-Up"
-              description="Fica a par dos especiais de stand-up, as datas e localizações da tour."
-              icon="/standup.jpg"
-            />
-
-            <Feature
-              title="Novas funcionalidades em breve"
-              description="Muitas outras funcionalidades serão lançadas em breve. Stay tuned!"
-              icon="/comingsoon.jpeg"
-            /> */}
+            <RouteLink to={`/comedians`}>
+              <Feature
+                title="Comediantes"
+                description="Explora os perfis dos teus comediantes favoritos com acesso rápido ao seu conteúdo."
+                icon={FaPeopleGroup}
+              />
+            </RouteLink>
+            <RouteLink to={`/comedians`}>
+              <Feature
+                title="Conteúdo"
+                description="Links diretos para podcasts, stand-up specials, patreon e vídeos no YouTube."
+                icon={FiPlayCircle}
+              />
+            </RouteLink>
+            <RouteLink to={`/shows`}>
+              <Feature
+                title="Pesquisar eventos"
+                description="Encontra eventos numa localização, data ou comediante à tua escolha."
+                icon={MdEvent}
+              />
+            </RouteLink>
           </SimpleGrid>
-
-          {/* <HStack spacing={4} justifyContent="center" alignItems="center">
-            <Button
-              fontSize="sm"
-              background="white"
-              border={`1px solid ${theme.colors.green[500]}`}
-              borderRadius="8px"
-              boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
-              color="green.500"
-              pl="2"
-              pr="2"
-              _hover={{ background: "green.300" }}
-              onClick={() => navigate("/comedians")}
-            >
-              Encontra Comediantes
-            </Button>
-            <Button
-              fontSize="sm"
-              background="white"
-              border={`1px solid ${theme.colors.green[500]}`}
-              borderRadius="8px"
-              boxShadow="2px 2px 6px 1px rgb(0 128 0 / 20%)"
-              color="green.500"
-              pl="2"
-              pr="2"
-              _hover={{ background: "green.300" }}
-              onClick={() => navigate("/shows")}
-            >
-              Pesquisa Eventos
-            </Button>
-          </HStack> */}
         </Box>
         {/* Trending Section */}
         {events.length > 0 && (
@@ -209,7 +162,7 @@ const Feature = ({ title, description, icon }: any) => (
   <VStack
     // bg="gray.50"
     p={4}
-    boxShadow="0px 0px 9px 2px rgb(57 124 57 / 20%)"
+    boxShadow="0px 0px 9px 3px rgb(135 135 135 / 20%)"
     // border="1px solid"
     // borderColor="green.600"
     borderRadius="20px"
@@ -217,6 +170,7 @@ const Feature = ({ title, description, icon }: any) => (
     spacing={3}
     textAlign="center"
     backgroundColor="white"
+    h="100%"
   >
     {/* <Image src={icon} alt={title} boxSize="80px" borderRadius="10px" /> */}
     <Icon as={icon} fontSize="5xl" padding="0" color="green.700" />

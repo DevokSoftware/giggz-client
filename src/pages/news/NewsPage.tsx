@@ -15,6 +15,9 @@ import {
 import useApi from "../../services/useApi";
 import { NewsContent, NewsService, Standup } from "../../services/openapi";
 import { Link as RouteLink } from "react-router-dom";
+
+import classes from "./NewsPage.module.scss";
+
 const NewsPage = () => {
   const theme = useTheme();
   const { isLoading, handleRequest } = useApi();
@@ -37,39 +40,6 @@ const NewsPage = () => {
       console.error(error);
     }
   };
-
-  // TODO fetch youtube metadata in future
-  // const fetchYouTubeThumbnail = async (youtubeUrl?: string) => {
-  //   const oembedUrl = `https://www.youtube.com/oembed?url=${youtubeUrl}&format=json`;
-  //   try {
-  //     const response = await fetch(oembedUrl);
-  //     if (!response.ok) {
-  //       return "/youtube_icon.png";
-  //     }
-  //     const data = await response.json();
-  //     console.log(1);
-  //     return data.thumbnail_url;
-  //   } catch (error) {
-  //     console.error("Error fetching YouTube metadata:", error);
-  //     throw error;
-  //   }
-  // };
-
-  // async function fillYoutubeThumbnail(youtubeList?: ContentResponse[]) {
-  //   if (!youtubeList) {
-  //     setYoutubeContent([]);
-  //     return;
-  //   }
-
-  //   const updatedList = await Promise.all(
-  //     youtubeList.map(async (youtube) => {
-  //       const thumbnailUrl = await fetchYouTubeThumbnail(youtube.url);
-  //       return { ...youtube, url: thumbnailUrl };
-  //     })
-  //   );
-
-  //   setYoutubeContent(updatedList);
-  // }
 
   useEffect(() => {
     fetchNews();
@@ -100,7 +70,6 @@ const NewsPage = () => {
               textAlign="center"
               mt={{ base: 3, sm: 3, md: 4, lg: 4 }}
               ml={2}
-              // textTransform="uppercase"
             >
               Os últimos standups anunciados...
             </Text>
@@ -109,8 +78,6 @@ const NewsPage = () => {
               columns={{ base: 2, sm: 3, md: 3, lg: 5 }}
               mt={3}
               spacing={3}
-              // borderTop={`1px solid ${theme.colors.gray[100]}`}
-              // borderBottom={`1px solid ${theme.colors.gray[100]}`}
             >
               {standups.map((standup) => (
                 <RouteLink to={`/comedians/${standup?.comedian?.id}`}>
@@ -120,7 +87,6 @@ const NewsPage = () => {
                     p={{ base: 1, lg: 2 }}
                   >
                     <Image
-                      // className={classes.comedian_image}
                       borderRadius="20px"
                       src={standup?.poster}
                       alt={standup?.name}
@@ -135,6 +101,7 @@ const NewsPage = () => {
                       }}
                       aspectRatio="2/3"
                       objectFit="cover"
+                      className={classes.show_card}
                     />
                     <Text
                       fontSize="md"
@@ -179,6 +146,7 @@ const NewsPage = () => {
                         border={`1px solid ${theme.colors.gray[200]}`}
                         boxShadow="1px 2px 7px 1px rgb(0 8 1 / 25%)"
                         p={1}
+                        className={classes.show_card}
                       >
                         <Image
                           p={1}
@@ -215,6 +183,7 @@ const NewsPage = () => {
                         backgroundColor="white"
                         borderRadius="15px"
                         border={`1px solid ${theme.colors.gray[200]}`}
+                        className={classes.show_card}
                       >
                         <Box flex="0 0 25%">
                           <Image
@@ -293,6 +262,7 @@ const NewsPage = () => {
                         border={`1px solid ${theme.colors.gray[200]}`}
                         boxShadow="1px 2px 7px 1px rgb(0 8 1 / 25%)"
                         p={1}
+                        className={classes.show_card}
                       >
                         <Image
                           p={1}
@@ -332,6 +302,7 @@ const NewsPage = () => {
                           backgroundColor="white"
                           borderRadius="15px"
                           border={`1px solid ${theme.colors.gray[200]}`}
+                          className={classes.show_card}
                         >
                           <Box flex="0 0 25%">
                             <Image

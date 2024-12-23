@@ -1,0 +1,7 @@
+.show_card {
+  transition: transform 0.2s ease-out;
+}
+
+.show_card:hover {
+  transform: scale(1.03);
+}

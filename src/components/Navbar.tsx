@@ -81,28 +81,6 @@ const Navbar = () => {
             </HStack>
             <Spacer />
             <HStack spacing={4}>
-              {/* <IconButton
-                as="a"
-                href="https://www.instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                icon={<FaInstagram />}
-                variant="ghost"
-                fontSize="25px"
-                color="white"
-              />
-              <IconButton
-                as="a"
-                href="https://www.twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter"
-                icon={<FaTwitter />}
-                variant="ghost"
-                fontSize="25px"
-                color="white"
-              /> */}
               <Link as={RouteLink} to="/profile">
                 <IconButton
                   as="a"
