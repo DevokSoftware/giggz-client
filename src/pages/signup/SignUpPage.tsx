@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -24,7 +24,14 @@ const SignUpPage = () => {
   const { isLoading, handleRequest } = useApi();
   const theme = useTheme();
   const navigate = useNavigate();
-
+  const [isInAppBrowser, setIsInAppBrowser] = useState(false);
+  useEffect(() => {
+    // Check for Instagram or other in-app browsers
+    const userAgent = navigator.userAgent || navigator.vendor;
+    if (/instagram|fb_iab|fb4a|fbav/i.test(userAgent)) {
+      setIsInAppBrowser(true);
+    }
+  }, []);
   const signUpWithEmail = async (values: {
     email: string;
     password: string;
@@ -41,6 +48,12 @@ const SignUpPage = () => {
 
   // Handle Google sign-in through backend
   const signUpWithGoogle = async () => {
+    if (isInAppBrowser) {
+      alert(
+        "Por razões de segurança, abra este link no seu navegador padrão. Toque nos três pontos no canto superior direito e selecione 'Abrir no navegador.'"
+      );
+      return;
+    }
     // Redirect user to Spring Security's OAuth2 login endpoint
     const width = 600; // Width of the popup
     const height = 600; // Height of the popup
