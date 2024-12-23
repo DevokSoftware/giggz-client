@@ -222,7 +222,7 @@ const TrendingCard = ({ event }: { event: EventResponse }) => {
           alt={"title"}
           objectFit="cover"
           w={{ base: "100%", md: "100%", lg: "100%" }}
-          h={{ base: "140px", md: "200px", lg: "200px" }}
+          h={{ base: "160px", md: "200px", lg: "200px" }}
         />
 
         <Box p={2}>
