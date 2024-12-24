@@ -204,41 +204,53 @@ const ProfilePage: React.FC = () => {
             ) : (
               <SimpleGrid columns={{ base: 2, sm: 3, md: 3, lg: 5 }} mt={2}>
                 {events.map((event) => (
-                  <Box
-                    key={event.id}
-                    textAlign="center"
-                    p={{ base: 1, lg: 2 }}
-                    cursor="pointer"
+                  <RouteLink
+                    to={
+                      event.standup
+                        ? `/standups/${event.standup.id}`
+                        : `/comedians/${
+                            event.comedians ? event.comedians[0].id : `/profile`
+                          }`
+                    }
                   >
-                    <Image
-                      // className={classes.comedian_image}
-                      borderRadius="20px"
-                      src={event.standup ? event.standup?.poster : event.poster}
-                      alt={event.standup ? event.standup?.name : event.name}
-                      mx="auto"
-                      boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
-                      border={`3px solid ${theme.colors.white}`}
-                      boxSize={{
-                        base: "110px",
-                        sm: "110px",
-                        md: "140px",
-                        lg: "150px",
-                      }}
-                      // aspectRatio="2/3"
-                      objectFit="cover"
-                    />
-                    <Text
-                      fontSize="md"
-                      color="green.700"
-                      mt={{ base: 1, lg: 2 }}
-                      noOfLines={1}
+                    <Box
+                      key={event.id}
+                      textAlign="center"
+                      p={{ base: 1, lg: 2 }}
+                      cursor="pointer"
                     >
-                      {event.standup ? event.standup?.name : event.name}
-                    </Text>
-                    <Text fontSize="sm" color="gray.500">
-                      {moment(event.date).format("DD/MMM/YYYY")}
-                    </Text>
-                  </Box>
+                      <Image
+                        // className={classes.comedian_image}
+                        borderRadius="20px"
+                        src={
+                          event.standup ? event.standup?.poster : event.poster
+                        }
+                        alt={event.standup ? event.standup?.name : event.name}
+                        mx="auto"
+                        boxShadow="0px 0px 5px 2px rgb(0 8 1 / 25%)"
+                        border={`3px solid ${theme.colors.white}`}
+                        boxSize={{
+                          base: "110px",
+                          sm: "110px",
+                          md: "140px",
+                          lg: "150px",
+                        }}
+                        // aspectRatio="2/3"
+                        objectFit="cover"
+                      />
+                      <Text
+                        fontSize="md"
+                        color="green.700"
+                        mt={{ base: 1, lg: 2 }}
+                        noOfLines={1}
+                      >
+                        {event.standup ? event.standup?.name : event.name}
+                      </Text>
+                      <Text fontSize="sm" color="gray.500">
+                        {moment(event.date).format("DD/MMM/YYYY")}
+                      </Text>
+                    </Box>
+                  </RouteLink>
                 ))}
               </SimpleGrid>
             )}

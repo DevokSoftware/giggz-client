@@ -81,7 +81,7 @@ const NewsPage = () => {
               spacing={3}
             >
               {standups.map((standup) => (
-                <RouteLink to={`/comedians/${standup?.comedian?.id}`}>
+                <RouteLink to={`/standups/${standup?.id}`}>
                   <Box
                     key={standup.id}
                     textAlign="center"
