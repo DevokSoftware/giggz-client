@@ -23,6 +23,7 @@ import {
 import useApi from "../../services/useApi";
 import { ComedianServiceTemp } from "../../services/tempGenerated/ComedianServiceTemp";
 import { QueryPagination } from "../../components/types/Types";
+import GoogleAds from "../../components/GoogleAds";
 
 const ComediansPage = () => {
   const { isLoading, error, handleRequest } = useApi();
@@ -180,6 +181,7 @@ const ComediansPage = () => {
           />
         </Center>
       </>
+      <GoogleAds slot="8493487167" />
     </Box>
   );
 };

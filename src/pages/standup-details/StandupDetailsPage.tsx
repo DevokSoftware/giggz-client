@@ -37,6 +37,7 @@ import Pagination from "../../components/Pagination";
 import { QueryPagination } from "../../components/types/Types";
 import { displayLocationAddress, isPastDate } from "../../components/utils";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import GoogleAds from "../../components/GoogleAds";
 
 const StandupDetailsPage = () => {
   const theme = useTheme();
@@ -281,6 +282,7 @@ const StandupDetailsPage = () => {
             </>
           )}
         </VStack>
+        <GoogleAds slot="8493487167" />
       </Box>
     </Box>
   );

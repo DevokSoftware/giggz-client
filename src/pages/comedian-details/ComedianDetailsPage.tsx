@@ -55,6 +55,7 @@ import {
   openTabWithExternUrl,
 } from "../../components/utils";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import GoogleAds from "../../components/GoogleAds";
 
 const ComedianDetailsPage = () => {
   const { handleRequest: handleRequestComedian } = useApi();
@@ -702,6 +703,7 @@ const ComedianDetailsPage = () => {
           )}
         </TabPanels>
       </Tabs>
+      <GoogleAds slot="8493487167" />
     </Box>
   );
 };

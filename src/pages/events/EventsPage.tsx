@@ -55,6 +55,7 @@ import {
   openTabWithExternUrl,
 } from "../../components/utils";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import GoogleAds from "../../components/GoogleAds";
 
 interface ComedianOption extends OptionBase {
   label: any;
@@ -560,6 +561,7 @@ const EventsPage = () => {
           />
         </Center>
       </>
+      <GoogleAds slot="8493487167" />
     </Box>
   );
 };

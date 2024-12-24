@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { useEffect } from "react";
 
 declare global {
@@ -13,14 +14,15 @@ function useEffectOnce(cb: any) {
   useEffect(cb, []);
 }
 
-function AdsComponent({ slot }: AdSenseProps) {
+function GoogleAds({ slot }: AdSenseProps) {
+  const showAds: boolean = process.env.REACT_APP_SHOW_ADS as unknown as boolean;
+
   useEffectOnce(() => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   });
 
-  return (
-    <div style={{ border: "1px solid white" }}>
-      Ads
+  return showAds ? (
+    <Box style={{ border: "1px solid white" }}>
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}
@@ -29,8 +31,10 @@ function AdsComponent({ slot }: AdSenseProps) {
         data-ad-format="auto"
         data-full-width-responsive="true"
       ></ins>
-    </div>
+    </Box>
+  ) : (
+    <></>
   );
 }
 
-export default AdsComponent;
+export default GoogleAds;

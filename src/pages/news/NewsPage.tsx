@@ -17,6 +17,7 @@ import { NewsContent, NewsService, Standup } from "../../services/openapi";
 import { Link as RouteLink } from "react-router-dom";
 
 import classes from "./NewsPage.module.scss";
+import GoogleAds from "../../components/GoogleAds";
 
 const NewsPage = () => {
   const theme = useTheme();
@@ -357,6 +358,7 @@ const NewsPage = () => {
           </>
         )}
       </>
+      <GoogleAds slot="8493487167" />
     </Box>
   );
 };

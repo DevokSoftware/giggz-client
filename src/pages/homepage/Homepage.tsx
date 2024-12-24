@@ -25,6 +25,7 @@ import { EventResponse, EventService } from "../../services/openapi";
 import useApi from "../../services/useApi";
 import moment from "moment";
 import { Link as RouteLink } from "react-router-dom";
+import GoogleAds from "../../components/GoogleAds";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -148,12 +149,8 @@ const Homepage = () => {
           </Box>
         )}
 
-        {/* Footer */}
+        <GoogleAds slot="8493487167" />
       </Box>
-      {/* <Box bg="green.600" color="white" py={8} mt="5vh" textAlign="center">
-        <Text fontSize="sm">© 2024 Giggz. All rights reserved.</Text>
-        <Text fontSize="sm">“A day without laughter is a day wasted.”</Text>
-      </Box> */}
     </>
   );
 };
