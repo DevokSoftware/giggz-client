@@ -15,7 +15,7 @@ function useEffectOnce(cb: any) {
 }
 
 function GoogleAds({ slot }: AdSenseProps) {
-  const showAds: boolean = process.env.REACT_APP_SHOW_ADS as unknown as boolean;
+  const showAds: boolean = process.env.REACT_APP_SHOW_ADS === "true";
 
   useEffectOnce(() => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
