@@ -241,10 +241,6 @@ const EventsPage = () => {
       ...provided,
       marginLeft: "25px",
     }),
-    menu: (provided) => ({
-      ...provided,
-      zIndex: 9999, // Set a high z-index to ensure it's on top
-    }),
   };
 
   const onChangeDate = (dates: any) => {
@@ -312,7 +308,8 @@ const EventsPage = () => {
             onKeyDown={handleKeyPress}
             backgroundColor="white"
           />
-          <InputGroup borderColor="green.600">
+
+          <InputGroup borderColor="green.600" zIndex={10}>
             <InputLeftElement>
               <MdOutlinePerson color="green" />
             </InputLeftElement>
@@ -339,7 +336,6 @@ const EventsPage = () => {
               }
             />
           </InputGroup>
-
           <InputGroup borderColor="green.600" backgroundColor="white">
             <InputLeftElement>
               <IoCalendarNumberOutline color="green" />
@@ -376,7 +372,7 @@ const EventsPage = () => {
             size="xl"
           />
         ) : (
-          <>
+          <Box>
             <HStack mt={3} justifyContent="end" mr={3}>
               <Text fontSize="xs" color="gray.400">
                 {eventPagination.numberOfResults === 1 ? (
@@ -554,7 +550,7 @@ const EventsPage = () => {
                 </Box>
               </Flex>
             ))}
-          </>
+          </Box>
         )}
         <Center>
           <Pagination
