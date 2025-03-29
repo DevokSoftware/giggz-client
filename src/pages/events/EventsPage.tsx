@@ -81,7 +81,7 @@ const EventsPage = () => {
   const { handleRequest: comediansHandleRequest } = useApi();
   const [pageable, setPageable] = useState<Pageable>({
     sort: ["date", "asc"],
-    size: 5,
+    size: 8,
     page: 0,
   });
   const [events, setEvents] = useState<EventResponse[]>([]);
