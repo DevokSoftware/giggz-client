@@ -56,7 +56,7 @@ const StandupDetailsPage = () => {
   });
   const [eventsPageable, setEventsPageable] = useState<Pageable>({
     sort: ["date", "asc"],
-    size: 5,
+    size: 10,
     page: 0,
   });
 
